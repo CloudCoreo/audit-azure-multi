@@ -847,7 +847,7 @@ coreo_aws_rule "azure-sql-send-alerts-set" do
   meta_cis_level "1"
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
-  { 
+  {
     good_uids as var(func:has(Microsoft.Sql_dg_servers)) @cascade{
       synthesises @filter(has(email_address)){
         email_address
@@ -1079,7 +1079,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all" do
   meta_cis_level "1"
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
-  { 
+  {
     query(func:has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
       synthesises {
         <%= default_predicates %>
@@ -1395,7 +1395,7 @@ end
 
 coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
   action :define
-  service :key-vault
+  service :key_vault
   link "azure-cis-1.0.0-5.13.html"
   display_name "Logging For Keyvault Enabled"
   description "Monitoring how and when your key vaults are accessed, and by whom enables an audit trail of interactions with your secrets, keys and certificates managed by Azure Keyvault. You can do this by enabling logging for Key Vault, which saves information in an Azure storage account that you provide. This creates a new container named insights-logs-auditevent automatically for your specified storage account, and you can use this same storage account for collecting logs for multiple key vaults."
@@ -1458,7 +1458,7 @@ coreo_aws_rule "azure-monitoring-log-profile-exists" do
     var(func:has(Microsoft.Subscription)){
       contains @filter(has(microsoft.insights)){
         observes @filter(has(Microsoft.Subscription)){
-          goodSub as uid        
+          goodSub as uid
         }
       }
     }
@@ -1949,7 +1949,7 @@ end
 
 coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days" do
   action :define
-  service :network-watcher
+  service :network_watcher
   link "azure-cis-1.0.0-6.4.html"
   display_name "Network Security Group Flow Log Retention Greater Than 90 Days"
   description "Flow logs enable capturing information about IP traffic flowing in and out of your Network Security Groups. Logs can be used to check for anomalies and give insight into suspected breaches."
@@ -1986,7 +1986,7 @@ end
 
 coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
   action :define
-  service :network-watcher
+  service :network_watcher
   link "azure-cis-1.0.0-6.5.html"
   display_name "Network Watcher Enabled"
   description "Network diagnostic and visualization tools available with Network Watcher help you understand, diagnose, and gain insights to your network in Azure."
@@ -2007,7 +2007,7 @@ coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
       provisioned as provisioning_status
     }
     q(func:has(sub_policy_location_id)){
-      <%= default_predicates %>  
+      <%= default_predicates %>
       contains @filter(has(Microsoft.Network_dg_networkWatchers) AND eq(val(provisioned), "Succeeded")){
         count(uid)
       }
@@ -2118,7 +2118,7 @@ end
 
 coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
   action :define
-  service :key-vault
+  service :key_vault
   link "azure-cis-1.0.0-8.1.html"
   display_name "Expiry Date Set For All Keys"
   description "Azure Key Vault enables users to store and use cryptographic keys within the Microsoft Azure environment. The `exp` (expiration time) attribute identifies the expiration time on or after which the key MUST NOT be used for a cryptographic operation. By default, Keys never expire. It is thus recommended that you rotate your keys in the key vault and set an explicit expiry time for all keys. This ensures that the keys cannot be used beyond their assigned lifetimes."
@@ -2147,13 +2147,13 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
   }
   QUERY
   meta_rule_node_triggers({
-   'AzureVaultKey' => [] 
+   'AzureVaultKey' => []
   })
 end
 
 coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
   action :define
-  service :key-vault
+  service :key_vault
   link "azure-cis-1.0.0-8.2.html"
   display_name "Expiry Date Set For All Secrets"
   description "Azure Key Vault enables users to store and secrets within the Microsoft Azure environment. Secrets in Azure Key Vault are octet sequences with a maximum size of 25k bytes each. The `exp` (expiration time) attribute identifies the expiration time on or after which the secret MUST NOT be used. By default, Secrets never expire. It is thus recommended that you rotate your secrets in the key vault and set an explicit expiry time for all secrets. This ensures that the secrets cannot be used beyond their assigned lifetimes."
@@ -2182,6 +2182,6 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
   }
   QUERY
   meta_rule_node_triggers({
-   'AzureVaultSecret' => [] 
+   'AzureVaultSecret' => []
   })
 end
