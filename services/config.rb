@@ -1,2434 +1,2187 @@
-# TODO: rules that are service=user should not require objectives,audit_objects,operators,raise_when,id_map
-
-
-coreo_uni_util_jsrunner "cloudtrail-tags-rollup" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-cloudtrail-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-cloudtrail-rollup" do
-  action :nothing
-end
-
-# cloudtrail end
-coreo_uni_util_jsrunner "ec2-tags-rollup" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-ec2-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-ec2-rollup" do
-  action :nothing
-end
-
-# ec2 end
-coreo_uni_util_jsrunner "elb-tags-rollup" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-elb-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-elb-rollup" do
-  action :nothing
-end
-
-# elb end
-coreo_uni_util_jsrunner "tags-rollup-iam" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-iam-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-iam-rollup" do
-  action :nothing
-end
-
-#  iam end
-
-coreo_uni_util_jsrunner "tags-rollup-rds" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-rds-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-rds-rollup" do
-  action :nothing
-end
-
-# rds end
-coreo_uni_util_jsrunner "tags-rollup-redshift" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-redshift-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-redshift-rollup" do
-  action :nothing
-end
-
-# redshift end
-coreo_uni_util_notify "advise-s3-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_jsrunner "tags-rollup-s3" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-s3-rollup" do
-  action :nothing
-end
-
-# s3 end
-
-coreo_uni_util_notify "advise-cloudwatch-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_jsrunner "tags-rollup-cloudwatch" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-cloudwatch-rollup" do
-  action :nothing
-end
-
-# cloudwatch end
-
-coreo_uni_util_jsrunner "tags-rollup-cloudwatchlogs" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-cloudwatchlogs-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-cloudwatchlogs-rollup" do
-  action :nothing
-end
-
-# cloudwatchlogs end
-
-coreo_uni_util_notify "advise-kms-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_jsrunner "tags-rollup-kms" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-kms-rollup" do
-  action :nothing
-end
-
-# kms end
-
-coreo_uni_util_notify "advise-sns-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_jsrunner "tags-rollup-sns" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-sns-rollup" do
-  action :nothing
-end
-
-# sns end
-
-coreo_uni_util_notify "advise-config-to-tag-values" do
-  action :nothing
-end
-coreo_uni_util_jsrunner "tags-rollup-config" do
-  action :nothing
-end
-coreo_uni_util_notify "advise-config-rollup" do
-  action :nothing
-end
-
-# config end
-
-coreo_aws_rule "monitor-unauthorized-api-calls" do
+coreo_aws_rule "azure-security-monitoring-agent-on" do
   action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-unauthorized-api-calls.html"
-  display_name "Ensure unauthorized API calls have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "Unauthorized API calls are not properly monitored and alerted"
+  service :security
+  link "azure-cis-1.0.0-2.02.html"
+  display_name "Monitoring Agent On"
+  description "When Automatic provisioning of monitoring agent is turned on, Azure Security Center provisions the Microsoft Monitoring Agent on all existing supported Azure virtual machines and any new ones that are created. The Microsoft Monitoring agent scans for various security-related configurations and events such as system updates, OS vulnerabilities, and endpoint protection and provides alerts."
+  category "Security"
+  suggested_action "Enable Automatic provisioning of monitoring agent to collect security data."
   level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.02"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as is_os_agent_enabled
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['is_os_agent_enabled']
+  })
+end
+
+coreo_aws_rule "azure-security-system-update-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.03.html"
+  display_name "System Update On"
+  description "When this setting is enabled, it retrieves a daily list of available security and critical updates from Windows Update or Windows Server Update Services. The retrieved list depends on the service that's configured for that virtual machine and recommends that the missing updates be applied. For Linux systems, the policy uses the distro-provided package management system to determine packages that have available updates. It also checks for security and critical updates from Azure Cloud Services virtual machines."
+  category "Security"
+  suggested_action "Enable system updates recommendations for virtual machines."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.03"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as is_os_update_enabled
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['is_os_update_enabled']
+  })
+end
+
+coreo_aws_rule "azure-security-security-configuration-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.04.html"
+  display_name "Security Configuration On"
+  description "When this setting is enabled, it analyzes operating system configurations daily to determine issues that could make the virtual machine vulnerable to attack. The policy also recommends configuration changes to address these vulnerabilities."
+  category "Security"
+  suggested_action "Enable OS vulnerabilities recommendations for virtual machines."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.04"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as security_baselines
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['security_baselines']
+  })
+end
+
+coreo_aws_rule "azure-security-endpoint-protection-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.05.html"
+  display_name "Endpoint Protection On"
+  description "When this setting is enabled, it recommends endpoint protection be provisioned for all Windows virtual machines to help identify and remove viruses, spyware, and other malicious software."
+  category "Security"
+  suggested_action "Enable Endpoint protection recommendations for virtual machines."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.05"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as endpoint_protection
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['endpoint_protection']
+  })
+end
+
+coreo_aws_rule "azure-security-disk-encrpytion-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.06.html"
+  display_name "Disk Encrpytion On"
+  description "When this setting is enabled, it recommends enabling disk encryption in all virtual machines to enhance data protection at rest."
+  category "Security"
+  suggested_action "Enable Disk encryption recommendations for virtual machines."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.06"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as disk_encryption
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['disk_encryption']
+  })
+end
+
+coreo_aws_rule "azure-security-network-security-groups-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.07.html"
+  display_name "Network Security Groups On"
+  description "When this setting is enabled, it recommends that network security groups be configured to control inbound and outbound traffic to VMs that have public endpoints. Network security groups that are configured for a subnet is inherited by all virtual machine network interfaces unless otherwise specified. In addition to checking that a network security group has been configured, this policy assesses inbound security rules to identify rules that allow incoming traffic."
+  category "Security"
+  suggested_action "Enable Network security groups recommendations for virtual machines."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.07"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as network_security_group
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['network_security_group']
+  })
+end
+
+coreo_aws_rule "azure-security-web-application-firewall-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.08.html"
+  display_name "Web Application Firewall On"
+  description "When this setting is enabled, it recommends that a web application firewall is provisioned on virtual machines when either of the following is true: (1) Instance-level public IP (ILPIP) is used and the inbound security rules for the associated network security group are configured to allow access to port 80/443. (2) Load-balanced IP is used and the associated load balancing and inbound network address translation (NAT) rules are configured to allow access to port 80/443."
+  category "Security"
+  suggested_action "Enable Web application firewall recommendations for virtual machines."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.08"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as provision_waf
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['provision_waf']
+  })
+end
+
+coreo_aws_rule "azure-security-next-generation-firewall-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.09.html"
+  display_name "Next Generation Firewall On"
+  description "When this setting is enabled, it extends network protections beyond network security groups, which are built into Azure. Security Center will discover deployments for which a next generation firewall is recommended and enable you to provision a virtual appliance."
+  category "SEcurity"
+  suggested_action "Enable Next generation firewall recommendations for virtual machines."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.09"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as enable_ngfw
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['enable_ngfw']
+  })
+end
+
+coreo_aws_rule "azure-security-vulnerability-assessment-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.10.html"
+  display_name "Vulnerability Assessment On"
+  description "When this setting is enabled, it recommends that you install a vulnerability assessment solution on your VM."
+  category "Security"
+  suggested_action "Enable Vulnerability assessment recommendations for virtual machines."
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.1"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as vulnerability_assessments
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['vulnerability_assessments']
+  })
+end
+
+coreo_aws_rule "azure-security-storage-encryption-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.11.html"
+  display_name "Storage Encryption On"
+  description "When this setting is enabled, any new data in Azure Blobs and Files will be encrypted."
+  category "Security"
+  suggested_action "Enable Storage Encryption recommendations."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.11"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as blob_encryption_enabled
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['blob_encryption_enabled']
+  })
+end
+
+coreo_aws_rule "azure-security-jit-network-access-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.12.html"
+  display_name "Jit Network Access On"
+  description "When this setting is enabled, it Security Center locks down inbound traffic to your Azure VMs by creating an NSG rule. You select the ports on the VM to which inbound traffic should be locked down. Just in time virtual machine (VM) access can be used to lock down inbound traffic to your Azure VMs, reducing exposure to attacks while providing easy access to connect to VMs when needed."
+  category "Security"
+  suggested_action "Enable JIT Network Access for virtual machines."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.12"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as jit_network_access
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['jit_network_access']
+  })
+end
+
+coreo_aws_rule "azure-security-adaptive-application-controls-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.13.html"
+  display_name "Adaptive Application Controls On"
+  description "Adaptive application controls help control which applications can run on your VMs located in Azure, which among other benefits helps harden your VMs against malware. Security Center uses machine learning to analyze the processes running in the VM and helps you apply whitelisting rules using this intelligence."
+  category "Security"
+  suggested_action "Enable adaptive application controls."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.13"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as os_mac_provisioning
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['os_mac_provisioning']
+  })
+end
+
+coreo_aws_rule "azure-security-sql-auditing-threat-detection-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.14.html"
+  display_name "Sql Auditing Threat Detection On"
+  description "When this setting is enabled, it recommends that auditing of access to Azure Database be enabled for compliance and also advanced threat detection, for investigation purposes."
+  category "Security"
+  suggested_action "Enable SQL auditing & Threat detection recommendations."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.14"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as sql_auditing
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['sql_auditing']
+  })
+end
+
+coreo_aws_rule "azure-security-sql-encryption-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.15.html"
+  display_name "Sql Encryption On"
+  description "When this setting is enabled, it recommends that encryption at rest be enabled for your Azure SQL Database, associated backups, and transaction log files. Even if your data is breached, it will not be readable."
+  category "Security"
+  suggested_action "Enable SQL Encryption recommendations."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.15"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as sql_encryption
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['sql_encryption']
+  })
+end
+
+coreo_aws_rule "azure-security-security-contact-emails-set" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.16.html"
+  display_name "Security Contact Emails Set"
+  description "Microsoft reaches out to the provided security contact in case its security team finds that your resources are compromised. This ensures that you are aware of any potential compromise and you can timely mitigate the risk."
+  category "Security"
+  suggested_action "Provide a security contact email address."
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.16"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(Microsoft.Security_dg_policies)) @cascade{
+      e as email_address
+    }
+    good_uids as var(func:has(xid)) @cascade{
+      synthesises @filter(has(email_address)){
+        email_address
+      }
+    }
+    q(func:has(xid)) @filter(NOT uid(good_uids)) {
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => []
+  })
+end
+
+coreo_aws_rule "azure-security-security-contact-phone-num-set" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.17.html"
+  display_name "Security Contact Phone Num Set"
+  description "Microsoft reaches out to the provided security contact in case its security team finds that your resources are compromised. This ensures that you are aware of any potential compromise and you can timely mitigate the risk."
+  category "Security"
+  suggested_action "Provide a security contact phone number."
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.17"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as security_phone_number
+    }
+    query(func:uid(blob_type)) @filter(eq(val(property), "")) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['security_phone_number']
+  })
+end
+
+coreo_aws_rule "azure-security-send-email-alerts-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.18.html"
+  display_name "Send Email Alerts On"
+  description "Enabling security alerts emailing ensures that you receive the security alert emails from Microsoft. This ensures that you are aware of any potential security issues and you can timely mitigate the risk."
+  category "Security"
+  suggested_action "Enable security alerts emailing to security contact."
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.18"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as send_notifications
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['send_notifications']
+  })
+end
+
+coreo_aws_rule "azure-security-send-email-to-subscription-owners-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.19.html"
+  display_name "Send Email To Subscription Owners On"
+  description "Enabling security alerts emailing to subscription owners ensures that they receive the security alert emails from Microsoft. This ensures that they are aware of any potential security issues and can timely mitigate the risk."
+  category "Security"
+  suggested_action "Enable security alerts emailing to subscription owners."
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.19"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as notify_admins
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['notify_admins']
+  })
+end
+
+coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
+  action :define
+  service :storage
+  link "azure-cis-1.0.0-3.1.html"
+  display_name "Secure Transfer Required Enabled"
+  description "The secure transfer option enhances the security of your storage account by only allowing requests to the storage account by a secure connection."
+  category "Security"
+  suggested_action "Enable data encryption is transit."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
   meta_cis_id "3.1"
   meta_cis_scored "true"
   meta_cis_level "1"
-  meta_nist_171_id "3.14.6, 3.14.7, 3.1.7, 3.4.3"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
+  # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
+    blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
+      property as https_only
     }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.errorCode = \\\"*UnauthorizedOperation\\\") || ($.errorCode = \\\"AccessDenied*\\\") }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
+      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
     }
-    <% end %>
   }
   QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
+  meta_rule_node_triggers({
+    'Microsoft.Storage_dg_storageAccounts' => ['https_only']
   })
 end
 
-coreo_aws_rule "monitor-console-login-without-mfa" do
+coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
   action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-console-login-without-mfa.html"
-  display_name "Ensure console login without MFA has monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "Console logins without MFA are not properly monitored and alerted"
-  level "Medium"
+  service :storage
+  link "azure-cis-1.0.0-3.2.html"
+  display_name "Storage Encryption Blob Service Enabled"
+  description "Storage service encryption protects your data at rest. Azure Storage encrypts your data as it's written in its datacenters, and automatically decrypts it for you as you access it."
+  category "Security"
+  suggested_action "Enable data encryption at rest for blobs."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
   meta_cis_id "3.2"
   meta_cis_scored "true"
   meta_cis_level "1"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7, 3.5.3"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
+  # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
+    blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
+      property as blob_encryption_enabled
     }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventName = \\\"ConsoleLogin\\\") && ($.additionalEventData.MFAUsed != \\\"Yes\\\") }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
+      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
     }
-    <% end %>
   }
   QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
+  meta_rule_node_triggers({
+    'Microsoft.Storage_dg_storageAccounts' => ['blob_encryption_enabled']
   })
 end
 
-coreo_aws_rule "monitor-root-account-usage" do
+coreo_aws_rule "azure-storage-storage-encryption-enabled-for-file-service" do
   action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-root-account-usage.html"
-  display_name "Ensure root account login has monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "Root account logins are not properly monitored and alerted"
+  service :storage
+  link "azure-cis-1.0.0-3.6.html"
+  display_name "Storage Encryption Enabled For File Service"
+  description "Storage service encryption protects your data at rest. Azure Storage encrypts your data as it's written in its datacenters, and automatically decrypts it for you as you access it."
+  category "Security"
+  suggested_action "Enable data encryption at rest for file service."
   level "High"
-  meta_cis_id "3.3"
-  meta_cis_scored "true"
-  meta_cis_level "1"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7"
-  objectives [""]
   audit_objects [""]
+  objectives [""]
   operators [""]
   raise_when [true]
-  id_map "static.no_op"
-  meta_rule_query <<~QUERY
-  {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
-    }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
-      <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ $.userIdentity.type = \\\"Root\\\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \\\"AwsServiceEvent\\\" }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
-    }
-    <% end %>
-  }
-  QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
-  })
-end
-
-coreo_aws_rule "monitor-iam-policy-changes" do
-  action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-iam-policy-changes.html"
-  display_name "Ensure IAM policy changes have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "IAM policy changes are not properly monitored and alerted"
-  level "High"
-  meta_cis_id "3.4"
-  meta_cis_scored "true"
-  meta_cis_level "1"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
-  meta_rule_query <<~QUERY
-  {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
-    }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
-      <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventName=DeleteGroupPolicy) || ($.eventName=DeleteRolePolicy) || ($.eventName=DeleteUserPolicy) || ($.eventName=PutGroupPolicy) || ($.eventName=PutRolePolicy) || ($.eventName=PutUserPolicy) || ($.eventName=CreatePolicy) || ($.eventName=DeletePolicy) || ($.eventName=CreatePolicyVersion) || ($.eventName=DeletePolicyVersion) || ($.eventName=AttachRolePolicy) || ($.eventName=DetachRolePolicy) || ($.eventName=AttachUserPolicy) || ($.eventName=DetachUserPolicy) || ($.eventName=AttachGroupPolicy) || ($.eventName=DetachGroupPolicy) }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
-    }
-    <% end %>
-  }
-  QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
-  })
-end
-
-coreo_aws_rule "monitor-cloudtrail-config-changes" do
-  action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-cloudtrail-config-changes.html"
-  display_name "Ensure CloudTrail configuration changes have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "CloudTrail configuration changes are not properly monitored and alerted"
-  level "Medium"
-  meta_cis_id "3.5"
-  meta_cis_scored "true"
-  meta_cis_level "1"
-  meta_nist_171_id "3.3.4, 3.4.3, 3.14.6, 3.14.7, 3.3.4"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
-  meta_rule_query <<~QUERY
-  {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
-    }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
-      <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
-    }
-    <% end %>
-  }
-  QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
-  })
-end
-
-coreo_aws_rule "monitor-console-auth-failures" do
-  action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-console-auth-failures.html"
-  display_name "Ensure console authentication failures have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "Console authentication failures are not properly monitored and alerted"
-  level "Medium"
   meta_cis_id "3.6"
   meta_cis_scored "true"
-  meta_cis_level "2"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7, 3.1.12"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
+    blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
+      property as file_encryption_enabled
     }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventName = ConsoleLogin) && ($.errorMessage = \\\"Failed authentication\\\") }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
+      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
     }
-    <% end %>
   }
   QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
+  meta_rule_node_triggers({
+    'Microsoft.Storage_dg_storageAccounts' => ['file_encryption_enabled']
   })
 end
 
-coreo_aws_rule "monitor-cmk-change-delete" do
+coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-containers" do
   action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-cmk-change-delete.html"
-  display_name "Ensure disabled or scheduled deletion of Customer Master Keys (CMKs) have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "Disabled and/or scheduled deletion of CMKs are not properly monitored and alerted"
-  level "Medium"
+  service :storage
+  link "azure-cis-1.0.0-3.7.html"
+  display_name "Public Access Level Set Private For Blob Containers"
+  description "You can enable anonymous, public read access to a container and its blobs in Azure Blob storage. By doing so, you can grant read-only access to these resources without sharing your account key, and without requiring a shared access signature. It is recommended to not provide anonymous access to blob containers until and unless it is strongly desired. You should use shared access signature token for providing controlled and timed access to blob containers."
+  category "Security"
+  suggested_action "Disable anonymous access to blob containers."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
   meta_cis_id "3.7"
   meta_cis_scored "true"
-  meta_cis_level "2"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
+    blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
+      t as type
+      property as public_access
     }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion))}")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
+      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
     }
-    <% end %>
   }
   QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
+  meta_rule_node_triggers({
+    'Microsoft.Storage_dg_storageAccounts' => ['public_access']
   })
 end
 
-coreo_aws_rule "monitor-s3-bucket-policy-changes" do
+coreo_aws_rule "azure-sql-auditing-on" do
   action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-s3-bucket-policy-changes.html"
-  display_name "Ensure S3 bucket policy changes have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "S3 bucket policy changes are not properly monitored and alerted"
-  level "High"
-  meta_cis_id "3.8"
+  service :sql
+  link "azure-cis-1.0.0-4.1.1.html"
+  display_name "Auditing On"
+  description "The Azure platform allows you to create a SQL server as a service. Enabling auditing at the server level ensures that all existing and newly created databases on the SQL server instance are audited. Auditing tracks database events and writes them to an audit log in your Azure storage account. It also helps you to maintain regulatory compliance, understand database activity, and gain insight into discrepancies and anomalies that could indicate business concerns or suspected security violations."
+  category "Security"
+  suggested_action "Enable auditing on SQL Servers."
+  level "Medium"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.1.1"
   meta_cis_scored "true"
   meta_cis_level "1"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
+  # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
+    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+      property as is_audit_enabled
     }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
+      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
     }
-    <% end %>
   }
   QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers' => ['is_audit_enabled']
   })
 end
 
-coreo_aws_rule "monitor-cloudwatch-config-changes" do
+coreo_aws_rule "azure-sql-threat-detection-on" do
   action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-cloudwatch-config-changes.html"
-  display_name "Ensure CloudWatch configuration changes have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "CloudWatch configuration changes are not properly monitored and alerted"
+  service :sql
+  link "azure-cis-1.0.0-4.1.2.html"
+  display_name "Threat Detection On"
+  description "SQL Threat Detection provides a new layer of security, which enables customers to detect and respond to potential threats as they occur by providing security alerts on anomalous activities. Users will receive an alert upon suspicious database activities, potential vulnerabilities, and SQL injection attacks, as well as anomalous database access patterns. SQL Threat Detection alerts provide details of suspicious activity and recommend action on how to investigate and mitigate the threat."
+  category "Security"
+  suggested_action "Enable threat detection on SQL Servers."
+  level "High"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.1.2"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+      property as is_threat_detection_enabled
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers' => ['is_threat_detection_enabled']
+  })
+end
+
+coreo_aws_rule "azure-sql-threat-detection-types-all" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.1.3.html"
+  display_name "Threat Detection Types All"
+  description "Enabling all threat detection types, you are protected against SQL injection, database vulnerabilities and any other anomalous activities."
+  category "Security"
+  suggested_action "Enable all types of threat detection on SQL Servers."
+  level "High"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.1.3"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+
+    }
+    query(func:has(has(Microsoft.Sql_dg_servers)) @cascade{
+      synthesises {
+        <%= default_predicates %>
+      }
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers' => []
+  })
+end
+
+coreo_aws_rule "azure-sql-send-alerts-set" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.1.4.html"
+  display_name "Send Alerts Set"
+  description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
+  category "Security"
+  suggested_action "Provide the email address to which alerts will be sent upon detection of anomalous activities on SQL Servers."
   level "Low"
-  meta_cis_id "3.9"
-  meta_cis_scored "true"
-  meta_cis_level "2"
-  meta_nist_171_id "3.3.4, 3.4.3, 3.14.6, 3.14.7, 3.3.4"
-  objectives [""]
   audit_objects [""]
-  operators [""]
   raise_when [true]
-  id_map "static.no_op"
-  meta_rule_query <<~QUERY
-  {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
-    }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
-      <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.even tName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder)) }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
-    }
-    <% end %>
-  }
-  QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
-  })
-end
-
-coreo_aws_rule "monitor-security-group-changes" do
-  action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-security-group-changes.html"
-  display_name "Ensure Security Groups configuration changes have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "Security Groups configuration changes are not properly monitored and alerted"
-  level "Medium"
-  meta_cis_id "3.10"
-  meta_cis_scored "true"
-  meta_cis_level "2"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7"
+  operators [""]
   objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
-  meta_rule_query <<~QUERY
-  {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
-    }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
-      <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.eventName = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup) }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
-    }
-    <% end %>
-  }
-  QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
-  })
-end
-
-coreo_aws_rule "monitor-nacl-changes" do
-  action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-nacl-changes.html"
-  display_name "Ensure Network Access Control Lists (NACL) configuration changes have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "Network Access Control Lists (NACL) configuration changes are not properly monitored and alerted"
-  level "High"
-  meta_cis_id "3.11"
-  meta_cis_scored "true"
-  meta_cis_level "2"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
-  meta_rule_query <<~QUERY
-  {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
-    }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
-      <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
-    }
-    <% end %>
-  }
-  QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
-  })
-end
-
-coreo_aws_rule "monitor-network-gateway-changes" do
-  action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-network-gateway-changes.html"
-  display_name "Ensure Network Gateway configuration changes have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "Network Gateway configuration changes are not properly monitored and alerted"
-  level "High"
-  meta_cis_id "3.12"
+  meta_cis_id "4.1.4"
   meta_cis_scored "true"
   meta_cis_level "1"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
+  # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
+    good_uids as var(func:has(Microsoft.Sql_dg_servers)) @cascade{
+      synthesises @filter(has(email_address)){
+        email_address
+      }
     }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
+    q(func:has(Microsoft.Sql_dg_servers)) @filter(NOT uid(good_uids)) {
       <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
-    }
-    <% end %>
-  }
-  QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
-  })
-end
-
-coreo_aws_rule "monitor-route-table-changes" do
-  action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-route-table-changes.html"
-  display_name "Ensure Route Table configuration changes have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "Route Table configuration changes are not properly monitored and alerted"
-  level "High"
-  meta_cis_id "3.13"
-  meta_cis_scored "true"
-  meta_cis_level "1"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
-  meta_rule_query <<~QUERY
-  {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
-    }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
-      <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
-    }
-    <% end %>
-  }
-  QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
-  })
-end
-
-coreo_aws_rule "monitor-vpc-changes" do
-  action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_monitor-vpc-changes.html"
-  display_name "Ensure VPC configuration changes have monitoring and alerting"
-  suggested_action "Setup the metric filter, alarm, SNS topic, and subscription"
-  description "VPC configuration changes are not properly monitored and alerted"
-  level "High"
-  meta_cis_id "3.14"
-  meta_cis_scored "true"
-  meta_cis_level "1"
-  meta_nist_171_id "3.4.3, 3.14.6, 3.14.7"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
-  meta_rule_query <<~QUERY
-  {
-    t as var(func: <%= filter['trail'] %>) { }
-    cwl as var(func: <%= filter['cloud_watch_logs_log_group'] %>) { }
-    lg as var(func: <%= filter['log_group'] %>) { }
-    mf as var(func: <%= filter['metric_filter'] %>) @cascade {
-      fp as filter_pattern
-    }
-    mt as var(func: <%= filter['metric_transformation'] %>) { }
-    m as var(func: <%= filter['metric'] %>) { }
-    ma as var(func: <%= filter['metric_alarm'] %>) { }
-    aa as var(func: <%= filter['alarm_action'] %>) { }
-    st as var(func: <%= filter['sns_topic'] %>) { }
-    <% range = (1..9).to_a.reverse %>
-    <% range.each do |i| %>
-    <% limitter = 0 %>
-    query_<%= i %>(func: uid(t)) @cascade {
-      <%= default_predicates %>
-      <% if (limitter += 1) < i %>
-      relates_to @filter(uid(cwl)) {
-        <%= default_predicates %>
-        <% if (limitter += 1) < i %>
-        relates_to @filter(uid(lg)) {
-          <%= default_predicates %>
-          <% if (limitter += 1) < i %>
-          relates_to @filter(uid(mf) AND eq(val(fp),"{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }")) {
-            <%= default_predicates %>
-            filter_pattern
-            <% if (limitter += 1) < i %>
-            relates_to @filter(uid(mt)) {
-              <%= default_predicates %>
-              <% if (limitter += 1) < i %>
-              relates_to @filter(uid(m)) {
-                <%= default_predicates %>
-                <% if (limitter += 1) < i %>
-                relates_to @filter(uid(ma)) {
-                  <%= default_predicates %>
-                  <% if (limitter += 1) < i %>
-                  relates_to @filter(uid(aa)) {
-                    <%= default_predicates %>
-                    <% if (limitter += 1) < i %>
-                    relates_to @filter(uid(st)) {
-                      <%= default_predicates %>
-                    }
-                    <% end %>
-                  }
-                  <% end %>
-                }
-                <% end %>
-              }
-              <% end %>
-            }
-            <% end %>
-          }
-          <% end %>
-        }
-        <% end %>
-      }
-      <% end %>
-    }
-    <% end %>
-  }
-  QUERY
-  meta_rule_node_triggers ({
-      'trail' => [],
-      'cloud_watch_logs_log_group' => [],
-      'log_group' => [],
-      'metric_transformation' => [],
-      'sns_topic' => [],
-      'metric' => [],
-      'metric_filter' => ['pattern_filter'],
-      'metric_alarm' => [],
-      'alarm_action' => []
-  })
-end
-
-coreo_aws_rule "bucket-acl-inventory" do
-  action :define
-  service :s3
-  link "http://kb.cloudcoreo.com/mydoc_all-inventory.html"
-  include_violations_in_count false
-  display_name "Bucket ACL for CloudTrail trail"
-  description "This is an internally defined alert"
-  category "Internal"
-  suggested_action "Ignore"
-  level "Internal"
-  objectives    ["bucket_acl"]
-  audit_objects ["object.grants.grantee.uri"]
-  operators     ["=~"]
-  raise_when    [//]
-  id_map        "modifiers.bucket"
-end
-
-coreo_aws_rule "bucket-logging-inventory" do
-  action :define
-  service :s3
-  link "http://kb.cloudcoreo.com/mydoc_all-inventory.html"
-  include_violations_in_count false
-  display_name "Bucket Logging for CloudTrail trail"
-  description "This is an internally defined alert"
-  category "Internal"
-  suggested_action "Ignore"
-  level "Internal"
-  objectives    ["bucket_logging"]
-  audit_objects ["object.logging_enabled.target_bucket"]
-  operators     ["=~"]
-  raise_when    [//]
-  id_map        "modifiers.bucket"
-end
-
-coreo_aws_rule_runner "advise-sns" do
-  action :run
-  rules ${AUDIT_AWS_CIS3_RULE_LIST}.reject(&:empty?).empty? ? ${AUDIT_AWS_SNS_ALERT_LIST} : ${AUDIT_AWS_SNS_ALERT_LIST}.push("sns-subscriptions-inventory-internal").uniq.reject(&:empty?)
-  service :sns
-  regions ${AUDIT_AWS_REGIONS}
-  filter(${FILTERED_OBJECTS}) if ${FILTERED_OBJECTS}
-end
-
-coreo_aws_rule_runner "advise-cloudwatchlogs" do
-  action :run
-  rules ${AUDIT_AWS_CIS3_RULE_LIST}.reject(&:empty?).empty? ? ${AUDIT_AWS_CLOUDWATCHLOGS_ALERT_LIST} : ${AUDIT_AWS_CLOUDWATCHLOGS_ALERT_LIST}.push("cloudwatchlogs-inventory").push("cloudwatchlogsmetricfilters-inventory").uniq.reject(&:empty?)
-  service :cloudwatchlogs
-  regions ${AUDIT_AWS_REGIONS}
-  filter(${FILTERED_OBJECTS}) if ${FILTERED_OBJECTS}
-end
-
-coreo_aws_rule_runner "advise-cloudwatch" do
-  action :run
-  rules ${AUDIT_AWS_CIS3_RULE_LIST}.reject(&:empty?).empty? ? ${AUDIT_AWS_CLOUDWATCH_ALERT_LIST} : ${AUDIT_AWS_CLOUDWATCH_ALERT_LIST}.push("cloudwatch-inventory").uniq.reject(&:empty?)
-  service :cloudwatch
-  regions ${AUDIT_AWS_REGIONS}
-  filter(${FILTERED_OBJECTS}) if ${FILTERED_OBJECTS}
-end
-
-coreo_aws_rule_runner "cis3-rules" do
-  action :run
-  service :cloudtrail
-  rules(${AUDIT_AWS_CIS3_RULE_LIST})
-  regions ${AUDIT_AWS_REGIONS}
-  filter(${FILTERED_OBJECTS}) if ${FILTERED_OBJECTS}
-end
-
-coreo_aws_rule_runner "cloudtrail-inventory-only" do
-  action :run
-  service :cloudtrail
-  rules(["cloudtrail-inventory-1"])
-  regions ${AUDIT_AWS_REGIONS}
-  filter(${FILTERED_OBJECTS}) if ${FILTERED_OBJECTS}
-end
-
-coreo_uni_util_jsrunner "cis3-rollup" do
-  action :run
-  json_input '[COMPOSITE::coreo_aws_rule_runner.advise-cloudwatchlogs.report, COMPOSITE::coreo_aws_rule_runner.advise-cloudwatch.report, COMPOSITE::coreo_aws_rule_runner.advise-sns.report, COMPOSITE::coreo_aws_rule_runner.cloudtrail-inventory-runner.report]'
-  function <<-'EOH'
-function cloudtrailLogsLogGroupArns(region, report) {
-    const logGroupArns = [];
-    if (!report[region]) return logGroupArns;
-    const objectIdKeys = Object.keys(report[region]);
-    objectIdKeys.forEach(objectIdKey => {
-        jsonBuilder(report, region, objectIdKey, 'violations', 'cloudtrail-inventory-1');
-        const results = report[region][objectIdKey]['violations']['cloudtrail-inventory-1']['result_info'];
-        results.forEach(result => {
-            if (result['object']['cloud_watch_logs_log_group_arn']) {
-                logGroupArns.push(result['object']['cloud_watch_logs_log_group_arn']);
-            }
-        })
-    })
-    return logGroupArns;
-}
-
-function jsonBuilder(a, b, c, d, e) {
-  if(!a[b]) {
-    a[b] = {};
-  }
-
-  if (!a[b][c])
-  {
-    a[b][c] = {};
-  }
-
-  if (!a[b][c][d])
-  {
-    a[b][c][d] = {};
-  }
-
-  if (!a[b][c][d][e])
-  {
-    a[b][c][d][e] = {};
-  }
-}
-
-function metricsForLogGroups(region, metricFilterPattern, trailArns, logs, logsmetricfilters) {
-    const metrics = [];
-    if (!logs[region]) return metrics;
-    const objectIdKeys = Object.keys(logs[region]);
-    trailArns.forEach(trailArn => {
-        objectIdKeys.forEach(objectIdKey => {
-            jsonBuilder(logs, region, objectIdKey, 'violations', 'cloudwatchlogs-inventory');
-             Object.keys(logsmetricfilters).forEach(region => {
-                Object.keys(logsmetricfilters[region]).forEach(objectIdKey => {
-                    var results = logsmetricfilters[region][objectIdKey]['violations']['cloudwatchlogsmetricfilters-inventory']['result_info'];
-                    results.forEach(result => {
-                        const filterPattern = result['object']['filter_pattern'].replace(/ /g, '').replace(/\\"/g, '"');
-                        if (trailArn.includes(result['object']['log_group_name']) && filterPattern === metricFilterPattern) {
-                            result['object']['metric_transformations'].forEach(metric => {
-                                // metrics.push({ metric_name: metric['metric_name'], log_group_name: result['object']['log_group_name']});
-                                metrics.push(metric['metric_name']);
-                            })
-                        }
-                    })
-                });
-            });
-        });
-    });
-    return metrics;
-}
-
-function alarmActionsForMetricFilter(region, metricFilters, cloudwatch) {
-    const alarms = [];
-    if (!cloudwatch[region]) return alarms;
-    const objectIdKeys = Object.keys(cloudwatch[region]);
-    objectIdKeys.forEach(objectIdKey => {
-        jsonBuilder(cloudwatch, region, objectIdKey, 'violations', 'cloudwatch-inventory')
-        const results = cloudwatch[region][objectIdKey]['violations']['cloudwatch-inventory']['result_info'];
-        results.forEach(result => {
-            const metricName = result['object']['metric_name'];
-            if (metricFilters.includes(metricName)) {
-                alarms.push(result['object']['alarm_actions']); // result['object']['alarm_actions'] is array
-            }
-        })
-    })
-    // Flatten array of arrays
-    return alarms.reduce((r, i) => r.concat(i), []);
-}
-
-function subscribersToTopics(region, alarms, sns) {
-    const metricSubscribers = {}; // { rule: [SNS subscriber] }
-    Object.keys(alarms).forEach((rule) => metricSubscribers[rule] = []);
-    if (!sns[region]) return metricSubscribers;
-    const snsTopics = Object.keys(sns[region]);
-    snsTopics.forEach(snsTopic => {
-        const rules = Object.keys(alarms);
-        if(rules) {
-          rules.forEach(rule => {
-              const alarmsForRule = alarms[rule];
-              const alarmsMatch = alarmsForRule.filter((alarm) => snsTopic.includes(alarm));
-              if (alarmsMatch.length > 0) {
-                  jsonBuilder(sns, region, snsTopic, 'violations', 'sns-subscriptions-inventory-internal');
-                  const results = sns[region][snsTopic]['violations']['sns-subscriptions-inventory-internal']['result_info'];
-                  if (results) {
-                    results.forEach(result => {
-                        const subscriberEndpoint = result['object']['endpoint'];
-                        metricSubscribers[rule].push(subscriberEndpoint);
-                    })
-                  }
-              }
-          })
-        }
-    })
-    return metricSubscribers;
-}
-
-function copyViolationInNewJsonInput(regions) {
-    const output = {};
-    output['number_ignored_violations'] = 0;
-    output['number_violations'] = 0;
-    output['number_checks'] = 0;
-    output['violations'] = {};
-    regions.forEach(regionKey => {
-        output['violations'][regionKey] = {};
-        output['violations'][regionKey][regionKey] = {};
-        output['violations'][regionKey][regionKey]['violations'] = {};
-        output['violations'][regionKey][regionKey]['tags'] = [];
-    });
-    return output;
-}
-
-function updateOutputWithResults(region, results) {
-    const rules = Object.keys(results);
-    rules.forEach(rule => {
-        // TODO: consider value of include_violations_in_count
-        json_output['number_checks'] += 1;
-        const ruleIsGlobal = Object.keys(globalRulesPassCounters).includes(rule);
-        if (results[rule].length > 0) {
-            if (ruleIsGlobal) globalRulesPassCounters[rule] += 1;
-        } else if (!ruleIsGlobal) {
-            json_output['violations'][region][region]['violations'][rule] = Object.assign(ruleMeta[rule]);
-            json_output['violations'][region][region]['violations'][rule]['region'] = region;
-            json_output['number_violations'] += 1;
-        }
-    })
-}
-
-function updateOutputWithGlobalResults() {
-    Object.keys(globalRulesPassCounters).forEach(globalRule => {
-        if (rulesArray.includes(globalRule) && globalRulesPassCounters[globalRule] === 0) {
-            // We didn't pass
-            const region = regionArray[0]; // Arbitrarily take first region
-            json_output['violations'][region][region]['violations'][globalRule] = Object.assign(ruleMeta[globalRule]);
-            json_output['violations'][region][region]['violations'][globalRule]['region'] = region;
-            json_output['number_violations'] += 1;
-        }
-    })
-}
-
-const rulesArrayJSON = "${AUDIT_AWS_CIS3_RULE_LIST}";
-const regionArrayJSON = "${AUDIT_AWS_REGIONS}";
-const rulesArray = JSON.parse(rulesArrayJSON.replace(/'/g, '"'));
-const regionArray = JSON.parse(regionArrayJSON.replace(/'/g, '"'));
-
-const ruleMetaJSON = {
-    'monitor-unauthorized-api-calls': COMPOSITE::coreo_aws_rule.monitor-unauthorized-api-calls.inputs,
-    'monitor-console-login-without-mfa': COMPOSITE::coreo_aws_rule.monitor-console-login-without-mfa.inputs,
-    'monitor-root-account-usage': COMPOSITE::coreo_aws_rule.monitor-root-account-usage.inputs,
-    'monitor-iam-policy-changes': COMPOSITE::coreo_aws_rule.monitor-iam-policy-changes.inputs,
-    'monitor-cloudtrail-config-changes': COMPOSITE::coreo_aws_rule.monitor-cloudtrail-config-changes.inputs,
-    'monitor-console-auth-failures': COMPOSITE::coreo_aws_rule.monitor-console-auth-failures.inputs,
-    'monitor-cmk-change-delete': COMPOSITE::coreo_aws_rule.monitor-cmk-change-delete.inputs,
-    'monitor-s3-bucket-policy-changes': COMPOSITE::coreo_aws_rule.monitor-s3-bucket-policy-changes.inputs,
-    'monitor-cloudwatch-config-changes': COMPOSITE::coreo_aws_rule.monitor-cloudwatch-config-changes.inputs,
-    'monitor-security-group-changes': COMPOSITE::coreo_aws_rule.monitor-security-group-changes.inputs,
-    'monitor-nacl-changes': COMPOSITE::coreo_aws_rule.monitor-nacl-changes.inputs,
-    'monitor-network-gateway-changes': COMPOSITE::coreo_aws_rule.monitor-network-gateway-changes.inputs,
-    'monitor-route-table-changes': COMPOSITE::coreo_aws_rule.monitor-route-table-changes.inputs,
-    'monitor-vpc-changes': COMPOSITE::coreo_aws_rule.monitor-vpc-changes.inputs
-};
-const ruleInputsToKeep = ['service', 'category', 'link', 'display_name', 'suggested_action', 'description', 'level', 'meta_cis_id', 'meta_cis_scored', 'meta_cis_level', 'include_violations_in_count'];
-const ruleMeta = {};
-Object.keys(ruleMetaJSON).forEach(rule => {
-    const flattenedRule = {};
-    ruleMetaJSON[rule].forEach(input => {
-        if (ruleInputsToKeep.includes(input.name)) flattenedRule[input.name] = input.value;
-    })
-    flattenedRule["service"] = "multi";
-    ruleMeta[rule] = flattenedRule;
-})
-
-// 3.2, 3.3, 3.4, 3.6, 3.8 are violations for global services IAM or S3
-const globalRulesPassCounters = {
-    'monitor-console-login-without-mfa': 0,
-    'monitor-root-account-usage': 0,
-    'monitor-iam-policy-changes': 0,
-    'monitor-console-auth-failures': 0,
-    'monitor-s3-bucket-policy-changes': 0
-}
-
-const cloudwatchlogsmetricfilters = {};
-const cloudwatchlogs = {};
-Object.keys(json_input[0]).forEach(region => {
-    Object.keys(json_input[0][region]).forEach(obj => {
-        if(json_input[0][region][obj]['violator_info'].hasOwnProperty('arn')) {
-            if(!(cloudwatchlogs.hasOwnProperty(region))) { cloudwatchlogs[region] = {}; }
-            cloudwatchlogs[region][obj] = json_input[0][region][obj];
-        } else if(json_input[0][region][obj]['violator_info'].hasOwnProperty('filter_pattern')) {
-            if(!(cloudwatchlogsmetricfilters.hasOwnProperty(region))) { cloudwatchlogsmetricfilters[region] = {}; }
-            cloudwatchlogsmetricfilters[region][obj] = json_input[0][region][obj];
-        }
-    });
-});
-
-const cloudwatch = json_input[1];
-const sns = json_input[2];
-const cloudtrail = json_input[3];
-
-const metricFilterPatterns = {
-    'monitor-unauthorized-api-calls': '{($.errorCode = "*UnauthorizedOperation") || ($.errorCode ="AccessDenied*") }', // 3.1
-    'monitor-console-login-without-mfa': '{ ($.eventName = "ConsoleLogin") && ($.additionalEventData.MFAUsed != "Yes") }', // 3.2
-    'monitor-root-account-usage': '{ $.userIdentity.type = "Root" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != "AwsServiceEvent" }', // 3.3
-    'monitor-iam-policy-changes': '{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}', // 3.4
-    'monitor-cloudtrail-config-changes': '{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }', // 3.5
-    'monitor-console-auth-failures': '{ ($.eventName = ConsoleLogin) && ($.errorMessage = "Failed authentication") }', // 3.6
-    'monitor-cmk-change-delete': '{($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion))}', // 3.7
-    'monitor-s3-bucket-policy-changes': '{ ($.eventSource = s3.amazonaws.com) && (($.eventName = PutBucketAcl) || ($.eventName = PutBucketPolicy) || ($.eventName = PutBucketCors) || ($.eventName = PutBucketLifecycle) || ($.eventName = PutBucketReplication) || ($.eventName = DeleteBucketPolicy) || ($.eventName = DeleteBucketCors) || ($.eventName = DeleteBucketLifecycle) || ($.eventName = DeleteBucketReplication)) }', // 3.8
-    'monitor-cloudwatch-config-changes': '{($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.even tName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder))}', // 3.9
-    'monitor-security-group-changes': '{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.eventName = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup)}', // 3.10
-    'monitor-nacl-changes': '{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }', // 3.11
-    'monitor-network-gateway-changes': '{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }', // 3.12
-    'monitor-route-table-changes': '{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }', // 3.13
-    'monitor-vpc-changes': '{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }' // 3.14
-};
-Object.keys(metricFilterPatterns).forEach((m) => metricFilterPatterns[m] = metricFilterPatterns[m].replace(/ /g, ''));
-
-const json_output = copyViolationInNewJsonInput(regionArray);
-
-regionArray.forEach(region => {
-    const cloudtrailArns = cloudtrailLogsLogGroupArns(region, cloudtrail);
-    const snsAlarms = {}; // { rule: [alarmsArray], ... }
-
-    rulesArray.forEach(rule => {
-        const metricFilter = metricFilterPatterns[rule]
-        if (!metricFilter) {
-            console.log(`unknown rule: ${rule}`);
-            return;
-        }
-        const metricsForUnauthApiCalls = metricsForLogGroups(region, metricFilter, cloudtrailArns, cloudwatchlogs, cloudwatchlogsmetricfilters);
-        snsAlarms[rule] = alarmActionsForMetricFilter(region, metricsForUnauthApiCalls, cloudwatch);
-    })
-
-    const metricSubscribers = subscribersToTopics(region, snsAlarms, sns);
-    updateOutputWithResults(region, metricSubscribers);
-})
-
-updateOutputWithGlobalResults();
-
-coreoExport('number_ignored_violations', json_output['number_ignored_violations']);
-coreoExport('number_violations', json_output['number_violations']);
-coreoExport('number_checks', json_output['number_checks']);
-
-callback(json_output['violations']);
-EOH
-end
-
-coreo_uni_util_variables "rollup-update-advisor-output" do
-  action :set
-  variables([
-                {'COMPOSITE::coreo_aws_rule_runner.cis3-rules.number_ignored_violations' => 'COMPOSITE::coreo_uni_util_jsrunner.cis3-rollup.number_ignored_violations'},
-                {'COMPOSITE::coreo_aws_rule_runner.cis3-rules.number_violations' => 'COMPOSITE::coreo_uni_util_jsrunner.cis3-rollup.number_violations'},
-                {'COMPOSITE::coreo_aws_rule_runner.cis3-rules.number_checks' => 'COMPOSITE::coreo_uni_util_jsrunner.cis3-rollup.number_checks'},
-                {'COMPOSITE::coreo_aws_rule_runner.cis3-rules.report' => 'COMPOSITE::coreo_uni_util_jsrunner.cis3-rollup.return'}
-            ])
-end
-
-coreo_aws_rule "s3-cloudtrail-public-access" do
-  action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_s3-cloudtrail-public-access.html"
-  display_name "Ensure S3 bucket for CloudTrail logs not publicly accessible"
-  suggested_action "Remove any public access that has been granted to CloudTrail buckets"
-  description "Access controls (ACLs) to CloudTrail S3 logging buckets allow public access"
-  level "High"
-  meta_cis_id "2.3"
-  meta_cis_scored "true"
-  meta_cis_level "1"
-  meta_nist_171_id "3.3.1"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
-  meta_rule_query <<~QUERY
-  {
-    tr as var(func: <%= filter['trail'] %>) @cascade{
-      b as relates_to @filter(<%= filter['bucket'] %>) {
-        ba as relates_to @filter(<%= filter['bucket_acl'] %>) {
-          bag as relates_to @filter(<%= filter['bucket_acl_grant'] %>) {
-            g as relates_to @filter(<%= filter['grantee'] %>) {
-              u as uri
-            }
-          }
-        }
-      }
-    }
-  
-    query(func: uid(tr)) @cascade {
-      <%= default_predicates %>
-      relates_to @filter(uid(b)) {
-        <%= default_predicates %>
-        relates_to @filter(uid(ba)) {
-          <%= default_predicates %>
-          relates_to @filter(uid(bag)) {
-            <%= default_predicates %>
-            relates_to @filter(uid(g) AND (eq(val(u),"http://acs.amazonaws.com/groups/global/AllUsers") OR  eq(val(u),"http://acs.amazonaws.com/groups/global/AuthenticatedUsers"))) {
-              <%= default_predicates %>
-              uri
-            }
-          }
-        }
-      }
     }
   }
   QUERY
   meta_rule_node_triggers({
-                              'trail' => [],
-                              'bucket' => [],
-                              'bucket_acl' => [],
-                              'bucket_acl_grant' => [],
-                              'grantee' => ['uri']
-                          })
+    'Microsoft.Sql_dg_servers' => []
+  })
 end
 
-coreo_aws_rule "s3-cloudtrail-no-logging" do
+coreo_aws_rule "azure-sql-email-service-co-administrators-enabled" do
   action :define
-  service :user
-  category "Audit"
-  link "http://kb.cloudcoreo.com/mydoc_s3-cloudtrail-no-logging.html"
-  display_name "Ensure S3 bucket logging is enabled for CloudTrail logs"
-  suggested_action "S3 Bucket access logging be enabled on the CloudTrail S3 bucket"
-  description "Logging of CloudTrail S3 bucket is not configured"
-  level "Medium"
-  meta_cis_id "2.6"
+  service :sql
+  link "azure-cis-1.0.0-4.1.5.html"
+  display_name "Email Service Co Administrators Enabled"
+  description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
+  category "Security"
+  suggested_action "Enable service and co-administrators to receive security alerts from SQL Server."
+  level "Low"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.1.5"
   meta_cis_scored "true"
   meta_cis_level "1"
-  meta_nist_171_id "3.3.2"
-  objectives [""]
-  audit_objects [""]
-  operators [""]
-  raise_when [true]
-  id_map "static.no_op"
+  # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    twb as var(func: <%= filter['trail'] %>) @cascade {
-      relates_to @filter(<%= filter['bucket'] %>) {
-        relates_to @filter(<%= filter['bucket_logging'] %>) {
-        }
-      }
+    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+      property as notify_admins
     }
-  
-    query(func: has(trail)) @filter(NOT uid(twb)) {
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      relates_to @filter(has(bucket)) {
+      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers' => ['notify_admins']
+  })
+end
+
+coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.1.6.html"
+  display_name "Auditing Retention Greater Than 90 Days"
+  description "Audit Logs can be used to check for anomalies and give insight into suspected breaches or misuse of information and access."
+  category "Security"
+  suggested_action "SQL Server Audit Retention should be configured to be greater than 90 days."
+  level "Low"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.1.6"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+      property as audit_retention_days
+    }
+    query(func:uid(blob_type)) @filter(AND lt(val(property), 90)) {
+      <%= default_predicates %>
+      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers' => ['audit_retention_days']
+  })
+end
+
+coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.1.7.html"
+  display_name "Threat Detection Retention Greater Than 90 Days"
+  description "Threat Detection Logs can be used to check for suspected attack attempts and breaches on a SQL server with known attack signatures."
+  category "Security"
+  suggested_action "SQL Server Threat Detection Retention should be configured to be greater than 90 days."
+  level "Low"
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  audit_objects [""]
+  meta_cis_id "4.1.7"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+      property as threat_retention_days
+    }
+    query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
+      <%= default_predicates %>
+      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers' => ['threat_retention_days']
+  })
+end
+
+coreo_aws_rule "azure-sql-active-directory-admin-configured" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.1.8.html"
+  display_name "Active Directory Admin Configured"
+  description "Azure Active Directory authentication is a mechanism of connecting to Microsoft Azure SQL Database and SQL Data Warehouse by using identities in Azure Active Directory (Azure AD). With Azure AD authentication, you can centrally manage the identities of database users and other Microsoft services in one central location."
+  category "Security"
+  suggested_action "Use Azure Active Directory Authentication for authentication with SQL Database"
+  level "High"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.1.8"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+      property as is_audit_enabled
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers' => ['is_audit_enabled']
+  })
+end
+
+coreo_aws_rule "azure-sql-auditing-on" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.2.1.html"
+  display_name "Auditing On"
+  description "Auditing tracks database events and writes them to an audit log in your Azure storage account. It also helps you to maintain regulatory compliance, understand database activity, and gain insight into discrepancies and anomalies that could indicate business concerns or suspected security violations."
+  category "Security"
+  suggested_action "Enable auditing on SQL databases."
+  level "Medium"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.2.1"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+      property as is_audit_enabled
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers_dg_databases' => ['is_audit_enabled']
+  })
+end
+
+coreo_aws_rule "azure-sql-threat-detection-on" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.2.2.html"
+  display_name "Threat Detection On"
+  description "SQL Threat Detection provides a new layer of security, which enables customers to detect and respond to potential threats as they occur by providing security alerts on anomalous activities. Users will receive an alert upon suspicious database activities, potential vulnerabilities, and SQL injection attacks, as well as anomalous database access patterns."
+  category "Security"
+  suggested_action "Enable threat detection on SQL databases."
+  level "High"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.2.2"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+      property as is_threat_detection_enabled
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers_dg_databases' => ['is_threat_detection_enabled']
+  })
+end
+
+coreo_aws_rule "azure-sql-threat-detection-types-all" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.2.3.html"
+  display_name "Threat Detection Types All"
+  description "Enabling all threat detection types, you are protected against SQL injection, database vulnerabilities and any other anomalous activities."
+  category "Security"
+  suggested_action "Enable all types of threat detection on SQL databases."
+  level "High"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.2.3"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    query(func:has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+      synthesises {
         <%= default_predicates %>
       }
     }
   }
   QUERY
   meta_rule_node_triggers({
-                              'trail' => [],
-                              'bucket' => [],
-                              'bucket_logging' => []
-                          })
-end
-
-coreo_aws_rule_runner "cis2-rules" do
-  action :run
-  service :cloudtrail
-  rules(${AUDIT_AWS_CIS2_RULE_LIST})
-  regions ${AUDIT_AWS_REGIONS}
-  filter(${FILTERED_OBJECTS}) if ${FILTERED_OBJECTS}
-end
-
-coreo_aws_rule_runner "bucket-inventory" do
-  service :s3
-  action :run
-  rules ${AUDIT_AWS_CIS2_RULE_LIST}.reject(&:empty?).empty? ? [""] : ["bucket-logging-inventory", "bucket-acl-inventory"]
-  global_objective "buckets"
-  global_modifier({:bucket => "buckets.name"})
-  regions ${AUDIT_AWS_REGIONS}
-  filter(${FILTERED_OBJECTS}) if ${FILTERED_OBJECTS}
-end
-
-coreo_uni_util_jsrunner "cis26-cis23-processor" do
-  action :run
-  json_input '[COMPOSITE::coreo_aws_rule_runner.bucket-inventory.report, COMPOSITE::coreo_aws_rule_runner.cloudtrail-inventory-only.report]'
-  function <<-'EOH'
-function copyViolationInNewJsonInput(regions) {
-    const output = {};
-    output['number_ignored_violations'] = 0;
-    output['number_violations'] = 0;
-    output['number_checks'] = 0;
-    output['violations'] = {};
-    regions.forEach(regionKey => {
-        output['violations'][regionKey] = {};
-    });
-    return output;
-}
-
-function updateOutputWithResults(region, bucket, result, targetRule, sourceRule) {
-    json_output['number_violations'] = json_output['number_violations'] + 1;
-
-    if (!json_output['violations'][region][bucket]) {
-        json_output['violations'][region][bucket] = {};
-        json_output['violations'][region][bucket]['violator_info'] = result['violator_info'];
-    }
-    if (!json_output['violations'][region][bucket]['violations']) {
-        json_output['violations'][region][bucket]['violations'] = {};
-    }
-    if (!json_output['violations'][region][bucket]['tags']) {
-        json_output['violations'][region][bucket]['tags'] = result['tags'];
-    }
-
-    json_output['violations'][region][bucket]['violations'][targetRule] = Object.assign(ruleMeta[targetRule]);
-    json_output['violations'][region][bucket]['violations'][targetRule]['region'] = region;
-
-    if (result['violations'][sourceRule]) {
-        // Overwrite region if defined in violation because of S3 bucket locations
-        json_output['violations'][region][bucket]['violations'][targetRule]['region'] = result['violations'][sourceRule]['region'];
-        json_output['violations'][region][bucket]['violations'][targetRule]['result_info'] = result['violations'][sourceRule]['result_info'];
-    }
-}
-
-const CLOUDTRAIL_INVENTORY_RULE = 'cloudtrail-inventory-1';
-const S3_ACL_INVENTORY_RULE = 'bucket-acl-inventory';
-const S3_LOGGING_INVENTORY_RULE = 'bucket-logging-inventory';
-const VIOLATING_GRANTEE_URIS = [
-    'http://acs.amazonaws.com/groups/global/AllUsers',
-    'http://acs.amazonaws.com/groups/global/AuthenticatedUsers'
-];
-
-const ruleMetaJSON = {
-    's3-cloudtrail-public-access': COMPOSITE::coreo_aws_rule.s3-cloudtrail-public-access.inputs,
-    's3-cloudtrail-no-logging': COMPOSITE::coreo_aws_rule.s3-cloudtrail-no-logging.inputs
-};
-const ruleInputsToKeep = ['service', 'category', 'link', 'display_name', 'suggested_action', 'description', 'level', 'meta_cis_id', 'meta_cis_scored', 'meta_cis_level', 'include_violations_in_count'];
-const ruleMeta = {};
-Object.keys(ruleMetaJSON).forEach(rule => {
-    const flattenedRule = {};
-    ruleMetaJSON[rule].forEach(input => {
-        if (ruleInputsToKeep.includes(input.name)) flattenedRule[input.name] = input.value;
-    })
-    ruleMeta[rule] = flattenedRule;
-})
-
-const rulesArrayJSON = "${AUDIT_AWS_CIS2_RULE_LIST}";
-const regionArrayJSON = "${AUDIT_AWS_REGIONS}";
-const rulesArray = JSON.parse(rulesArrayJSON.replace(/'/g, '"'));
-const regionArray = JSON.parse(regionArrayJSON.replace(/'/g, '"'));
-
-const s3BucketInventory = json_input[0];
-const cloudtrail = json_input[1];
-
-const json_output = copyViolationInNewJsonInput(regionArray);
-
-const trailsToCheck = [];
-regionArray.forEach(region => {
-    // There can be no violations without trails
-    if (!cloudtrail[region]) return;
-
-    const trails = Object.keys(cloudtrail[region]);
-    trails.forEach(trail => {
-        const results = cloudtrail[region][trail]['violations'][CLOUDTRAIL_INVENTORY_RULE]['result_info'];
-        results.forEach(result => {
-            const bucket = result['object']['s3_bucket_name'];
-            if (bucket) {
-                trailsToCheck.push(bucket);
-            }
-        })
-    })
-})
-
-regionArray.forEach(region => {
-    if (!s3BucketInventory[region]) return;
-    const buckets = Object.keys(s3BucketInventory[region]);
-    buckets.forEach(bucket => {
-        if (trailsToCheck.includes(bucket)) {
-            let targetRule = 's3-cloudtrail-public-access';
-            if (rulesArray.includes(targetRule)) {
-                let haveACLViolation = false;
-                if (s3BucketInventory[region][bucket]['violations'][S3_ACL_INVENTORY_RULE]) {
-                    const bucketACLResults = s3BucketInventory[region][bucket]['violations'][S3_ACL_INVENTORY_RULE]['result_info'];
-                    bucketACLResults.forEach(result => {
-                        json_output['number_checks'] = json_output['number_checks'] + 1;
-                        const granteeURI = result['object']['uri'];
-                        if (VIOLATING_GRANTEE_URIS.includes(granteeURI)) {
-                            haveACLViolation = true;
-                        }
-                    })
-                    if (haveACLViolation) {
-                        const sourceRule = S3_ACL_INVENTORY_RULE;
-                        updateOutputWithResults(region, bucket, s3BucketInventory[region][bucket], targetRule, sourceRule);
-                    }
-                }
-            }
-
-            targetRule = 's3-cloudtrail-no-logging';
-            if (rulesArray.includes(targetRule)) {
-                let haveLoggingViolation = false;
-                if (s3BucketInventory[region][bucket]['violations'][S3_LOGGING_INVENTORY_RULE]) {
-                    const bucketLoggingResults = s3BucketInventory[region][bucket]['violations'][S3_LOGGING_INVENTORY_RULE]['result_info'];
-                    bucketLoggingResults.forEach(result => {
-                        json_output['number_checks'] = json_output['number_checks'] + 1;
-                        const targetBucket = result['object']['target_bucket'];
-                        if (!targetBucket) {
-                            haveLoggingViolation = true;
-                        }
-                    })
-                } else {
-                    haveLoggingViolation = true;
-                    json_output['number_checks'] = json_output['number_checks'] + 1;
-                }
-                if (haveLoggingViolation) {
-                    const sourceRule = S3_LOGGING_INVENTORY_RULE;
-                    updateOutputWithResults(region, bucket, s3BucketInventory[region][bucket], targetRule, sourceRule);
-                }
-            }
-        }
-    })
-})
-
-coreoExport('number_ignored_violations', json_output['number_ignored_violations']);
-coreoExport('number_violations', json_output['number_violations']);
-coreoExport('number_checks', json_output['number_checks']);
-
-callback(json_output['violations']);
-EOH
-end
-
-coreo_uni_util_variables "rollup-update-advisor-output-cis2" do
-  action :set
-  variables([
-                {'COMPOSITE::coreo_aws_rule_runner.cis2-rules.number_ignored_violations' => 'COMPOSITE::coreo_uni_util_jsrunner.cis2-rollup.number_ignored_violations'},
-                {'COMPOSITE::coreo_aws_rule_runner.cis2-rules.number_violations' => 'COMPOSITE::coreo_uni_util_jsrunner.cis2-rollup.number_violations'},
-                {'COMPOSITE::coreo_aws_rule_runner.cis2-rules.number_checks' => 'COMPOSITE::coreo_uni_util_jsrunner.cis2-rollup.number_checks'},
-                {'COMPOSITE::coreo_aws_rule_runner.cis2-rules.report' => 'COMPOSITE::coreo_uni_util_jsrunner.cis26-cis23-processor.return'}
-            ])
-end
-
-coreo_uni_util_variables "aws-planwide" do
-  action :set
-  variables([
-                {'COMPOSITE::coreo_uni_util_variables.aws-planwide.composite_name' => 'PLAN::stack_name'},
-                {'COMPOSITE::coreo_uni_util_variables.aws-planwide.plan_name' => 'PLAN::name'},
-                {'COMPOSITE::coreo_uni_util_variables.aws-planwide.results' => 'unset'},
-                {'COMPOSITE::coreo_uni_util_variables.aws-planwide.number_violations' => '0'}
-            ])
-end
-
-coreo_uni_util_jsrunner "splice-violation-object" do
-  action :run
-  data_type "json"
-  json_input '
-  {"composite name":"PLAN::stack_name","plan name":"PLAN::name", "services": {
-  "cloudtrail": {
-   "composite name":"PLAN::stack_name",
-   "plan name":"PLAN::name",
-   "audit name": "CloudTrail",
-    "cloud account name":"PLAN::cloud_account_name",
-   "violations": COMPOSITE::coreo_aws_rule_runner.advise-cloudtrail.report },
-  "ec2": {
-   "audit name": "EC2",
-   "violations": COMPOSITE::coreo_aws_rule_runner.advise-ec2.report },
-    "cloudwatch": {
-      "audit name": "CLOUDWATCH",
-      "violations": COMPOSITE::coreo_aws_rule_runner.advise-cloudwatch.report
-    },
-    "sns": {
-      "audit name": "SNS",
-      "violations": COMPOSITE::coreo_aws_rule_runner.advise-sns.report
-    },
-    "kms": {
-      "audit name": "KMS",
-      "violations": COMPOSITE::coreo_aws_rule_runner.advise-kms.report
-    },
-  "cloudwatchlogs": {
-   "audit name": "CLOUDWATCHLOGS",
-   "violations": COMPOSITE::coreo_aws_rule_runner.advise-cloudwatchlogs.report },
-  "iam": {
-   "audit name": "IAM",
-   "violations": COMPOSITE::coreo_aws_rule_runner.advise-iam.report },
-  "elb": {
-   "audit name": "ELB",
-   "violations": COMPOSITE::coreo_aws_rule_runner.advise-elb.report },
-  "rds": {
-   "audit name": "RDS",
-   "violations": COMPOSITE::coreo_aws_rule_runner.advise-rds.report },
-  "redshift": {
-   "audit name": "REDSHIFT",
-   "violations": COMPOSITE::coreo_aws_rule_runner.advise-redshift.report },
-  "s3": {
-   "audit name": "S3",
-   "violations": COMPOSITE::coreo_aws_rule_runner.advise-s3.report }
-  }}'
-  function <<-EOH
-  const wayToServices = json_input['services'];
-  let newViolation = {};
-  let violationCounter = 0;
-  const auditStackKeys = Object.keys(wayToServices);
-  auditStackKeys.forEach(auditStackKey => {
-      let wayForViolation = wayToServices[auditStackKey]['violations'];
-      const violationKeys = Object.keys(wayForViolation);
-      violationKeys.forEach(violationRegion => {
-          if(!newViolation.hasOwnProperty(violationRegion)) {
-              newViolation[violationRegion] = {};
-          }
-          const ruleKeys = Object.keys(wayForViolation[violationRegion]);
-          violationCounter+= ruleKeys.length;
-          ruleKeys.forEach(objectKey => {
-              if(!newViolation[violationRegion].hasOwnProperty(objectKey)) {
-                  newViolation[violationRegion][objectKey] = {};
-                  newViolation[violationRegion][objectKey]['violations'] = {};
-              }
-              const objectKeys = Object.keys(wayForViolation[violationRegion][objectKey]['violations']);
-              objectKeys.forEach(ruleKey => {
-                  newViolation[violationRegion][objectKey]['tags'] = wayForViolation[violationRegion][objectKey]['tags'];
-                  newViolation[violationRegion][objectKey]['violations'][ruleKey] = wayForViolation[violationRegion][objectKey]['violations'][ruleKey];
-              })
-          })
-      });
-  });
-  coreoExport('violationCounter', JSON.stringify(violationCounter));
-  callback(newViolation);
-  EOH
-end
-
-coreo_uni_util_variables "aws-update-planwide-1" do
-  action :set
-  variables([
-                {'COMPOSITE::coreo_uni_util_variables.aws-planwide.results' => 'COMPOSITE::coreo_aws_rule_runner.splice-violation-object.report'},
-                {'COMPOSITE::coreo_uni_util_variables.aws-planwide.number_violations' => 'COMPOSITE::coreo_aws_rule_runner.splice-violation-object.violationCounter'},
-
-            ])
-end
-
-
-coreo_uni_util_jsrunner "tags-to-notifiers-array-aws" do
-  action :run
-  data_type "json"
-  provide_composite_access true
-  packages([
-               {
-                   :name => "cloudcoreo-jsrunner-commons",
-                   :version => "1.10.7-beta65"
-               },
-               {
-                   :name => "js-yaml",
-                   :version => "3.7.0"
-               }])
-  json_input '{ "compositeName":"PLAN::stack_name",
-                "planName":"PLAN::name",
-                "teamName":"PLAN::team_name",
-                "cloudAccountName": "PLAN::cloud_account_name",
-                "violations": COMPOSITE::coreo_uni_util_jsrunner.splice-violation-object.return}'
-  function <<-EOH
-
-const compositeName = json_input.compositeName;
-const planName = json_input.planName;
-const cloudAccount = json_input.cloudAccountName;
-const cloudObjects = json_input.violations;
-const teamName = json_input.teamName;
-
-const NO_OWNER_EMAIL = "${AUDIT_AWS_ALERT_RECIPIENT}";
-const OWNER_TAG = "${AUDIT_AWS_OWNER_TAG}";
-const ALLOW_EMPTY = "${AUDIT_AWS_ALLOW_EMPTY}";
-const SEND_ON = "${AUDIT_AWS_SEND_ON}";
-const htmlReportSubject = "${HTML_REPORT_SUBJECT}";
-
-let cloudtrailAlertListToJSON = "${AUDIT_AWS_CLOUDTRAIL_ALERT_LIST}";
-let redshiftAlertListToJSON = "${AUDIT_AWS_REDSHIFT_ALERT_LIST}";
-let rdsAlertListToJSON = "${AUDIT_AWS_RDS_ALERT_LIST}";
-let iamAlertListToJSON = "${AUDIT_AWS_IAM_ALERT_LIST}";
-let elbAlertListToJSON = "${AUDIT_AWS_ELB_ALERT_LIST}";
-let ec2AlertListToJSON = "${AUDIT_AWS_EC2_ALERT_LIST}";
-let s3AlertListToJSON = "${AUDIT_AWS_S3_ALERT_LIST}";
-let cloudwatchAlertListToJSON = "${AUDIT_AWS_CLOUDWATCH_ALERT_LIST}";
-let cloudwatchlogsAlertListToJSON = "${AUDIT_AWS_CLOUDWATCHLOGS_ALERT_LIST}";
-let kmsAlertListToJSON = "${AUDIT_AWS_KMS_ALERT_LIST}";
-let snsAlertListToJSON = "${AUDIT_AWS_SNS_ALERT_LIST}";
-
-
-const alertListMap = new Set();
-
-alertListMap.add(JSON.parse(cloudtrailAlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(redshiftAlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(rdsAlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(iamAlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(elbAlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(ec2AlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(s3AlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(cloudwatchAlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(cloudwatchlogsAlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(kmsAlertListToJSON.replace(/'/g, '"')));
-alertListMap.add(JSON.parse(snsAlertListToJSON.replace(/'/g, '"')));
-
-
-let auditAwsAlertList = [];
-
-alertListMap.forEach(alertList => {
-    auditAwsAlertList = auditAwsAlertList.concat(alertList);
-});
-
-const alertListArray = auditAwsAlertList;
-const ruleInputs = {};
-
-let userSuppression;
-let userSchemes;
-
-const fs = require('fs');
-const yaml = require('js-yaml');
-function setSuppression() {
-  try {
-      userSuppression = yaml.safeLoad(fs.readFileSync('./suppression.yaml', 'utf8'));
-  } catch (e) {
-    if (e.name==="YAMLException") {
-      throw new Error("Syntax error in suppression.yaml file. "+ e.message);
-    }
-    else{
-      console.log(e.name);
-      console.log(e.message);
-      userSuppression=[];
-    }
-  }
-
-  coreoExport('suppression', JSON.stringify(userSuppression));
-}
-
-function setTable() {
-  try {
-    userSchemes = yaml.safeLoad(fs.readFileSync('./table.yaml', 'utf8'));
-  } catch (e) {
-    if (e.name==="YAMLException") {
-      throw new Error("Syntax error in table.yaml file. "+ e.message);
-    }
-    else{
-      console.log(e.name);
-      console.log(e.message);
-      userSchemes={};
-    }
-  }
-
-  coreoExport('table', JSON.stringify(userSchemes));
-}
-setSuppression();
-setTable();
-
-const argForConfig = {
-    NO_OWNER_EMAIL, cloudObjects, userSuppression, OWNER_TAG,
-    userSchemes, alertListArray, ruleInputs, ALLOW_EMPTY,
-    SEND_ON, cloudAccount, compositeName, planName, htmlReportSubject, teamName
-}
-
-
-function createConfig(argForConfig) {
-    let JSON_INPUT = {
-        compositeName: argForConfig.compositeName,
-        htmlReportSubject: argForConfig.htmlReportSubject,
-        planName: argForConfig.planName,
-        teamName: argForConfig.teamName,
-        violations: argForConfig.cloudObjects,
-        userSchemes: argForConfig.userSchemes,
-        userSuppression: argForConfig.userSuppression,
-        alertList: argForConfig.alertListArray,
-        disabled: argForConfig.ruleInputs,
-        cloudAccount: argForConfig.cloudAccount
-    };
-    let SETTINGS = {
-        NO_OWNER_EMAIL: argForConfig.NO_OWNER_EMAIL,
-        OWNER_TAG: argForConfig.OWNER_TAG,
-        ALLOW_EMPTY: argForConfig.ALLOW_EMPTY, SEND_ON: argForConfig.SEND_ON,
-        SHOWN_NOT_SORTED_VIOLATIONS_COUNTER: false
-    };
-    return {JSON_INPUT, SETTINGS};
-}
-
-const {JSON_INPUT, SETTINGS} = createConfig(argForConfig);
-const CloudCoreoJSRunner = require('cloudcoreo-jsrunner-commons');
-
-const emails = CloudCoreoJSRunner.createEmails(JSON_INPUT, SETTINGS);
-const suppressionJSON = CloudCoreoJSRunner.createJSONWithSuppress(JSON_INPUT, SETTINGS);
-
-coreoExport('JSONReport', JSON.stringify(suppressionJSON));
-coreoExport('report', JSON.stringify(suppressionJSON['violations']));
-
-callback(emails);
-  EOH
-end
-
-
-coreo_uni_util_variables "aws-update-planwide-2" do
-  action :set
-  variables([
-                {'COMPOSITE::coreo_uni_util_variables.aws-planwide.results' => 'COMPOSITE::coreo_uni_util_jsrunner.tags-to-notifiers-array-aws.JSONReport'},
-                {'COMPOSITE::coreo_uni_util_variables.aws-planwide.table' => 'COMPOSITE::coreo_uni_util_jsrunner.tags-to-notifiers-array-aws.table'}
-            ])
-end
-
-coreo_uni_util_jsrunner "tags-rollup-aws" do
-  action :run
-  data_type "text"
-  json_input 'COMPOSITE::coreo_uni_util_jsrunner.tags-to-notifiers-array-aws.return'
-  function <<-EOH
-const notifiers = json_input;
-
-
-function setTextRollup() {
-    let emailText = '';
-    let numberOfViolations = 0;
-    let usedEmails=new Map();
-    notifiers.forEach(notifier => {
-        const hasEmail = notifier['endpoint']['to'].length;
-        const email = notifier['endpoint']['to'];
-        if(hasEmail && usedEmails.get(email)!==true) {
-            usedEmails.set(email,true);
-            numberOfViolations += parseInt(notifier['num_violations']);
-            emailText += "recipient: " + notifier['endpoint']['to'] + " - " + "Violations: " + notifier['numberOfViolatingCloudObjects'] + ", Cloud Objects: "+ (notifier["num_violations"]-notifier['numberOfViolatingCloudObjects']) + "\\n";
-        }
-    });
-
-    textRollup += 'Total Number of matching Cloud Objects: ' + numberOfViolations + "\\n";
-    textRollup += 'Rollup' + "\\n";
-    textRollup += emailText;
-
-}
-
-
-let textRollup = '';
-setTextRollup();
-
-callback(textRollup);
-  EOH
-end
-
-coreo_uni_util_notify "advise-aws-to-tag-values" do
-  action((("${AUDIT_AWS_ALERT_RECIPIENT}".length > 0)) ? :notify : :nothing)
-  notifiers 'COMPOSITE::coreo_uni_util_jsrunner.tags-to-notifiers-array-aws.return'
-end
-
-coreo_uni_util_notify "advise-aws-rollup" do
-  action((("${AUDIT_AWS_ALERT_RECIPIENT}".length > 0) and (! "${AUDIT_AWS_OWNER_TAG}".eql?("NOT_A_TAG"))) ? :notify : :nothing)
-  type 'email'
-  allow_empty true
-  send_on 'always'
-  payload '
-composite name: PLAN::stack_name
-plan name: PLAN::name
-COMPOSITE::coreo_uni_util_jsrunner.tags-rollup-aws.return
-  '
-  payload_type 'text'
-  endpoint ({
-      :to => '${AUDIT_AWS_ALERT_RECIPIENT}', :subject => 'CloudCoreo aws rule results on PLAN::stack_name :: PLAN::name'
+    'Microsoft.Sql_dg_servers_dg_databases' => []
   })
 end
 
-coreo_aws_s3_policy "cloudcoreo-audit-aws-multi-policy" do
-  action((("${AUDIT_AWS_MULTI_S3_NOTIFICATION_BUCKET_NAME}".length > 0) ) ? :create : :nothing)
-  policy_document <<-EOF
-{
-"Version": "2012-10-17",
-"Statement": [
-{
-"Sid": "",
-"Effect": "Allow",
-"Principal":
-{ "AWS": "*" }
-,
-"Action": "s3:*",
-"Resource": [
-"arn:aws:s3:::bucket-${AUDIT_AWS_MULTI_S3_NOTIFICATION_BUCKET_NAME}/*",
-"arn:aws:s3:::bucket-${AUDIT_AWS_MULTI_S3_NOTIFICATION_BUCKET_NAME}"
-]
-}
-]
-}
-  EOF
+coreo_aws_rule "azure-sql-send-alerts-set" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.2.4.html"
+  display_name "Send Alerts Set"
+  description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
+  category "Security"
+  suggested_action "Provide the email address to which alerts will be sent upon detection of anomalous activities on SQL databases."
+  level "Low"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.2.4"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    good_uids as var(func:has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+      synthesises @filter(has(email_address)){
+        email_address
+      }
+    }
+    q(func:has(Microsoft.Sql_dg_servers_dg_databases)) @filter(NOT uid(good_uids)) {
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers_dg_database' => []
+  })
 end
 
-coreo_aws_s3_bucket "bucket-${AUDIT_AWS_MULTI_S3_NOTIFICATION_BUCKET_NAME}" do
-  action((("${AUDIT_AWS_MULTI_S3_NOTIFICATION_BUCKET_NAME}".length > 0) ) ? :create : :nothing)
-  bucket_policies ["cloudcoreo-audit-aws-multi-policy"]
+coreo_aws_rule "azure-sql-email-service-co-administrators-enabled" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.2.5.html"
+  display_name "Email Service Co Administrators Enabled"
+  description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
+  category "Security"
+  suggested_action "Enable service and co-administrators to receive security alerts from SQL databases."
+  level "Low"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.2.5"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+      property as notify_admins
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers_dg_databases' => ['notify_admins']
+  })
 end
 
-coreo_uni_util_notify "cloudcoreo-audit-aws-multi-s3" do
-  action((("${AUDIT_AWS_MULTI_S3_NOTIFICATION_BUCKET_NAME}".length > 0) ) ? :notify : :nothing)
-  type 's3'
-  allow_empty true
-  payload 'COMPOSITE::coreo_uni_util_jsrunner.tags-to-notifiers-array-aws.report'
-  endpoint ({
-      object_name: 'aws-multi-json',
-      bucket_name: 'bucket-${AUDIT_AWS_MULTI_S3_NOTIFICATION_BUCKET_NAME}',
-      folder: 'multi/PLAN::name',
-      properties: {}
+coreo_aws_rule "azure-sql-data-encryption-on" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.2.6.html"
+  display_name "Data Encryption On"
+  description "Azure SQL Database transparent data encryption helps protect against the threat of malicious activity by performing real-time encryption and decryption of the database, associated backups, and transaction log files at rest without requiring changes to the application."
+  category "Security"
+  suggested_action "Encrypt database."
+  level "High"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.2.6"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+      property as sql_encryption
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers_dg_databases' => ['sql_encryption']
+  })
+end
+
+coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.2.7.html"
+  display_name "Auditing Retention Greater Than 90 Days"
+  description "Audit Logs can be used to check for anomalies and give insight into suspected breaches or misuse of information and access."
+  category "Security"
+  suggested_action "SQL Database Audit Retention should be configured to be greater than 90 days."
+  level "Low"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.2.7"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+      property as audit_retention_days
+    }
+    query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
+      <%= default_predicates %>
+      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers_dg_databases' => ['audit_retention_days']
+  })
+end
+
+coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-4.2.8.html"
+  display_name "Threat Detection Retention Greater Than 90 Days"
+  description "Threat Logs can be used to check for anomalies and give insight into suspected breaches or misuse of information and access."
+  category "Security"
+  suggested_action "SQL Database Threat Retention should be configured to be greater than 90 days."
+  level "Low"
+  audit_objects [""]
+  raise_when [true]
+  operators [""]
+  objectives [""]
+  meta_cis_id "4.2.8"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+      property as threat_retention_days
+    }
+    query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
+      <%= default_predicates %>
+      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Sql_dg_servers_dg_databases' => ['threat_retention_days']
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.10.html"
+  display_name "Activity Log Alert For Create Or Update Sql Server Firewall Rule"
+  description "Monitoring for Create or Update SQL Server Firewall Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create or Update SQL Server Firewall Rule event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.1"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.sql/servers/firewallrules/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewall-rule" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.11.html"
+  display_name "Activity Log Alert For Delete Sql Server Firewall Rule"
+  description "Monitoring for Delete SQL Server Firewall Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Delete SQL Server Firewall Rule event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.11"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.sql/servers/firewallrules/delete")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.12.html"
+  display_name "Activity Log Alert For Update Security Policy"
+  description "Monitoring for Update Security Policy events gives insight into changes to the Security Policy and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Update Security Policy event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.12"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.security/policies/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
+  action :define
+  service :key_vault
+  link "azure-cis-1.0.0-5.13.html"
+  display_name "Logging For Keyvault Enabled"
+  description "Monitoring how and when your key vaults are accessed, and by whom enables an audit trail of interactions with your secrets, keys and certificates managed by Azure Keyvault. You can do this by enabling logging for Key Vault, which saves information in an Azure storage account that you provide. This creates a new container named insights-logs-auditevent automatically for your specified storage account, and you can use this same storage account for collecting logs for multiple key vaults."
+  category "Logging"
+  suggested_action "Enable AuditEvent logging for Key Vault instances to ensure interactions with key vaults are logged and available."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.13"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      retentionDays as retention_days
+    }
+    var(func:has(Microsoft.Subscription)) @cascade{
+      contains @filter(has(Microsoft.KeyVault_dg_vaults)){
+        synthesises @filter(has(microsoft.keyvault)){
+          synthesises @filter(has(is_retention_enabled) AND ge(val(retentionDays), 180)){
+            observes{
+              happySub as uid
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(not uid(happySub)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.KeyVault_dg_vaults' => ['retention_days']
+  })
+end
+
+coreo_aws_rule "azure-monitoring-log-profile-exists" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.1.html"
+  display_name "Log Profile Exists"
+  description "A Log Profile controls how your Activity Log is exported. By default, activity logs are retained only for 90 days. It is thus recommended to define a log profile using which you could export the logs and store them for a longer duration for analyzing security activities within your Azure subscription."
+  category "Logging"
+  suggested_action "Enable log profile for exporting activity logs."
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.1"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(Microsoft.Subscription)){
+      contains @filter(has(microsoft.insights)){
+        observes @filter(has(Microsoft.Subscription)){
+          goodSub as uid
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(goodSub)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'microsoft.insights' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.2.html"
+  display_name "Activity Log Retention 365 Days Or Greater"
+  description "A Log Profile controls how your Activity Log is exported and retained. Since the average time to detect a breach is 210 days, it is recommended to retain your activity log for 365 days or more in order to have time to respond to any incidents."
+  category "Logging"
+  suggested_action "Ensure Activity Log Retention is set for 365 days or greater"
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.2"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      days as retention_days
+    }
+    var(func:has(Microsoft.Subscription)) @cascade{
+      contains @filter(has(microsoft.insights) AND ge(val(days), 365)){
+        goodProfile as uid
+      }
+    }
+    q(func:has(microsoft.insights)) @filter(NOT uid(goodProfile)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'microsoft.insights' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.3.html"
+  display_name "Activity Log Alert For Create Polic Assignment"
+  description "Monitoring for Create Policy Assignment gives insight into privilege assignment and may reduce the time it takes to detect a breach or misuse of information."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create Policy Assignment event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.3"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.authorization/policyassignments/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.4.html"
+  display_name "Activity Log Alert For Create Or Update Network Security Group"
+  description "Monitoring for Create or Update Network Security Group events gives insight network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create or Update Network Security Group event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.4"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-group" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.5.html"
+  display_name "Activity Log Alert For Delete Network Security Group"
+  description "Monitoring for Delete Network Security Group events gives insight network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Delete Network Security Group event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.5"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/delete")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group-rule" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.6.html"
+  display_name "Activity Log Alert For Create Or Update Network Security Group Rule"
+  description "Monitoring for Create or Update Network Security Group Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create or Update Network Security Group Rule event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.6"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/securityrules/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-group-rule" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.7.html"
+  display_name "Activity Log Alert For Delete Network Security Group Rule"
+  description "Monitoring for Delete Network Security Group Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Delete Network Security Group Rule event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.7"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/securityrules/delete")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-security-solution" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.8.html"
+  display_name "Activity Log Alert For Create Or Update Security Solution"
+  description "Monitoring for Create or Update Security Solution events gives insight into changes to the active security solutions and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create or Update Security Solution event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.8"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.security/securitysolutions/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-solution" do
+  action :define
+  service :monitoring
+  link "azure-cis-1.0.0-5.9.html"
+  display_name "Activity Log Alert For Delete Network Security Solution"
+  description "Monitoring for Delete Security Solution events gives insight into changes to the active security solutions and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Delete Security Solution event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.9"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.security/securitysolutions/delete")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
+
+coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-6.1.html"
+  display_name "Rdp Access Restricted From Internet"
+  description "The potential security problem with using RDP over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
+  category "Security"
+  suggested_action "Disable RDP access on Network Security Groups from Internet"
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.1"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(type)) @cascade{
+      proto as protocol
+      dportMin as destination_port_max
+      dportMax as destination_port_min
+      sAddrMin as source_cidr_range_min
+      sAddrMax as source_cidr_range_max
+    }
+    var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
+      synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 3389) AND ge(val(dportMax), 3389)){
+        violation as uid
+      }
+    }
+    q(func:uid(violation)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkSecurityGroups' => []
+  })
+end
+
+coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-6.2.html"
+  display_name "Ssh Access Restricted From Internet"
+  description "The potential security problem with using SSH over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
+  category "Security"
+  suggested_action "Disable SSH access on Network Security Groups from Internet"
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.2"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(type)) @cascade{
+      proto as protocol
+      dportMin as destination_port_max
+      dportMax as destination_port_min
+      sAddrMin as source_cidr_range_min
+      sAddrMax as source_cidr_range_max
+    }
+    var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
+      synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 22) AND ge(val(dportMax), 22)){
+        violation as uid
+      }
+    }
+    q(func:uid(violation)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkSecurityGroups' => []
+  })
+end
+
+coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
+  action :define
+  service :sql
+  link "azure-cis-1.0.0-6.3.html"
+  display_name "Sql Server Access Restricted From Internet"
+  description "SQL Database includes a firewall to block access to unauthorized connections. After creating your SQL Database, you can specify which IP addresses can connect to your database. You can then define more granular IP addresses by referencing the range of addresses available from specific datacenters."
+  category "Security"
+  suggested_action "Ensure that no SQL Databases allow ingress from the internet."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.3"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(type)) @cascade{
+      proto as protocol
+      dportMin as destination_port_max
+      dportMax as destination_port_min
+      sAddrMin as source_cidr_range_min
+      sAddrMax as source_cidr_range_max
+    }
+    var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
+      synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 1433) AND ge(val(dportMax), 1433)){
+        violation as uid
+      }
+    }
+    q(func:uid(violation)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkSecurityGroups' => []
+  })
+end
+
+coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days" do
+  action :define
+  service :network_watcher
+  link "azure-cis-1.0.0-6.4.html"
+  display_name "Network Security Group Flow Log Retention Greater Than 90 Days"
+  description "Flow logs enable capturing information about IP traffic flowing in and out of your Network Security Groups. Logs can be used to check for anomalies and give insight into suspected breaches."
+  category "Security"
+  suggested_action "Network Security Group Flow Logs should be enabled and retention period is set to greater than or equal to 90 days."
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.4"
+  meta_cis_scored "true"
+  meta_cis_level "2"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(type)) @cascade{
+      flowLogs as is_audit_enabled
+      retentionOk as retention_days
+    }
+    okNSG as var(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND eq(val(flowLogs), true)){
+      uid
+    }
+    q(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
+      <%= default_predicates %>
+      retention_days
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkSecurityGroups' => ['retention_days']
+  })
+end
+
+coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
+  action :define
+  service :network_watcher
+  link "azure-cis-1.0.0-6.5.html"
+  display_name "Network Watcher Enabled"
+  description "Network diagnostic and visualization tools available with Network Watcher help you understand, diagnose, and gain insights to your network in Azure."
+  category "Security"
+  suggested_action "Enable Network Watcher for your Azure Subscriptions."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.5"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(type)) @cascade{
+      provisioned as provisioning_status
+    }
+    q(func:has(sub_policy_location_id)){
+      <%= default_predicates %>
+      contains @filter(has(Microsoft.Network_dg_networkWatchers) AND eq(val(provisioned), "Succeeded")){
+        count(uid)
+      }
+    }
+    ##TODO ADD ERB TEMPLATE TO CHECK IF count is < 27 (total locations from azure)
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkWatchers' => []
+  })
+end
+
+coreo_aws_rule "azure-security-vm-agent-installed" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-7.1.html"
+  display_name "Vm Agent Installed"
+  description "The VM agent must be installed on Azure virtual machines (VMs) in order to enable Azure Security center for data collection. Security Center collects data from your virtual machines (VMs) to assess their security state, provide security recommendations, and alert you to threats."
+  category "Security"
+  suggested_action "Install VM agent on Virtual Machines."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "7.1"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    vms as var(func:has(vm_hardware_profile)) @cascade{
+      hasAgent as is_os_agent_enabled
+    }
+    q(func:uid(vms)) @filter(NOT eq(val(hasAgent), true) OR NOT uid(hasAgent)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Compute_dg_virtualMachines' => ['is_os_agent_enabled']
+  })
+end
+
+coreo_aws_rule "azure-security-os-disks-encrypted" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-7.2.html"
+  display_name "Os Disks Encrypted"
+  description "Encrypting your IaaS VM's OS disk (boot volume) ensures that its entire content is fully unrecoverable without a key and thus protects the volume from unwarranted reads."
+  category "Security"
+  suggested_action "Ensure that OS disks (boot volumes) are encrypted, where possible."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "7.2"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    vms as var(func:has(vm_hardware_profile)) @cascade{
+      encrypted as is_os_encryption_enabled
+    }
+    q(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Compute_dg_virtualMachines' => ['is_os_encryption_enabled']
+  })
+end
+
+coreo_aws_rule "azure-security-data-disks-encrypted" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-7.3.html"
+  display_name "Data Disks Encrypted"
+  description "Encrypting your IaaS VM's Data disks (non-boot volume) ensures that its entire content is fully unrecoverable without a key and thus protects the volume from unwarranted reads."
+  category "Security"
+  suggested_action "Ensure that Data disks (non-boot volumes) are encrypted, where possible."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "7.3"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    vms as var(func:has(vm_hardware_profile)) @cascade{
+      encrypted as disk_encryption
+    }
+    q(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Compute_dg_virtualMachines' => ['disk_encryption']
+  })
+end
+
+coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
+  action :define
+  service :key_vault
+  link "azure-cis-1.0.0-8.1.html"
+  display_name "Expiry Date Set For All Keys"
+  description "Azure Key Vault enables users to store and use cryptographic keys within the Microsoft Azure environment. The `exp` (expiration time) attribute identifies the expiration time on or after which the key MUST NOT be used for a cryptographic operation. By default, Keys never expire. It is thus recommended that you rotate your keys in the key vault and set an explicit expiry time for all keys. This ensures that the keys cannot be used beyond their assigned lifetimes."
+  category "Security"
+  suggested_action "Ensure that all Keys in Azure Key Vault have an expiry time set."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "8.1"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var (func:has(vault_uri)) @cascade{
+      contains @filter(has(AzureVaultKey)){
+        expires as validity_period_end_datetime
+        vaultKey as uid
+      }
+    }
+    q (func:uid(vaultKey)) @filter(NOT uid(expires)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+   'AzureVaultKey' => []
+  })
+end
+
+coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
+  action :define
+  service :key_vault
+  link "azure-cis-1.0.0-8.2.html"
+  display_name "Expiry Date Set For All Secrets"
+  description "Azure Key Vault enables users to store and secrets within the Microsoft Azure environment. Secrets in Azure Key Vault are octet sequences with a maximum size of 25k bytes each. The `exp` (expiration time) attribute identifies the expiration time on or after which the secret MUST NOT be used. By default, Secrets never expire. It is thus recommended that you rotate your secrets in the key vault and set an explicit expiry time for all secrets. This ensures that the secrets cannot be used beyond their assigned lifetimes."
+  category "Security"
+  suggested_action "Ensure that all Secrets in Azure Key Vault have an expiry time set."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "8.2"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var (func:has(vault_uri)) @cascade{
+      contains @filter(has(AzureVaultSecret)){
+        expires as validity_period_end_datetime
+        vaultSecret as uid
+      }
+    }
+    q (func:uid(vaultSecret)) @filter(NOT uid(expires)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+   'AzureVaultSecret' => []
   })
 end
