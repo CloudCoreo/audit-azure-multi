@@ -1,35 +1,35 @@
-# coreo_aws_rule "azure-security-monitoring-agent-on" do
-#   action :define
-#   service :security
-#   link "azure-cis-1.0.0-2.02.html"
-#   display_name "Monitoring Agent On"
-#   description "When Automatic provisioning of monitoring agent is turned on, Azure Security Center provisions the Microsoft Monitoring Agent on all existing supported Azure virtual machines and any new ones that are created. The Microsoft Monitoring agent scans for various security-related configurations and events such as system updates, OS vulnerabilities, and endpoint protection and provides alerts."
-#   category "Security"
-#   suggested_action "Enable Automatic provisioning of monitoring agent to collect security data."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "2.02"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
-#       property as is_os_agent_enabled
-#     }
-#     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
-#       <%= default_predicates %>
-#       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Security_dg_policies' => ['is_os_agent_enabled']
-#   })
-# end
+coreo_aws_rule "azure-security-monitoring-agent-on" do
+  action :define
+  service :security
+  link "azure-cis-1.0.0-2.02.html"
+  display_name "Monitoring Agent On"
+  description "When Automatic provisioning of monitoring agent is turned on, Azure Security Center provisions the Microsoft Monitoring Agent on all existing supported Azure virtual machines and any new ones that are created. The Microsoft Monitoring agent scans for various security-related configurations and events such as system updates, OS vulnerabilities, and endpoint protection and provides alerts."
+  category "Security"
+  suggested_action "Enable Automatic provisioning of monitoring agent to collect security data."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.02"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+      property as is_os_agent_enabled
+    }
+    query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
+      <%= default_predicates %>
+      is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => ['is_os_agent_enabled']
+  })
+end
 
 # coreo_aws_rule "azure-security-system-update-on" do
 #   action :define
@@ -2135,7 +2135,7 @@
 #   # meta_scoring_status "full"
 #   meta_rule_query <<~QUERY
 #   {
-#     var (func:has(vault_uri)) @cascade{
+#     var(func:has(vault_uri)) @cascade{
 #       contains @filter(has(AzureVaultKey)){
 #         expires as validity_period_end_datetime
 #         vaultKey as uid
@@ -2170,7 +2170,7 @@
 #   # meta_scoring_status "full"
 #   meta_rule_query <<~QUERY
 #   {
-#     var (func:has(vault_uri)) @cascade{
+#     var(func:has(vault_uri)) @cascade{
 #       contains @filter(has(AzureVaultSecret)){
 #         expires as validity_period_end_datetime
 #         vaultSecret as uid
