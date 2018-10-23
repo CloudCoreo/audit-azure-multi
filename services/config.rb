@@ -729,7 +729,7 @@ coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-container
   })
 end
 
-coreo_aws_rule "azure-sql-auditing-on" do
+coreo_aws_rule "azure-sql-auditing-on-server" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.1.1.html"
@@ -762,7 +762,7 @@ coreo_aws_rule "azure-sql-auditing-on" do
   })
 end
 
-coreo_aws_rule "azure-sql-threat-detection-on" do
+coreo_aws_rule "azure-sql-threat-detection-on-server" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.1.2.html"
@@ -795,7 +795,7 @@ coreo_aws_rule "azure-sql-threat-detection-on" do
   })
 end
 
-coreo_aws_rule "azure-sql-threat-detection-types-all" do
+coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.1.3.html"
@@ -829,7 +829,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all" do
   })
 end
 
-coreo_aws_rule "azure-sql-send-alerts-set" do
+coreo_aws_rule "azure-sql-send-alerts-set-server" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.1.4.html"
@@ -863,7 +863,7 @@ coreo_aws_rule "azure-sql-send-alerts-set" do
   })
 end
 
-coreo_aws_rule "azure-sql-email-service-co-administrators-enabled" do
+coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.1.5.html"
@@ -896,7 +896,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled" do
   })
 end
 
-coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days" do
+coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.1.6.html"
@@ -929,7 +929,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days" do
   })
 end
 
-coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days" do
+coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.1.7.html"
@@ -995,7 +995,7 @@ coreo_aws_rule "azure-sql-active-directory-admin-configured" do
   })
 end
 
-coreo_aws_rule "azure-sql-auditing-on" do
+coreo_aws_rule "azure-sql-auditing-on-database" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.2.1.html"
@@ -1028,7 +1028,7 @@ coreo_aws_rule "azure-sql-auditing-on" do
   })
 end
 
-coreo_aws_rule "azure-sql-threat-detection-on" do
+coreo_aws_rule "azure-sql-threat-detection-on-database" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.2.2.html"
@@ -1061,7 +1061,7 @@ coreo_aws_rule "azure-sql-threat-detection-on" do
   })
 end
 
-coreo_aws_rule "azure-sql-threat-detection-types-all" do
+coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.2.3.html"
@@ -1092,7 +1092,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all" do
   })
 end
 
-coreo_aws_rule "azure-sql-send-alerts-set" do
+coreo_aws_rule "azure-sql-send-alerts-set-database" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.2.4.html"
@@ -1126,7 +1126,7 @@ coreo_aws_rule "azure-sql-send-alerts-set" do
   })
 end
 
-coreo_aws_rule "azure-sql-email-service-co-administrators-enabled" do
+coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.2.5.html"
@@ -1192,7 +1192,7 @@ coreo_aws_rule "azure-sql-data-encryption-on" do
   })
 end
 
-coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days" do
+coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.2.7.html"
@@ -1225,7 +1225,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days" do
   })
 end
 
-coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days" do
+coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-database" do
   action :define
   service :sql
   link "azure-cis-1.0.0-4.2.8.html"
