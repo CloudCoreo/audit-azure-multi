@@ -1,7 +1,7 @@
 coreo_aws_rule "azure-security-monitoring-agent-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.02.html"
+  link "azure-security-monitoring-agent-on..html"
   display_name "Monitoring Agent On"
   description "When Automatic provisioning of monitoring agent is turned on, Azure Security Center provisions the Microsoft Monitoring Agent on all existing supported Azure virtual machines and any new ones that are created. The Microsoft Monitoring agent scans for various security-related configurations and events such as system updates, OS vulnerabilities, and endpoint protection and provides alerts."
   category "Security"
@@ -34,7 +34,7 @@ end
 coreo_aws_rule "azure-security-system-update-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.03.html"
+  link "azure-security-system-update-on.html"
   display_name "System Update On"
   description "When this setting is enabled, it retrieves a daily list of available security and critical updates from Windows Update or Windows Server Update Services. The retrieved list depends on the service that's configured for that virtual machine and recommends that the missing updates be applied. For Linux systems, the policy uses the distro-provided package management system to determine packages that have available updates. It also checks for security and critical updates from Azure Cloud Services virtual machines."
   category "Security"
@@ -67,7 +67,7 @@ end
 coreo_aws_rule "azure-security-security-configuration-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.04.html"
+  link "azure-security-security-configuration-on.html"
   display_name "Security Configuration On"
   description "When this setting is enabled, it analyzes operating system configurations daily to determine issues that could make the virtual machine vulnerable to attack. The policy also recommends configuration changes to address these vulnerabilities."
   category "Security"
@@ -100,7 +100,7 @@ end
 coreo_aws_rule "azure-security-endpoint-protection-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.05.html"
+  link "azure-security-endpoint-protection-on.html"
   display_name "Endpoint Protection On"
   description "When this setting is enabled, it recommends endpoint protection be provisioned for all Windows virtual machines to help identify and remove viruses, spyware, and other malicious software."
   category "Security"
@@ -133,7 +133,7 @@ end
 coreo_aws_rule "azure-security-disk-encrpytion-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.06.html"
+  link "azure-security-disk-encryption-on.html"
   display_name "Disk Encrpytion On"
   description "When this setting is enabled, it recommends enabling disk encryption in all virtual machines to enhance data protection at rest."
   category "Security"
@@ -166,7 +166,7 @@ end
 coreo_aws_rule "azure-security-network-security-groups-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.07.html"
+  link "azure-security-network-security-groups-on.html"
   display_name "Network Security Groups On"
   description "When this setting is enabled, it recommends that network security groups be configured to control inbound and outbound traffic to VMs that have public endpoints. Network security groups that are configured for a subnet is inherited by all virtual machine network interfaces unless otherwise specified. In addition to checking that a network security group has been configured, this policy assesses inbound security rules to identify rules that allow incoming traffic."
   category "Security"
@@ -199,7 +199,7 @@ end
 coreo_aws_rule "azure-security-web-application-firewall-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.08.html"
+  link "azure-security-web-application-firewall-on.html"
   display_name "Web Application Firewall On"
   description "When this setting is enabled, it recommends that a web application firewall is provisioned on virtual machines when either of the following is true: (1) Instance-level public IP (ILPIP) is used and the inbound security rules for the associated network security group are configured to allow access to port 80/443. (2) Load-balanced IP is used and the associated load balancing and inbound network address translation (NAT) rules are configured to allow access to port 80/443."
   category "Security"
@@ -232,7 +232,7 @@ end
 coreo_aws_rule "azure-security-next-generation-firewall-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.09.html"
+  link "azure-security-next-generation-firewall-on.html"
   display_name "Next Generation Firewall On"
   description "When this setting is enabled, it extends network protections beyond network security groups, which are built into Azure. Security Center will discover deployments for which a next generation firewall is recommended and enable you to provision a virtual appliance."
   category "SEcurity"
@@ -265,7 +265,7 @@ end
 coreo_aws_rule "azure-security-vulnerability-assessment-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.10.html"
+  link "azure-security-vulnerability-assessment-on.html"
   display_name "Vulnerability Assessment On"
   description "When this setting is enabled, it recommends that you install a vulnerability assessment solution on your VM."
   category "Security"
@@ -298,7 +298,7 @@ end
 coreo_aws_rule "azure-security-storage-encryption-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.11.html"
+  link "azure-security-storage-encryption-on.html"
   display_name "Storage Encryption On"
   description "When this setting is enabled, any new data in Azure Blobs and Files will be encrypted."
   category "Security"
@@ -331,7 +331,7 @@ end
 coreo_aws_rule "azure-security-jit-network-access-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.12.html"
+  link "azure-security-jit-network-access-on.html"
   display_name "Jit Network Access On"
   description "When this setting is enabled, it Security Center locks down inbound traffic to your Azure VMs by creating an NSG rule. You select the ports on the VM to which inbound traffic should be locked down. Just in time virtual machine (VM) access can be used to lock down inbound traffic to your Azure VMs, reducing exposure to attacks while providing easy access to connect to VMs when needed."
   category "Security"
@@ -364,7 +364,7 @@ end
 coreo_aws_rule "azure-security-adaptive-application-controls-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.13.html"
+  link "azure-security-adaptive-application-controls-on.html"
   display_name "Adaptive Application Controls On"
   description "Adaptive application controls help control which applications can run on your VMs located in Azure, which among other benefits helps harden your VMs against malware. Security Center uses machine learning to analyze the processes running in the VM and helps you apply whitelisting rules using this intelligence."
   category "Security"
@@ -397,7 +397,7 @@ end
 coreo_aws_rule "azure-security-sql-auditing-threat-detection-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.14.html"
+  link "azure-security-sql-auditing-threat-detection-on.html"
   display_name "Sql Auditing Threat Detection On"
   description "When this setting is enabled, it recommends that auditing of access to Azure Database be enabled for compliance and also advanced threat detection, for investigation purposes."
   category "Security"
@@ -430,7 +430,7 @@ end
 coreo_aws_rule "azure-security-sql-encryption-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.15.html"
+  link "azure-security-sql-encryption-on.html"
   display_name "Sql Encryption On"
   description "When this setting is enabled, it recommends that encryption at rest be enabled for your Azure SQL Database, associated backups, and transaction log files. Even if your data is breached, it will not be readable."
   category "Security"
@@ -463,7 +463,7 @@ end
 # coreo_aws_rule "azure-security-security-contact-emails-set" do
 #   action :define
 #   service :security
-#   link "azure-cis-1.0.0-2.16.html"
+#   link "azure-security-security-contact-emails-set.html"
 #   display_name "Security Contact Emails Set"
 #   description "Microsoft reaches out to the provided security contact in case its security team finds that your resources are compromised. This ensures that you are aware of any potential compromise and you can timely mitigate the risk."
 #   category "Security"
@@ -500,7 +500,7 @@ end
 coreo_aws_rule "azure-security-security-contact-phone-num-set" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.17.html"
+  link "azure-security-security-contact-phone-num-set.html"
   display_name "Security Contact Phone Num Set"
   description "Microsoft reaches out to the provided security contact in case its security team finds that your resources are compromised. This ensures that you are aware of any potential compromise and you can timely mitigate the risk."
   category "Security"
@@ -533,7 +533,7 @@ end
 coreo_aws_rule "azure-security-send-email-alerts-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.18.html"
+  link "azure-security-send-email-alerts-on.html"
   display_name "Send Email Alerts On"
   description "Enabling security alerts emailing ensures that you receive the security alert emails from Microsoft. This ensures that you are aware of any potential security issues and you can timely mitigate the risk."
   category "Security"
@@ -566,7 +566,7 @@ end
 coreo_aws_rule "azure-security-send-email-to-subscription-owners-on" do
   action :define
   service :security
-  link "azure-cis-1.0.0-2.19.html"
+  link "azure-security-send-email-to-subscription-owners-on.html"
   display_name "Send Email To Subscription Owners On"
   description "Enabling security alerts emailing to subscription owners ensures that they receive the security alert emails from Microsoft. This ensures that they are aware of any potential security issues and can timely mitigate the risk."
   category "Security"
@@ -599,7 +599,7 @@ end
 coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
   action :define
   service :storage
-  link "azure-cis-1.0.0-3.1.html"
+  link "azure-storage-secure-transfer-required-enabled.html"
   display_name "Secure Transfer Required Enabled"
   description "The secure transfer option enhances the security of your storage account by only allowing requests to the storage account by a secure connection."
   category "Security"
@@ -632,7 +632,7 @@ end
 coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
   action :define
   service :storage
-  link "azure-cis-1.0.0-3.2.html"
+  link "azure-storage-storage-encryption-blob-service-enabled.html"
   display_name "Storage Encryption Blob Service Enabled"
   description "Storage service encryption protects your data at rest. Azure Storage encrypts your data as it's written in its datacenters, and automatically decrypts it for you as you access it."
   category "Security"
@@ -665,7 +665,7 @@ end
 coreo_aws_rule "azure-storage-storage-encryption-enabled-for-file-service" do
   action :define
   service :storage
-  link "azure-cis-1.0.0-3.6.html"
+  link "azure-storage-storage-encryption-enabled-for-file-service.html"
   display_name "Storage Encryption Enabled For File Service"
   description "Storage service encryption protects your data at rest. Azure Storage encrypts your data as it's written in its datacenters, and automatically decrypts it for you as you access it."
   category "Security"
@@ -698,7 +698,7 @@ end
 coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-containers" do
   action :define
   service :storage
-  link "azure-cis-1.0.0-3.7.html"
+  link "azure-storage-public-access-level-set-private-for-blob-containers.html"
   display_name "Public Access Level Set Private For Blob Containers"
   description "You can enable anonymous, public read access to a container and its blobs in Azure Blob storage. By doing so, you can grant read-only access to these resources without sharing your account key, and without requiring a shared access signature. It is recommended to not provide anonymous access to blob containers until and unless it is strongly desired. You should use shared access signature token for providing controlled and timed access to blob containers."
   category "Security"
@@ -732,7 +732,7 @@ end
 coreo_aws_rule "azure-sql-auditing-on-server" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.1.1.html"
+  link "azure-sql-auditing-on-server.html"
   display_name "Auditing On"
   description "The Azure platform allows you to create a SQL server as a service. Enabling auditing at the server level ensures that all existing and newly created databases on the SQL server instance are audited. Auditing tracks database events and writes them to an audit log in your Azure storage account. It also helps you to maintain regulatory compliance, understand database activity, and gain insight into discrepancies and anomalies that could indicate business concerns or suspected security violations."
   category "Security"
@@ -765,7 +765,7 @@ end
 coreo_aws_rule "azure-sql-threat-detection-on-server" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.1.2.html"
+  link "azure-sql-threat-detection-on-server.html"
   display_name "Threat Detection On"
   description "SQL Threat Detection provides a new layer of security, which enables customers to detect and respond to potential threats as they occur by providing security alerts on anomalous activities. Users will receive an alert upon suspicious database activities, potential vulnerabilities, and SQL injection attacks, as well as anomalous database access patterns. SQL Threat Detection alerts provide details of suspicious activity and recommend action on how to investigate and mitigate the threat."
   category "Security"
@@ -798,7 +798,7 @@ end
 coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.1.3.html"
+  link "azure-sql-threat-detection-types-all-server.html"
   display_name "Threat Detection Types All"
   description "Enabling all threat detection types, you are protected against SQL injection, database vulnerabilities and any other anomalous activities."
   category "Security"
@@ -832,7 +832,7 @@ end
 coreo_aws_rule "azure-sql-send-alerts-set-server" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.1.4.html"
+  link "azure-sql-send-alerts-set-server.html"
   display_name "Send Alerts Set"
   description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
   category "Security"
@@ -866,7 +866,7 @@ end
 coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.1.5.html"
+  link "azure-sql-email-service-co-administrators-enabled-server.html"
   display_name "Email Service Co Administrators Enabled"
   description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
   category "Security"
@@ -899,7 +899,7 @@ end
 coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.1.6.html"
+  link "azure-sql-auditing-retention-greater-than-90-days-server.html"
   display_name "Auditing Retention Greater Than 90 Days"
   description "Audit Logs can be used to check for anomalies and give insight into suspected breaches or misuse of information and access."
   category "Security"
@@ -932,7 +932,7 @@ end
 coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.1.7.html"
+  link "azure-sql-threat-detection-retention-greater-than-90-days-server.html"
   display_name "Threat Detection Retention Greater Than 90 Days"
   description "Threat Detection Logs can be used to check for suspected attack attempts and breaches on a SQL server with known attack signatures."
   category "Security"
@@ -965,7 +965,7 @@ end
 coreo_aws_rule "azure-sql-active-directory-admin-configured" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.1.8.html"
+  link "azure-sql-active-directory-admin-configured.html"
   display_name "Active Directory Admin Configured"
   description "Azure Active Directory authentication is a mechanism of connecting to Microsoft Azure SQL Database and SQL Data Warehouse by using identities in Azure Active Directory (Azure AD). With Azure AD authentication, you can centrally manage the identities of database users and other Microsoft services in one central location."
   category "Security"
@@ -998,7 +998,7 @@ end
 coreo_aws_rule "azure-sql-auditing-on-database" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.2.1.html"
+  link "azure-sql-auditing-on-database.html"
   display_name "Auditing On"
   description "Auditing tracks database events and writes them to an audit log in your Azure storage account. It also helps you to maintain regulatory compliance, understand database activity, and gain insight into discrepancies and anomalies that could indicate business concerns or suspected security violations."
   category "Security"
@@ -1031,7 +1031,7 @@ end
 coreo_aws_rule "azure-sql-threat-detection-on-database" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.2.2.html"
+  link "azure-sql-threat-detection-on-database.html"
   display_name "Threat Detection On"
   description "SQL Threat Detection provides a new layer of security, which enables customers to detect and respond to potential threats as they occur by providing security alerts on anomalous activities. Users will receive an alert upon suspicious database activities, potential vulnerabilities, and SQL injection attacks, as well as anomalous database access patterns."
   category "Security"
@@ -1064,7 +1064,7 @@ end
 coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.2.3.html"
+  link "azure-sql-threat-detection-types-all-database.html"
   display_name "Threat Detection Types All"
   description "Enabling all threat detection types, you are protected against SQL injection, database vulnerabilities and any other anomalous activities."
   category "Security"
@@ -1095,7 +1095,7 @@ end
 coreo_aws_rule "azure-sql-send-alerts-set-database" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.2.4.html"
+  link "azure-sql-send-alerts-set-database.html"
   display_name "Send Alerts Set"
   description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
   category "Security"
@@ -1129,7 +1129,7 @@ end
 coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.2.5.html"
+  link "azure-sql-email-service-co-administrators-enabled-database.html"
   display_name "Email Service Co Administrators Enabled"
   description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
   category "Security"
@@ -1162,7 +1162,7 @@ end
 coreo_aws_rule "azure-sql-data-encryption-on" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.2.6.html"
+  link "azure-sql-data-encryption-on.html"
   display_name "Data Encryption On"
   description "Azure SQL Database transparent data encryption helps protect against the threat of malicious activity by performing real-time encryption and decryption of the database, associated backups, and transaction log files at rest without requiring changes to the application."
   category "Security"
@@ -1195,7 +1195,7 @@ end
 coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.2.7.html"
+  link "azure-sql-auditing-retention-greater-than-90-days-database.html"
   display_name "Auditing Retention Greater Than 90 Days"
   description "Audit Logs can be used to check for anomalies and give insight into suspected breaches or misuse of information and access."
   category "Security"
@@ -1228,7 +1228,7 @@ end
 coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-database" do
   action :define
   service :sql
-  link "azure-cis-1.0.0-4.2.8.html"
+  link "azure-sql-threat-detection-retention-greater-than-90-days-database.html"
   display_name "Threat Detection Retention Greater Than 90 Days"
   description "Threat Logs can be used to check for anomalies and give insight into suspected breaches or misuse of information and access."
   category "Security"
@@ -1261,7 +1261,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.10.html"
+#   link "azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule.html"
 #   display_name "Activity Log Alert For Create Or Update Sql Server Firewall Rule"
 #   description "Monitoring for Create or Update SQL Server Firewall Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
 #   category "Logging"
@@ -1306,7 +1306,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewall-rule" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.11.html"
+#   link "azure-monitoring-activity-log-alert-for-delete-sql-server-firewall-rule.html"
 #   display_name "Activity Log Alert For Delete Sql Server Firewall Rule"
 #   description "Monitoring for Delete SQL Server Firewall Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
 #   category "Logging"
@@ -1351,7 +1351,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.12.html"
+#   link "azure-monitoring-activity-log-alert-for-update-security-policy.html"
 #   display_name "Activity Log Alert For Update Security Policy"
 #   description "Monitoring for Update Security Policy events gives insight into changes to the Security Policy and may reduce the time it takes to detect suspicious activity."
 #   category "Logging"
@@ -1396,7 +1396,7 @@ end
 # coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
 #   action :define
 #   service :key_vault
-#   link "azure-cis-1.0.0-5.13.html"
+#   link "azure-key-vault-logging-for-keyvault-enabled.html"
 #   display_name "Logging For Keyvault Enabled"
 #   description "Monitoring how and when your key vaults are accessed, and by whom enables an audit trail of interactions with your secrets, keys and certificates managed by Azure Keyvault. You can do this by enabling logging for Key Vault, which saves information in an Azure storage account that you provide. This creates a new container named insights-logs-auditevent automatically for your specified storage account, and you can use this same storage account for collecting logs for multiple key vaults."
 #   category "Logging"
@@ -1439,7 +1439,7 @@ end
 coreo_aws_rule "azure-monitoring-log-profile-exists" do
   action :define
   service :monitoring
-  link "azure-cis-1.0.0-5.1.html"
+  link "azure-monitoring-log-profile-exists.html"
   display_name "Log Profile Exists"
   description "A Log Profile controls how your Activity Log is exported. By default, activity logs are retained only for 90 days. It is thus recommended to define a log profile using which you could export the logs and store them for a longer duration for analyzing security activities within your Azure subscription."
   category "Logging"
@@ -1475,7 +1475,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.2.html"
+#   link "azure-monitoring-activity-log-retention-365-days-or-greater.html"
 #   display_name "Activity Log Retention 365 Days Or Greater"
 #   description "A Log Profile controls how your Activity Log is exported and retained. Since the average time to detect a breach is 210 days, it is recommended to retain your activity log for 365 days or more in order to have time to respond to any incidents."
 #   category "Logging"
@@ -1512,7 +1512,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.3.html"
+#   link azure-monitoring-activity-log-alert-for-create-polic-assignment.html"
 #   display_name "Activity Log Alert For Create Polic Assignment"
 #   description "Monitoring for Create Policy Assignment gives insight into privilege assignment and may reduce the time it takes to detect a breach or misuse of information."
 #   category "Logging"
@@ -1557,7 +1557,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.4.html"
+#   link ""azure-monitoring-activity-log-alert-for-create-or-update-network-security-group.html"
 #   display_name "Activity Log Alert For Create Or Update Network Security Group"
 #   description "Monitoring for Create or Update Network Security Group events gives insight network access changes and may reduce the time it takes to detect suspicious activity."
 #   category "Logging"
@@ -1602,7 +1602,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-group" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.5.html"
+#   link "azure-monitoring-activity-log-alert-for-delete-network-security-group.html"
 #   display_name "Activity Log Alert For Delete Network Security Group"
 #   description "Monitoring for Delete Network Security Group events gives insight network access changes and may reduce the time it takes to detect suspicious activity."
 #   category "Logging"
@@ -1647,7 +1647,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group-rule" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.6.html"
+#   link "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group-rule.html"
 #   display_name "Activity Log Alert For Create Or Update Network Security Group Rule"
 #   description "Monitoring for Create or Update Network Security Group Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
 #   category "Logging"
@@ -1692,7 +1692,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-group-rule" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.7.html"
+#   link "azure-monitoring-activity-log-alert-for-delete-network-security-group-rule.html"
 #   display_name "Activity Log Alert For Delete Network Security Group Rule"
 #   description "Monitoring for Delete Network Security Group Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
 #   category "Logging"
@@ -1737,7 +1737,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-security-solution" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.8.html"
+#   link "azure-monitoring-activity-log-alert-for-create-or-update-security-solution.html"
 #   display_name "Activity Log Alert For Create Or Update Security Solution"
 #   description "Monitoring for Create or Update Security Solution events gives insight into changes to the active security solutions and may reduce the time it takes to detect suspicious activity."
 #   category "Logging"
@@ -1782,7 +1782,7 @@ end
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-solution" do
 #   action :define
 #   service :monitoring
-#   link "azure-cis-1.0.0-5.9.html"
+#   link "azure-monitoring-activity-log-alert-for-delete-network-security-solution.html"
 #   display_name "Activity Log Alert For Delete Network Security Solution"
 #   description "Monitoring for Delete Security Solution events gives insight into changes to the active security solutions and may reduce the time it takes to detect suspicious activity."
 #   category "Logging"
@@ -1827,7 +1827,7 @@ end
 # coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
 #   action :define
 #   service :security
-#   link "azure-cis-1.0.0-6.1.html"
+#   link "azure-security-rdp-access-restricted-from-internet.html"
 #   display_name "Rdp Access Restricted From Internet"
 #   description "The potential security problem with using RDP over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
 #   category "Security"
@@ -1868,7 +1868,7 @@ end
 # coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
 #   action :define
 #   service :security
-#   link "azure-cis-1.0.0-6.2.html"
+#   link "azure-security-ssh-access-restricted-from-internet.html"
 #   display_name "Ssh Access Restricted From Internet"
 #   description "The potential security problem with using SSH over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
 #   category "Security"
@@ -1909,7 +1909,7 @@ end
 # coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
 #   action :define
 #   service :sql
-#   link "azure-cis-1.0.0-6.3.html"
+#   link "azure-sql-sql-server-access-restricted-from-internet.html"
 #   display_name "Sql Server Access Restricted From Internet"
 #   description "SQL Database includes a firewall to block access to unauthorized connections. After creating your SQL Database, you can specify which IP addresses can connect to your database. You can then define more granular IP addresses by referencing the range of addresses available from specific datacenters."
 #   category "Security"
@@ -1950,7 +1950,7 @@ end
 # coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days" do
 #   action :define
 #   service :network_watcher
-#   link "azure-cis-1.0.0-6.4.html"
+#   link "azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days.html"
 #   display_name "Network Security Group Flow Log Retention Greater Than 90 Days"
 #   description "Flow logs enable capturing information about IP traffic flowing in and out of your Network Security Groups. Logs can be used to check for anomalies and give insight into suspected breaches."
 #   category "Security"
@@ -1987,7 +1987,7 @@ end
 # coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
 #   action :define
 #   service :network_watcher
-#   link "azure-cis-1.0.0-6.5.html"
+#   link "azure-network-watcher-network-watcher-enabled.html"
 #   display_name "Network Watcher Enabled"
 #   description "Network diagnostic and visualization tools available with Network Watcher help you understand, diagnose, and gain insights to your network in Azure."
 #   category "Security"
@@ -2023,7 +2023,7 @@ end
 coreo_aws_rule "azure-security-vm-agent-installed" do
   action :define
   service :security
-  link "azure-cis-1.0.0-7.1.html"
+  link "azure-security-vm-agent-installed.html"
   display_name "Vm Agent Installed"
   description "The VM agent must be installed on Azure virtual machines (VMs) in order to enable Azure Security center for data collection. Security Center collects data from your virtual machines (VMs) to assess their security state, provide security recommendations, and alert you to threats."
   category "Security"
@@ -2055,7 +2055,7 @@ end
 coreo_aws_rule "azure-security-os-disks-encrypted" do
   action :define
   service :security
-  link "azure-cis-1.0.0-7.2.html"
+  link "azure-security-os-disks-encrypted.html"
   display_name "Os Disks Encrypted"
   description "Encrypting your IaaS VM's OS disk (boot volume) ensures that its entire content is fully unrecoverable without a key and thus protects the volume from unwarranted reads."
   category "Security"
@@ -2087,7 +2087,7 @@ end
 coreo_aws_rule "azure-security-data-disks-encrypted" do
   action :define
   service :security
-  link "azure-cis-1.0.0-7.3.html"
+  link "azure-security-data-disks-encrypted.html"
   display_name "Data Disks Encrypted"
   description "Encrypting your IaaS VM's Data disks (non-boot volume) ensures that its entire content is fully unrecoverable without a key and thus protects the volume from unwarranted reads."
   category "Security"
@@ -2119,7 +2119,7 @@ end
 coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
   action :define
   service :key_vault
-  link "azure-cis-1.0.0-8.1.html"
+  link "azure-key-vault-expiry-date-set-for-all-keys.html"
   display_name "Expiry Date Set For All Keys"
   description "Azure Key Vault enables users to store and use cryptographic keys within the Microsoft Azure environment. The `exp` (expiration time) attribute identifies the expiration time on or after which the key MUST NOT be used for a cryptographic operation. By default, Keys never expire. It is thus recommended that you rotate your keys in the key vault and set an explicit expiry time for all keys. This ensures that the keys cannot be used beyond their assigned lifetimes."
   category "Security"
@@ -2154,7 +2154,7 @@ end
 coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
   action :define
   service :key_vault
-  link "azure-cis-1.0.0-8.2.html"
+  link "azure-key-vault-expiry-date-set-for-all-secrets.html"
   display_name "Expiry Date Set For All Secrets"
   description "Azure Key Vault enables users to store and secrets within the Microsoft Azure environment. Secrets in Azure Key Vault are octet sequences with a maximum size of 25k bytes each. The `exp` (expiration time) attribute identifies the expiration time on or after which the secret MUST NOT be used. By default, Secrets never expire. It is thus recommended that you rotate your secrets in the key vault and set an explicit expiry time for all secrets. This ensures that the secrets cannot be used beyond their assigned lifetimes."
   category "Security"
