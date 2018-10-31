@@ -1257,50 +1257,50 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-databa
   })
 end
 
-coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule" do
-  action :define
-  service :monitoring
-  link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule.html"
-  display_name "Activity Log Alert For Create Or Update Sql Server Firewall Rule"
-  description "Monitoring for Create or Update SQL Server Firewall Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
-  category "Logging"
-  suggested_action "Create an Activity Log Alert for the Create or Update SQL Server Firewall Rule event."
-  level "Medium"
-  audit_objects [""]
-  objectives [""]
-  operators [""]
-  raise_when [true]
-  meta_cis_id "5.1"
-  meta_cis_scored "true"
-  meta_cis_level "1"
-  # meta_scoring_status "full"
-  meta_rule_query <<~QUERY
-  {
-    var(func:has(xid)){
-      opValues as value
-    }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-      guards{
-        checks @filter(eq(val(opValues), "Administrative")){
-          checks @filter(eq(val(opValues), "microsoft.sql/servers/firewallrules/write")){
-            endorses{
-              records{
-                happyTarget as uid
-              }
-            }
-          }
-        }
-      }
-    }
-    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-      <%= default_predicates %>
-    }
-  }
-  QUERY
-  meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
-  })
-end
+# coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule" do
+#   action :define
+#   service :monitoring
+#   link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule.html"
+#   display_name "Activity Log Alert For Create Or Update Sql Server Firewall Rule"
+#   description "Monitoring for Create or Update SQL Server Firewall Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
+#   category "Logging"
+#   suggested_action "Create an Activity Log Alert for the Create or Update SQL Server Firewall Rule event."
+#   level "Medium"
+#   audit_objects [""]
+#   objectives [""]
+#   operators [""]
+#   raise_when [true]
+#   meta_cis_id "5.1"
+#   meta_cis_scored "true"
+#   meta_cis_level "1"
+#   # meta_scoring_status "full"
+#   meta_rule_query <<~QUERY
+#   {
+#     var(func:has(xid)){
+#       opValues as value
+#     }
+#     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+#       guards{
+#         checks @filter(eq(val(opValues), "Administrative")){
+#           checks @filter(eq(val(opValues), "microsoft.sql/servers/firewallrules/write")){
+#             endorses{
+#               records{
+#                 happyTarget as uid
+#               }
+#             }
+#           }
+#         }
+#       }
+#     }
+#     q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+#       <%= default_predicates %>
+#     }
+#   }
+#   QUERY
+#   meta_rule_node_triggers({
+#     'Microsoft.Insights_dg_ActivityLogAlerts' => []
+#   })
+# end
 
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewall-rule" do
 #   action :define
