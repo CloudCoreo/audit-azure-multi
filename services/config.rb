@@ -620,7 +620,7 @@ coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
+      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group label
     }
   }
   QUERY
@@ -653,7 +653,7 @@ coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
+      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group label
     }
   }
   QUERY
@@ -686,7 +686,7 @@ coreo_aws_rule "azure-storage-storage-encryption-enabled-for-file-service" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
+      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group label
     }
   }
   QUERY
@@ -715,12 +715,11 @@ coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-container
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
-      t as type
       property as public_access
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
+      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group label
     }
   }
   QUERY
@@ -753,7 +752,7 @@ coreo_aws_rule "azure-sql-auditing-on-server" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -786,7 +785,7 @@ coreo_aws_rule "azure-sql-threat-detection-on-server" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -887,7 +886,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -920,7 +919,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
     }
     query(func:uid(blob_type)) @filter(AND lt(val(property), 90)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -953,7 +952,7 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -986,7 +985,7 @@ coreo_aws_rule "azure-sql-active-directory-admin-configured" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -1019,7 +1018,7 @@ coreo_aws_rule "azure-sql-auditing-on-database" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases xid,type
     }
   }
   QUERY
@@ -1052,7 +1051,7 @@ coreo_aws_rule "azure-sql-threat-detection-on-database" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases xid,type
     }
   }
   QUERY
@@ -1150,7 +1149,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases xid
     }
   }
   QUERY
@@ -1183,7 +1182,7 @@ coreo_aws_rule "azure-sql-data-encryption-on" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases xid
     }
   }
   QUERY
@@ -1216,7 +1215,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases xid
     }
   }
   QUERY
@@ -1249,7 +1248,7 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-databa
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases xid
     }
   }
   QUERY
@@ -1258,50 +1257,50 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-databa
   })
 end
 
-# coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule" do
-#   action :define
-#   service :monitoring
-#   link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule.html"
-#   display_name "Activity Log Alert For Create Or Update Sql Server Firewall Rule"
-#   description "Monitoring for Create or Update SQL Server Firewall Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
-#   category "Logging"
-#   suggested_action "Create an Activity Log Alert for the Create or Update SQL Server Firewall Rule event."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.1"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       opValues as value
-#     }
-#     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-#       guards{
-#         checks @filter(eq(val(opValues), "Administrative")){
-#           checks @filter(eq(val(opValues), "microsoft.sql/servers/firewallrules/write")){
-#             endorses{
-#               records{
-#                 happyTarget as uid
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#     q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Insights_dg_ActivityLogAlerts' => []
-#   })
-# end
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule" do
+  action :define
+  service :monitoring
+  link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule.html"
+  display_name "Activity Log Alert For Create Or Update Sql Server Firewall Rule"
+  description "Monitoring for Create or Update SQL Server Firewall Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create or Update SQL Server Firewall Rule event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.1"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(xid)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.sql/servers/firewallrules/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
 
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewall-rule" do
 #   action :define
