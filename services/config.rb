@@ -852,7 +852,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-server" do
         email_address
       }
     }
-    q(func:has(Microsoft.Sql_dg_servers)) @filter(NOT uid(good_uids)) {
+    query(func:has(Microsoft.Sql_dg_servers)) @filter(NOT uid(good_uids)) {
       <%= default_predicates %>
     }
   }
@@ -1115,7 +1115,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-database" do
         email_address
       }
     }
-    q(func:has(Microsoft.Sql_dg_servers_dg_databases)) @filter(NOT uid(good_uids)) {
+    query(func:has(Microsoft.Sql_dg_servers_dg_databases)) @filter(NOT uid(good_uids)) {
       <%= default_predicates %>
     }
   }
@@ -1461,7 +1461,7 @@ coreo_aws_rule "azure-monitoring-log-profile-exists" do
         }
       }
     }
-    q(func:has(Microsoft.Subscription)) @filter(NOT uid(goodSub)){
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(goodSub)){
       <%= default_predicates %>
     }
   }
@@ -2041,7 +2041,7 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
     vms as var(func:has(vm_hardware_profile)) @cascade{
       hasAgent as is_os_agent_enabled
     }
-    q(func:uid(vms)) @filter(NOT eq(val(hasAgent), true) OR NOT uid(hasAgent)){
+    query(func:uid(vms)) @filter(NOT eq(val(hasAgent), true) OR NOT uid(hasAgent)){
       <%= default_predicates %>
     }
   }
@@ -2073,7 +2073,7 @@ coreo_aws_rule "azure-security-os-disks-encrypted" do
     vms as var(func:has(vm_hardware_profile)) @cascade{
       encrypted as is_os_encryption_enabled
     }
-    q(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
       <%= default_predicates %>
     }
   }
@@ -2105,7 +2105,7 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
     vms as var(func:has(vm_hardware_profile)) @cascade{
       encrypted as disk_encryption
     }
-    q(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
       <%= default_predicates %>
     }
   }
@@ -2140,7 +2140,7 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
         vaultKey as uid
       }
     }
-    q (func:uid(vaultKey)) @filter(NOT uid(expires)){
+    query(func:uid(vaultKey)) @filter(NOT uid(expires)){
       <%= default_predicates %>
     }
   }
@@ -2175,7 +2175,7 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
         vaultSecret as uid
       }
     }
-    q (func:uid(vaultSecret)) @filter(NOT uid(expires)){
+    query(func:uid(vaultSecret)) @filter(NOT uid(expires)){
       <%= default_predicates %>
     }
   }
