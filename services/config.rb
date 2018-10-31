@@ -1276,26 +1276,27 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-ser
   meta_cis_level "1"
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
-  {
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-      guards{
-        v1 as value
-        checks @filter(eq(val(v1), "Administrative")){
-          v2 as value
-          checks @filter(eq(val(v2), "microsoft.sql/servers/firewallrules/write")){
-            endorses{
-              records{
-                happyTarget as uid
-              }
+  {   
+    var(func:has(value)) {
+    vals as value
+  }
+  var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    guards{
+      checks @filter(eq(val(vals), "Administrative")){
+        checks @filter(eq(val(vals), "microsoft.sql/servers/firewallrules/write")){
+          endorses{
+            records{
+              happyTarget as uid
             }
           }
         }
       }
     }
-    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-      <%= default_predicates %>
-    }
   }
+  query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+    <%= default_predicates %>
+  }
+}
   QUERY
   meta_rule_node_triggers({
     'Microsoft.Insights_dg_ActivityLogAlerts' => []
@@ -1320,13 +1321,14 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewa
   meta_cis_level "1"
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
-  {
+  { 
+      var(func:has(value)) {
+      vals as value
+    }
     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
       guards{
-        v1 as value
-        checks @filter(eq(val(v1), "Administrative")){
-          v2 as value
-          checks @filter(eq(val(v2), "microsoft.sql/servers/firewallrules/delete")){
+        checks @filter(eq(val(vals), "Administrative")){
+          checks @filter(eq(val(vals), "microsoft.sql/servers/firewallrules/delete")){
             endorses{
               records{
                 happyTarget as uid
@@ -1365,12 +1367,13 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" 
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
+    var(func:has(value)) {
+      vals as value
+    }
     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
       guards{
-        v1 as value
-        checks @filter(eq(val(v1), "Administrative")){
-          v2 as value
-          checks @filter(eq(val(v2), "microsoft.security/policies/write")){
+        checks @filter(eq(val(vals), "Administrative")){
+          checks @filter(eq(val(vals), "microsoft.security/policies/write")){
             endorses{
               records{
                 happyTarget as uid
@@ -1473,42 +1476,44 @@ coreo_aws_rule "azure-monitoring-log-profile-exists" do
   })
 end
 
-# coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
-#   action :define
-#   service :monitoring
-#   link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-retention-365-days-or-greater.html"
-#   display_name "Activity Log Retention 365 Days Or Greater"
-#   description "A Log Profile controls how your Activity Log is exported and retained. Since the average time to detect a breach is 210 days, it is recommended to retain your activity log for 365 days or more in order to have time to respond to any incidents."
-#   category "Logging"
-#   suggested_action "Ensure Activity Log Retention is set for 365 days or greater"
-#   level "Low"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.2"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       days as retention_days
-#     }
-#     var(func:has(Microsoft.Subscription)) @cascade{
-#       contains @filter(has(microsoft.insights) AND ge(val(days), 365)){
-#         goodProfile as uid
-#       }
-#     }
-#     query(func:has(microsoft.insights)) @filter(NOT uid(goodProfile)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'microsoft.insights' => []
-#   })
-# end
+coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
+  action :define
+  service :monitoring
+  link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-retention-365-days-or-greater.html"
+  display_name "Activity Log Retention 365 Days Or Greater"
+  description "A Log Profile controls how your Activity Log is exported and retained. Since the average time to detect a breach is 210 days, it is recommended to retain your activity log for 365 days or more in order to have time to respond to any incidents."
+  category "Logging"
+  suggested_action "Ensure Activity Log Retention is set for 365 days or greater"
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.2"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+{
+  var(func:has(retention_days)){
+    days as retention_days
+  }
+  subs as var(func:has(Microsoft.Subscription)) {}
+  insights as var(func:has(microsoft.insights)) {}
+  var(func:uid(subs)) @cascade{
+    contains @filter(uid(insights) AND ge(val(days), 365)){
+      goodProfile as uid
+    }
+  }
+  query(func:has(microsoft.insights)) @filter(NOT uid(goodProfile)){
+    <%= default_predicates %>
+  }
+}
+  QUERY
+  meta_rule_node_triggers({
+    'microsoft.insights' => []
+  })
+end
 
 # coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment" do
 #   action :define
