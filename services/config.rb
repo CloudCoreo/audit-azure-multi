@@ -620,7 +620,7 @@ coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
+      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group
     }
   }
   QUERY
@@ -653,7 +653,7 @@ coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
+      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group
     }
   }
   QUERY
@@ -686,7 +686,7 @@ coreo_aws_rule "azure-storage-storage-encryption-enabled-for-file-service" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
+      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group
     }
   }
   QUERY
@@ -715,12 +715,11 @@ coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-container
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
-      t as type
       property as public_access
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains tenant_id storage_account object_id blob_encryption_enabled cc_location https_only resource_group label
+      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group
     }
   }
   QUERY
@@ -753,7 +752,7 @@ coreo_aws_rule "azure-sql-auditing-on-server" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -786,7 +785,7 @@ coreo_aws_rule "azure-sql-threat-detection-on-server" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -887,7 +886,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -920,7 +919,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
     }
     query(func:uid(blob_type)) @filter(AND lt(val(property), 90)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -953,7 +952,7 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -986,7 +985,7 @@ coreo_aws_rule "azure-sql-active-directory-admin-configured" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains tenant_id audit_retention_days cc_location threat_retention_days is_audit_enabled
+      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
@@ -1019,7 +1018,7 @@ coreo_aws_rule "azure-sql-auditing-on-database" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases
     }
   }
   QUERY
@@ -1052,7 +1051,7 @@ coreo_aws_rule "azure-sql-threat-detection-on-database" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases
     }
   }
   QUERY
@@ -1150,7 +1149,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases
     }
   }
   QUERY
@@ -1183,7 +1182,7 @@ coreo_aws_rule "azure-sql-data-encryption-on" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases
     }
   }
   QUERY
@@ -1216,7 +1215,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases
     }
   }
   QUERY
@@ -1249,7 +1248,7 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-databa
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name cc_cloud tenant_id object_id Microsoft.Sql_dg_servers_dg_databases cc_location xid,type
+      name Microsoft.Sql_dg_servers_dg_databases
     }
   }
   QUERY
