@@ -45,7 +45,7 @@ variables:
       - azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule
       - azure-monitoring-activity-log-alert-for-delete-sql-server-firewall-rule
       - azure-monitoring-activity-log-alert-for-update-security-policy
-      # - azure-key-vault-logging-for-keyvault-enabled
+      - azure-key-vault-logging-for-keyvault-enabled
       - azure-monitoring-log-profile-exists
       # - azure-monitoring-activity-log-retention-365-days-or-greater
       # - azure-monitoring-activity-log-alert-for-create-polic-assignment

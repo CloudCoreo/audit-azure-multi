@@ -487,7 +487,7 @@ end
 #         email_address
 #       }
 #     }
-#     q(func:has(xid)) @filter(NOT uid(good_uids)) {
+#     query(func:has(xid)) @filter(NOT uid(good_uids)) {
 #       <%= default_predicates %>
 #     }
 #   }
@@ -853,7 +853,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-server" do
         email_address
       }
     }
-    q(func:has(Microsoft.Sql_dg_servers)) @filter(NOT uid(good_uids)) {
+    query(func:has(Microsoft.Sql_dg_servers)) @filter(NOT uid(good_uids)) {
       <%= default_predicates %>
     }
   }
@@ -1116,7 +1116,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-database" do
         email_address
       }
     }
-    q(func:has(Microsoft.Sql_dg_servers_dg_databases)) @filter(NOT uid(good_uids)) {
+    query(func:has(Microsoft.Sql_dg_servers_dg_databases)) @filter(NOT uid(good_uids)) {
       <%= default_predicates %>
     }
   }
@@ -1292,7 +1292,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-ser
         }
       }
     }
-    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
       <%= default_predicates %>
     }
   }
@@ -1336,7 +1336,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewa
         }
       }
     }
-    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
       <%= default_predicates %>
     }
   }
@@ -1380,7 +1380,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" 
         }
       }
     }
-    q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
       <%= default_predicates %>
     }
   }
@@ -1390,48 +1390,52 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" 
   })
 end
 
-# coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
-#   action :define
-#   service :key_vault
-#   link "https://kb.securestate.vmware.com/azure-key-vault-logging-for-keyvault-enabled.html"
-#   display_name "Logging For Keyvault Enabled"
-#   description "Monitoring how and when your key vaults are accessed, and by whom enables an audit trail of interactions with your secrets, keys and certificates managed by Azure Keyvault. You can do this by enabling logging for Key Vault, which saves information in an Azure storage account that you provide. This creates a new container named insights-logs-auditevent automatically for your specified storage account, and you can use this same storage account for collecting logs for multiple key vaults."
-#   category "Logging"
-#   suggested_action "Enable AuditEvent logging for Key Vault instances to ensure interactions with key vaults are logged and available."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.13"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       retentionDays as retention_days
-#     }
-#     var(func:has(Microsoft.Subscription)) @cascade{
-#       contains @filter(has(Microsoft.KeyVault_dg_vaults)){
-#         synthesises @filter(has(microsoft.keyvault)){
-#           synthesises @filter(has(is_retention_enabled) AND ge(val(retentionDays), 180)){
-#             observes{
-#               happySub as uid
-#             }
-#           }
-#         }
-#       }
-#     }
-#     q(func:has(Microsoft.Subscription)) @filter(not uid(happySub)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.KeyVault_dg_vaults' => ['retention_days']
-#   })
-# end
+coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
+  action :define
+  service :key_vault
+  link "https://kb.securestate.vmware.com/azure-key-vault-logging-for-keyvault-enabled.html"
+  display_name "Logging For Keyvault Enabled"
+  description "Monitoring how and when your key vaults are accessed, and by whom enables an audit trail of interactions with your secrets, keys and certificates managed by Azure Keyvault. You can do this by enabling logging for Key Vault, which saves information in an Azure storage account that you provide. This creates a new container named insights-logs-auditevent automatically for your specified storage account, and you can use this same storage account for collecting logs for multiple key vaults."
+  category "Logging"
+  suggested_action "Enable AuditEvent logging for Key Vault instances to ensure interactions with key vaults are logged and available."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.13"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+{
+    var(func:has(is_retention_enabled)){
+      days as retention_days
+    }
+    subs as var(func:has(Microsoft.Subscription)) { }
+    kvs as var(func: has(Microsoft.KeyVault_dg_vaults)){ }
+    vaults as var(func: has(microsoft.keyvault)){ }
+    retention as var(func: has(is_retention_enabled)) @filter(ge(val(days), 180)) { }  
+    var(func:uid(subs)) @cascade{
+      contains @filter(uid(kvs)){
+        synthesises @filter(uid(vaults)){
+          synthesises @filter(uid(retention)) {
+            observes {
+              happySub as uid
+            }
+          }
+        }
+      }
+    }
+    q(func:has(Microsoft.Subscription)) @filter(not uid(happySub)){
+       <%= default_predicates %>
+    }
+}
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.KeyVault_dg_vaults' => ['retention_days']
+  })
+end
 
 coreo_aws_rule "azure-monitoring-log-profile-exists" do
   action :define
@@ -1459,7 +1463,7 @@ coreo_aws_rule "azure-monitoring-log-profile-exists" do
         }
       }
     }
-    q(func:has(Microsoft.Subscription)) @filter(NOT uid(goodSub)){
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(goodSub)){
       <%= default_predicates %>
     }
   }
@@ -1496,7 +1500,7 @@ end
 #         goodProfile as uid
 #       }
 #     }
-#     q(func:has(microsoft.insights)) @filter(NOT uid(goodProfile)){
+#     query(func:has(microsoft.insights)) @filter(NOT uid(goodProfile)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1541,7 +1545,7 @@ end
 #         }
 #       }
 #     }
-#     q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1586,7 +1590,7 @@ end
 #         }
 #       }
 #     }
-#     q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1631,7 +1635,7 @@ end
 #         }
 #       }
 #     }
-#     q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1676,7 +1680,7 @@ end
 #         }
 #       }
 #     }
-#     q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1721,7 +1725,7 @@ end
 #         }
 #       }
 #     }
-#     q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1766,7 +1770,7 @@ end
 #         }
 #       }
 #     }
-#     q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1811,7 +1815,7 @@ end
 #         }
 #       }
 #     }
-#     q(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1852,7 +1856,7 @@ end
 #         violation as uid
 #       }
 #     }
-#     q(func:uid(violation)){
+#     query(func:uid(violation)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1893,7 +1897,7 @@ end
 #         violation as uid
 #       }
 #     }
-#     q(func:uid(violation)){
+#     query(func:uid(violation)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1934,7 +1938,7 @@ end
 #         violation as uid
 #       }
 #     }
-#     q(func:uid(violation)){
+#     query(func:uid(violation)){
 #       <%= default_predicates %>
 #     }
 #   }
@@ -1970,7 +1974,7 @@ end
 #     okNSG as var(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND eq(val(flowLogs), true)){
 #       uid
 #     }
-#     q(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
+#     query(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
 #       <%= default_predicates %>
 #       retention_days
 #     }
@@ -2003,7 +2007,7 @@ end
 #     var(func:has(type)) @cascade{
 #       provisioned as provisioning_status
 #     }
-#     q(func:has(sub_policy_location_id)){
+#     query(func:has(sub_policy_location_id)){
 #       <%= default_predicates %>
 #       contains @filter(has(Microsoft.Network_dg_networkWatchers) AND eq(val(provisioned), "Succeeded")){
 #         count(uid)
@@ -2039,7 +2043,7 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
     vms as var(func:has(vm_hardware_profile)) @cascade{
       hasAgent as is_os_agent_enabled
     }
-    q(func:uid(vms)) @filter(NOT eq(val(hasAgent), true) OR NOT uid(hasAgent)){
+    query(func:uid(vms)) @filter(NOT eq(val(hasAgent), true) OR NOT uid(hasAgent)){
       <%= default_predicates %>
     }
   }
@@ -2071,7 +2075,7 @@ coreo_aws_rule "azure-security-os-disks-encrypted" do
     vms as var(func:has(vm_hardware_profile)) @cascade{
       encrypted as is_os_encryption_enabled
     }
-    q(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
       <%= default_predicates %>
     }
   }
@@ -2103,7 +2107,7 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
     vms as var(func:has(vm_hardware_profile)) @cascade{
       encrypted as disk_encryption
     }
-    q(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
       <%= default_predicates %>
     }
   }
@@ -2138,7 +2142,7 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
         vaultKey as uid
       }
     }
-    q (func:uid(vaultKey)) @filter(NOT uid(expires)){
+    query(func:uid(vaultKey)) @filter(NOT uid(expires)){
       <%= default_predicates %>
     }
   }
@@ -2173,7 +2177,7 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
         vaultSecret as uid
       }
     }
-    q (func:uid(vaultSecret)) @filter(NOT uid(expires)){
+    query(func:uid(vaultSecret)) @filter(NOT uid(expires)){
       <%= default_predicates %>
     }
   }
