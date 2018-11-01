@@ -1319,7 +1319,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewa
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   { 
-      var(func:has(value)) {
+    var(func:has(value)) {
       vals as value
     }
     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
@@ -1427,7 +1427,7 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
         }
       }
     }
-    q(func:has(Microsoft.Subscription)) @filter(not uid(happySub)){
+    query(func:has(Microsoft.Subscription)) @filter(not uid(happySub)){
        <%= default_predicates %>
     }
 }
