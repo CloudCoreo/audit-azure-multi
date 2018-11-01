@@ -1515,516 +1515,516 @@ coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
   })
 end
 
-# coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment" do
-#   action :define
-#   service :monitoring
-#   link azure-monitoring-activity-log-alert-for-create-polic-assignment.html"
-#   display_name "Activity Log Alert For Create Polic Assignment"
-#   description "Monitoring for Create Policy Assignment gives insight into privilege assignment and may reduce the time it takes to detect a breach or misuse of information."
-#   category "Logging"
-#   suggested_action "Create an Activity Log Alert for the Create Policy Assignment event."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.3"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       opValues as value
-#     }
-#     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-#       guards{
-#         checks @filter(eq(val(opValues), "Administrative")){
-#           checks @filter(eq(val(opValues), "microsoft.authorization/policyassignments/write")){
-#             endorses{
-#               records{
-#                 happyTarget as uid
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Insights_dg_ActivityLogAlerts' => []
-#   })
-# end
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment" do
+  action :define
+  service :monitoring
+  link "azure-monitoring-activity-log-alert-for-create-polic-assignment.html"
+  display_name "Activity Log Alert For Create Polic Assignment"
+  description "Monitoring for Create Policy Assignment gives insight into privilege assignment and may reduce the time it takes to detect a breach or misuse of information."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create Policy Assignment event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.3"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(value)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.authorization/policyassignments/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
 
-# coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group" do
-#   action :define
-#   service :monitoring
-#   link ""azure-monitoring-activity-log-alert-for-create-or-update-network-security-group.html"
-#   display_name "Activity Log Alert For Create Or Update Network Security Group"
-#   description "Monitoring for Create or Update Network Security Group events gives insight network access changes and may reduce the time it takes to detect suspicious activity."
-#   category "Logging"
-#   suggested_action "Create an Activity Log Alert for the Create or Update Network Security Group event."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.4"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       opValues as value
-#     }
-#     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-#       guards{
-#         checks @filter(eq(val(opValues), "Administrative")){
-#           checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/write")){
-#             endorses{
-#               records{
-#                 happyTarget as uid
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Insights_dg_ActivityLogAlerts' => []
-#   })
-# end
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group" do
+  action :define
+  service :monitoring
+  link "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group.html"
+  display_name "Activity Log Alert For Create Or Update Network Security Group"
+  description "Monitoring for Create or Update Network Security Group events gives insight network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create or Update Network Security Group event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.4"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(value)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
 
-# coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-group" do
-#   action :define
-#   service :monitoring
-#   link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-delete-network-security-group.html"
-#   display_name "Activity Log Alert For Delete Network Security Group"
-#   description "Monitoring for Delete Network Security Group events gives insight network access changes and may reduce the time it takes to detect suspicious activity."
-#   category "Logging"
-#   suggested_action "Create an Activity Log Alert for the Delete Network Security Group event."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.5"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       opValues as value
-#     }
-#     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-#       guards{
-#         checks @filter(eq(val(opValues), "Administrative")){
-#           checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/delete")){
-#             endorses{
-#               records{
-#                 happyTarget as uid
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Insights_dg_ActivityLogAlerts' => []
-#   })
-# end
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-group" do
+  action :define
+  service :monitoring
+  link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-delete-network-security-group.html"
+  display_name "Activity Log Alert For Delete Network Security Group"
+  description "Monitoring for Delete Network Security Group events gives insight network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Delete Network Security Group event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.5"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(value)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/delete")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
 
-# coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group-rule" do
-#   action :define
-#   service :monitoring
-#   link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-create-or-update-network-security-group-rule.html"
-#   display_name "Activity Log Alert For Create Or Update Network Security Group Rule"
-#   description "Monitoring for Create or Update Network Security Group Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
-#   category "Logging"
-#   suggested_action "Create an Activity Log Alert for the Create or Update Network Security Group Rule event."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.6"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       opValues as value
-#     }
-#     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-#       guards{
-#         checks @filter(eq(val(opValues), "Administrative")){
-#           checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/securityrules/write")){
-#             endorses{
-#               records{
-#                 happyTarget as uid
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Insights_dg_ActivityLogAlerts' => []
-#   })
-# end
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network-security-group-rule" do
+  action :define
+  service :monitoring
+  link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-create-or-update-network-security-group-rule.html"
+  display_name "Activity Log Alert For Create Or Update Network Security Group Rule"
+  description "Monitoring for Create or Update Network Security Group Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create or Update Network Security Group Rule event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.6"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(value)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/securityrules/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
 
-# coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-group-rule" do
-#   action :define
-#   service :monitoring
-#   link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-delete-network-security-group-rule.html"
-#   display_name "Activity Log Alert For Delete Network Security Group Rule"
-#   description "Monitoring for Delete Network Security Group Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
-#   category "Logging"
-#   suggested_action "Create an Activity Log Alert for the Delete Network Security Group Rule event."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.7"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       opValues as value
-#     }
-#     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-#       guards{
-#         checks @filter(eq(val(opValues), "Administrative")){
-#           checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/securityrules/delete")){
-#             endorses{
-#               records{
-#                 happyTarget as uid
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Insights_dg_ActivityLogAlerts' => []
-#   })
-# end
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-group-rule" do
+  action :define
+  service :monitoring
+  link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-delete-network-security-group-rule.html"
+  display_name "Activity Log Alert For Delete Network Security Group Rule"
+  description "Monitoring for Delete Network Security Group Rule events gives insight into network access changes and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Delete Network Security Group Rule event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.7"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(value)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/securityrules/delete")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
 
-# coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-security-solution" do
-#   action :define
-#   service :monitoring
-#   link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-create-or-update-security-solution.html"
-#   display_name "Activity Log Alert For Create Or Update Security Solution"
-#   description "Monitoring for Create or Update Security Solution events gives insight into changes to the active security solutions and may reduce the time it takes to detect suspicious activity."
-#   category "Logging"
-#   suggested_action "Create an Activity Log Alert for the Create or Update Security Solution event."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.8"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       opValues as value
-#     }
-#     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-#       guards{
-#         checks @filter(eq(val(opValues), "Administrative")){
-#           checks @filter(eq(val(opValues), "microsoft.security/securitysolutions/write")){
-#             endorses{
-#               records{
-#                 happyTarget as uid
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Insights_dg_ActivityLogAlerts' => []
-#   })
-# end
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-security-solution" do
+  action :define
+  service :monitoring
+  link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-create-or-update-security-solution.html"
+  display_name "Activity Log Alert For Create Or Update Security Solution"
+  description "Monitoring for Create or Update Security Solution events gives insight into changes to the active security solutions and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Create or Update Security Solution event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.8"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(value)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.security/securitysolutions/write")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
 
-# coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-solution" do
-#   action :define
-#   service :monitoring
-#   link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-delete-network-security-solution.html"
-#   display_name "Activity Log Alert For Delete Network Security Solution"
-#   description "Monitoring for Delete Security Solution events gives insight into changes to the active security solutions and may reduce the time it takes to detect suspicious activity."
-#   category "Logging"
-#   suggested_action "Create an Activity Log Alert for the Delete Security Solution event."
-#   level "Medium"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "5.9"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(xid)){
-#       opValues as value
-#     }
-#     var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
-#       guards{
-#         checks @filter(eq(val(opValues), "Administrative")){
-#           checks @filter(eq(val(opValues), "microsoft.security/securitysolutions/delete")){
-#             endorses{
-#               records{
-#                 happyTarget as uid
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Insights_dg_ActivityLogAlerts' => []
-#   })
-# end
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-solution" do
+  action :define
+  service :monitoring
+  link "https://kb.securestate.vmware.com/azure-monitoring-activity-log-alert-for-delete-network-security-solution.html"
+  display_name "Activity Log Alert For Delete Network Security Solution"
+  description "Monitoring for Delete Security Solution events gives insight into changes to the active security solutions and may reduce the time it takes to detect suspicious activity."
+  category "Logging"
+  suggested_action "Create an Activity Log Alert for the Delete Security Solution event."
+  level "Medium"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "5.9"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(value)){
+      opValues as value
+    }
+    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+      guards{
+        checks @filter(eq(val(opValues), "Administrative")){
+          checks @filter(eq(val(opValues), "microsoft.security/securitysolutions/delete")){
+            endorses{
+              records{
+                happyTarget as uid
+              }
+            }
+          }
+        }
+      }
+    }
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+  })
+end
 
-# coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
-#   action :define
-#   service :security
-#   link "https://kb.securestate.vmware.com/azure-security-rdp-access-restricted-from-internet.html"
-#   display_name "Rdp Access Restricted From Internet"
-#   description "The potential security problem with using RDP over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
-#   category "Security"
-#   suggested_action "Disable RDP access on Network Security Groups from Internet"
-#   level "High"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "6.1"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(type)) @cascade{
-#       proto as protocol
-#       dportMin as destination_port_max
-#       dportMax as destination_port_min
-#       sAddrMin as source_cidr_range_min
-#       sAddrMax as source_cidr_range_max
-#     }
-#     var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
-#       synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 3389) AND ge(val(dportMax), 3389)){
-#         violation as uid
-#       }
-#     }
-#     query(func:uid(violation)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Network_dg_networkSecurityGroups' => []
-#   })
-# end
+coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
+  action :define
+  service :security
+  link "https://kb.securestate.vmware.com/azure-security-rdp-access-restricted-from-internet.html"
+  display_name "Rdp Access Restricted From Internet"
+  description "The potential security problem with using RDP over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
+  category "Security"
+  suggested_action "Disable RDP access on Network Security Groups from Internet"
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.1"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(protocol)) @cascade{
+      proto as protocol
+      dportMin as destination_port_max
+      dportMax as destination_port_min
+      sAddrMin as source_cidr_range_min
+      sAddrMax as source_cidr_range_max
+    }
+    var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
+      synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 3389) AND ge(val(dportMax), 3389)){
+        violation as uid
+      }
+    }
+    query(func:uid(violation)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkSecurityGroups' => []
+  })
+end
 
-# coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
-#   action :define
-#   service :security
-#   link "https://kb.securestate.vmware.com/azure-security-ssh-access-restricted-from-internet.html"
-#   display_name "Ssh Access Restricted From Internet"
-#   description "The potential security problem with using SSH over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
-#   category "Security"
-#   suggested_action "Disable SSH access on Network Security Groups from Internet"
-#   level "High"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "6.2"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(type)) @cascade{
-#       proto as protocol
-#       dportMin as destination_port_max
-#       dportMax as destination_port_min
-#       sAddrMin as source_cidr_range_min
-#       sAddrMax as source_cidr_range_max
-#     }
-#     var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
-#       synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 22) AND ge(val(dportMax), 22)){
-#         violation as uid
-#       }
-#     }
-#     query(func:uid(violation)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Network_dg_networkSecurityGroups' => []
-#   })
-# end
+coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
+  action :define
+  service :security
+  link "https://kb.securestate.vmware.com/azure-security-ssh-access-restricted-from-internet.html"
+  display_name "Ssh Access Restricted From Internet"
+  description "The potential security problem with using SSH over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
+  category "Security"
+  suggested_action "Disable SSH access on Network Security Groups from Internet"
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.2"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(protocol)) @cascade{
+      proto as protocol
+      dportMin as destination_port_max
+      dportMax as destination_port_min
+      sAddrMin as source_cidr_range_min
+      sAddrMax as source_cidr_range_max
+    }
+    var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
+      synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 22) AND ge(val(dportMax), 22)){
+        violation as uid
+      }
+    }
+    query(func:uid(violation)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkSecurityGroups' => []
+  })
+end
 
-# coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
-#   action :define
-#   service :sql
-#   link "https://kb.securestate.vmware.com/azure-sql-sql-server-access-restricted-from-internet.html"
-#   display_name "Sql Server Access Restricted From Internet"
-#   description "SQL Database includes a firewall to block access to unauthorized connections. After creating your SQL Database, you can specify which IP addresses can connect to your database. You can then define more granular IP addresses by referencing the range of addresses available from specific datacenters."
-#   category "Security"
-#   suggested_action "Ensure that no SQL Databases allow ingress from the internet."
-#   level "High"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "6.3"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(type)) @cascade{
-#       proto as protocol
-#       dportMin as destination_port_max
-#       dportMax as destination_port_min
-#       sAddrMin as source_cidr_range_min
-#       sAddrMax as source_cidr_range_max
-#     }
-#     var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
-#       synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 1433) AND ge(val(dportMax), 1433)){
-#         violation as uid
-#       }
-#     }
-#     query(func:uid(violation)){
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Network_dg_networkSecurityGroups' => []
-#   })
-# end
+coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
+  action :define
+  service :sql
+  link "https://kb.securestate.vmware.com/azure-sql-sql-server-access-restricted-from-internet.html"
+  display_name "Sql Server Access Restricted From Internet"
+  description "SQL Database includes a firewall to block access to unauthorized connections. After creating your SQL Database, you can specify which IP addresses can connect to your database. You can then define more granular IP addresses by referencing the range of addresses available from specific datacenters."
+  category "Security"
+  suggested_action "Ensure that no SQL Databases allow ingress from the internet."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.3"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(protocol)) @cascade{
+      proto as protocol
+      dportMin as destination_port_max
+      dportMax as destination_port_min
+      sAddrMin as source_cidr_range_min
+      sAddrMax as source_cidr_range_max
+    }
+    var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
+      synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 1433) AND ge(val(dportMax), 1433)){
+        violation as uid
+      }
+    }
+    query(func:uid(violation)){
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkSecurityGroups' => []
+  })
+end
 
-# coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days" do
-#   action :define
-#   service :network_watcher
-#   link "https://kb.securestate.vmware.com/azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days.html"
-#   display_name "Network Security Group Flow Log Retention Greater Than 90 Days"
-#   description "Flow logs enable capturing information about IP traffic flowing in and out of your Network Security Groups. Logs can be used to check for anomalies and give insight into suspected breaches."
-#   category "Security"
-#   suggested_action "Network Security Group Flow Logs should be enabled and retention period is set to greater than or equal to 90 days."
-#   level "Low"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "6.4"
-#   meta_cis_scored "true"
-#   meta_cis_level "2"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(type)) @cascade{
-#       flowLogs as is_audit_enabled
-#       retentionOk as retention_days
-#     }
-#     okNSG as var(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND eq(val(flowLogs), true)){
-#       uid
-#     }
-#     query(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
-#       <%= default_predicates %>
-#       retention_days
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Network_dg_networkSecurityGroups' => ['retention_days']
-#   })
-# end
+coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days" do
+  action :define
+  service :network_watcher
+  link "https://kb.securestate.vmware.com/azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days.html"
+  display_name "Network Security Group Flow Log Retention Greater Than 90 Days"
+  description "Flow logs enable capturing information about IP traffic flowing in and out of your Network Security Groups. Logs can be used to check for anomalies and give insight into suspected breaches."
+  category "Security"
+  suggested_action "Network Security Group Flow Logs should be enabled and retention period is set to greater than or equal to 90 days."
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.4"
+  meta_cis_scored "true"
+  meta_cis_level "2"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(is_audit_enabled)) @cascade{
+      flowLogs as is_audit_enabled
+      retentionOk as retention_days
+    }
+    okNSG as var(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND eq(val(flowLogs), true)){
+      uid
+    }
+    query(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
+      <%= default_predicates %>
+      retention_days
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkSecurityGroups' => ['retention_days']
+  })
+end
 
-# coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
-#   action :define
-#   service :network_watcher
-#   link "https://kb.securestate.vmware.com/azure-network-watcher-network-watcher-enabled.html"
-#   display_name "Network Watcher Enabled"
-#   description "Network diagnostic and visualization tools available with Network Watcher help you understand, diagnose, and gain insights to your network in Azure."
-#   category "Security"
-#   suggested_action "Enable Network Watcher for your Azure Subscriptions."
-#   level "High"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "6.5"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(type)) @cascade{
-#       provisioned as provisioning_status
-#     }
-#     query(func:has(sub_policy_location_id)){
-#       <%= default_predicates %>
-#       contains @filter(has(Microsoft.Network_dg_networkWatchers) AND eq(val(provisioned), "Succeeded")){
-#         count(uid)
-#       }
-#     }
-#     ##TODO ADD ERB TEMPLATE TO CHECK IF count is < 27 (total locations from azure)
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Network_dg_networkWatchers' => []
-#   })
-# end
+coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
+  action :define
+  service :network_watcher
+  link "https://kb.securestate.vmware.com/azure-network-watcher-network-watcher-enabled.html"
+  display_name "Network Watcher Enabled"
+  description "Network diagnostic and visualization tools available with Network Watcher help you understand, diagnose, and gain insights to your network in Azure."
+  category "Security"
+  suggested_action "Enable Network Watcher for your Azure Subscriptions."
+  level "High"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "6.5"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    var(func:has(provisioning_status)) @cascade{
+      provisioned as provisioning_status
+    }
+    query(func:has(sub_policy_location_id)){
+      <%= default_predicates %>
+      contains @filter(has(Microsoft.Network_dg_networkWatchers) AND eq(val(provisioned), "Succeeded")){
+        count(uid)
+      }
+    }
+    ##TODO ADD ERB TEMPLATE TO CHECK IF count is < 27 (total locations from azure)
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Network_dg_networkWatchers' => []
+  })
+end
 
 coreo_aws_rule "azure-security-vm-agent-installed" do
   action :define
