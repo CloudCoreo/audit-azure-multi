@@ -18,7 +18,7 @@ variables:
       - azure-security-adaptive-application-controls-on
       - azure-security-sql-auditing-threat-detection-on
       - azure-security-sql-encryption-on
-      # - azure-security-security-contact-emails-set
+      - azure-security-security-contact-emails-set
       - azure-security-security-contact-phone-num-set
       - azure-security-send-email-alerts-on
       - azure-security-send-email-to-subscription-owners-on

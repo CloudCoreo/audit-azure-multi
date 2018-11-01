@@ -460,42 +460,39 @@ coreo_aws_rule "azure-security-sql-encryption-on" do
   })
 end
 
-# coreo_aws_rule "azure-security-security-contact-emails-set" do
-#   action :define
-#   service :security
-#   link "https://kb.securestate.vmware.com/azure-security-security-contact-emails-set.html"
-#   display_name "Security Contact Emails Set"
-#   description "Microsoft reaches out to the provided security contact in case its security team finds that your resources are compromised. This ensures that you are aware of any potential compromise and you can timely mitigate the risk."
-#   category "Security"
-#   suggested_action "Provide a security contact email address."
-#   level "Low"
-#   audit_objects [""]
-#   objectives [""]
-#   operators [""]
-#   raise_when [true]
-#   meta_cis_id "2.16"
-#   meta_cis_scored "true"
-#   meta_cis_level "1"
-#   # meta_scoring_status "full"
-#   meta_rule_query <<~QUERY
-#   {
-#     var(func:has(Microsoft.Security_dg_policies)) @cascade{
-#       e as email_address
-#     }
-#     good_uids as var(func:has(xid)) @cascade{
-#       synthesises @filter(has(email_address)){
-#         email_address
-#       }
-#     }
-#     query(func:has(xid)) @filter(NOT uid(good_uids)) {
-#       <%= default_predicates %>
-#     }
-#   }
-#   QUERY
-#   meta_rule_node_triggers({
-#     'Microsoft.Security_dg_policies' => []
-#   })
-# end
+coreo_aws_rule "azure-security-security-contact-emails-set" do
+  action :define
+  service :security
+  link "https://kb.securestate.vmware.com/azure-security-security-contact-emails-set.html"
+  display_name "Security Contact Emails Set"
+  description "Microsoft reaches out to the provided security contact in case its security team finds that your resources are compromised. This ensures that you are aware of any potential compromise and you can timely mitigate the risk."
+  category "Security"
+  suggested_action "Provide a security contact email address."
+  level "Low"
+  audit_objects [""]
+  objectives [""]
+  operators [""]
+  raise_when [true]
+  meta_cis_id "2.16"
+  meta_cis_scored "true"
+  meta_cis_level "1"
+  # meta_scoring_status "full"
+  meta_rule_query <<~QUERY
+  {
+    good_uids as var(func:has(Security_dg_policies)) @cascade{
+      relates @filter(has(email_address)){
+        email_address
+      }
+    }
+    query(func:has(Security_dg_policies)) @filter(NOT uid(good_uids)) {
+      <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_node_triggers({
+    'Microsoft.Security_dg_policies' => []
+  })
+end
 
 coreo_aws_rule "azure-security-security-contact-phone-num-set" do
   action :define
