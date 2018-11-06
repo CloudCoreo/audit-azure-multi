@@ -18,7 +18,7 @@ variables:
       - azure-security-adaptive-application-controls-on
       - azure-security-sql-auditing-threat-detection-on
       - azure-security-sql-encryption-on
-      # - azure-security-security-contact-emails-set
+      - azure-security-security-contact-emails-set
       - azure-security-security-contact-phone-num-set
       - azure-security-send-email-alerts-on
       - azure-security-send-email-to-subscription-owners-on
@@ -42,24 +42,24 @@ variables:
       - azure-sql-data-encryption-on
       - azure-sql-auditing-retention-greater-than-90-days
       - azure-sql-threat-detection-retention-greater-than-90-days
-      # - azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule
-      # - azure-monitoring-activity-log-alert-for-delete-sql-server-firewall-rule
-      # - azure-monitoring-activity-log-alert-for-update-security-policy
-      # - azure-key-vault-logging-for-keyvault-enabled
+      - azure-monitoring-activity-log-alert-for-create-or-update-sql-server-firewall-rule
+      - azure-monitoring-activity-log-alert-for-delete-sql-server-firewall-rule
+      - azure-monitoring-activity-log-alert-for-update-security-policy
+      - azure-key-vault-logging-for-keyvault-enabled
       - azure-monitoring-log-profile-exists
-      # - azure-monitoring-activity-log-retention-365-days-or-greater
-      # - azure-monitoring-activity-log-alert-for-create-polic-assignment
-      # - azure-monitoring-activity-log-alert-for-create-or-update-network-security-group
-      # - azure-monitoring-activity-log-alert-for-delete-network-security-group
-      # - azure-monitoring-activity-log-alert-for-create-or-update-network-security-group-rule
-      # - azure-monitoring-activity-log-alert-for-delete-network-security-group-rule
-      # - azure-monitoring-activity-log-alert-for-create-or-update-security-solution
-      # - azure-monitoring-activity-log-alert-for-delete-network-security-solution
-      # - azure-security-rdp-access-restricted-from-internet
-      # - azure-security-ssh-access-restricted-from-internet
-      # - azure-sql-sql-server-access-restricted-from-internet
-      # - azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days
-      # - azure-network-watcher-network-watcher-enabled
+      - azure-monitoring-activity-log-retention-365-days-or-greater
+      - azure-monitoring-activity-log-alert-for-create-polic-assignment
+      - azure-monitoring-activity-log-alert-for-create-or-update-network-security-group
+      - azure-monitoring-activity-log-alert-for-delete-network-security-group
+      - azure-monitoring-activity-log-alert-for-create-or-update-network-security-group-rule
+      - azure-monitoring-activity-log-alert-for-delete-network-security-group-rule
+      - azure-monitoring-activity-log-alert-for-create-or-update-security-solution
+      - azure-monitoring-activity-log-alert-for-delete-network-security-solution
+      - azure-security-rdp-access-restricted-from-internet
+      - azure-security-ssh-access-restricted-from-internet
+      - azure-sql-sql-server-access-restricted-from-internet
+      - azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days
+      - azure-network-watcher-network-watcher-enabled
       - azure-security-vm-agent-installed
       - azure-security-os-disks-encrypted
       - azure-security-data-disks-encrypted
