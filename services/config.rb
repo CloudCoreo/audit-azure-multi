@@ -479,12 +479,12 @@ coreo_aws_rule "azure-security-security-contact-emails-set" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    good_uids as var(func:has(Security_dg_policies)) @cascade{
+    good_uids as var(func:has(Microsoft.Security_dg_policies)) @cascade{
       relates @filter(has(email_address)){
         email_address
       }
     }
-    query(func:has(Security_dg_policies)) @filter(NOT uid(good_uids)) {
+    query(func:has(Microsoft.Security_dg_policies)) @filter(NOT uid(good_uids)) {
       <%= default_predicates %>
     }
   }
@@ -810,10 +810,9 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
-
-    }
-    query(func:has(has(Microsoft.Sql_dg_servers)) @cascade{
+    blob_type as var(func: has(Microsoft.Sql_dg_servers)) {}
+    query(func:uid(blob_type)) @cascade{
+      <%= default_predicates %>
       synthesises {
         <%= default_predicates %>
       }
@@ -845,7 +844,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-server" do
   meta_rule_query <<~QUERY
   {
     good_uids as var(func:has(Microsoft.Sql_dg_servers)) @cascade{
-      synthesises @filter(has(email_address)){
+      relates @filter(has(email_address)){
         email_address
       }
     }
@@ -914,7 +913,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
     blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
       property as audit_retention_days
     }
-    query(func:uid(blob_type)) @filter(AND lt(val(property), 90)) {
+    query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
       name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
     }
@@ -1077,6 +1076,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
   meta_rule_query <<~QUERY
   {
     query(func:has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+      <%= default_predicates %>
       synthesises {
         <%= default_predicates %>
       }
@@ -1108,7 +1108,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-database" do
   meta_rule_query <<~QUERY
   {
     good_uids as var(func:has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
-      synthesises @filter(has(email_address)){
+      relates @filter(has(email_address)){
         email_address
       }
     }
@@ -1267,7 +1267,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-ser
   objectives [""]
   operators [""]
   raise_when [true]
-  meta_cis_id "5.1"
+  meta_cis_id "5.10"
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
@@ -1972,10 +1972,10 @@ coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-
       flowLogs as is_audit_enabled
       retentionOk as retention_days
     }
-    okNSG as var(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND eq(val(flowLogs), true)){
+    okNSG as var(func:has(Microsoft.Network_dg_networkSecurityGroups)) @filter(eq(val(flowLogs), true)){
       uid
     }
-    query(func:uid(t)) @filter(eq(val(t),"Microsoft.Network/networkSecurityGroups") AND NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
+    query(func:has(Microsoft.Network_dg_networkSecurityGroups)) @filter(NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
       <%= default_predicates %>
       retention_days
     }
@@ -2105,7 +2105,7 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    vms as var(func:has(vm_hardware_profile)) @cascade{
+    vms as var(func:has(Microsoft.Compute_dg_virtualMachines)) @cascade{
       encrypted as disk_encryption
     }
     query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
@@ -2138,18 +2138,17 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
   meta_rule_query <<~QUERY
   {
     var(func:has(vault_uri)) @cascade{
-      contains @filter(has(AzureVaultKey)){
+      contains @filter(has(Microsoft.KeyVault)){
         expires as validity_period_end_datetime
-        vaultKey as uid
       }
     }
-    query(func:uid(vaultKey)) @filter(NOT uid(expires)){
+    query(func:has(Microsoft.KeyVault)) @filter(NOT uid(expires)){
       <%= default_predicates %>
     }
   }
   QUERY
   meta_rule_node_triggers({
-   'AzureVaultKey' => []
+   'Microsoft.KeyVault' => []
   })
 end
 
