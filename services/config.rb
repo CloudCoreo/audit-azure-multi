@@ -17,7 +17,7 @@ coreo_aws_rule "azure-security-monitoring-agent-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as is_os_agent_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -27,7 +27,7 @@ coreo_aws_rule "azure-security-monitoring-agent-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['is_os_agent_enabled']
+    'Microsoft.Security/policies' => ['is_os_agent_enabled']
   })
 end
 
@@ -50,7 +50,7 @@ coreo_aws_rule "azure-security-system-update-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as is_os_update_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -60,7 +60,7 @@ coreo_aws_rule "azure-security-system-update-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['is_os_update_enabled']
+    'Microsoft.Security/policies' => ['is_os_update_enabled']
   })
 end
 
@@ -83,7 +83,7 @@ coreo_aws_rule "azure-security-security-configuration-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as security_baselines
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -93,7 +93,7 @@ coreo_aws_rule "azure-security-security-configuration-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['security_baselines']
+    'Microsoft.Security/policies' => ['security_baselines']
   })
 end
 
@@ -116,7 +116,7 @@ coreo_aws_rule "azure-security-endpoint-protection-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as endpoint_protection
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -126,7 +126,7 @@ coreo_aws_rule "azure-security-endpoint-protection-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['endpoint_protection']
+    'Microsoft.Security/policies' => ['endpoint_protection']
   })
 end
 
@@ -149,7 +149,7 @@ coreo_aws_rule "azure-security-disk-encrpytion-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as disk_encryption
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -159,7 +159,7 @@ coreo_aws_rule "azure-security-disk-encrpytion-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['disk_encryption']
+    'Microsoft.Security/policies' => ['disk_encryption']
   })
 end
 
@@ -182,7 +182,7 @@ coreo_aws_rule "azure-security-network-security-groups-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as network_security_group
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -192,7 +192,7 @@ coreo_aws_rule "azure-security-network-security-groups-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['network_security_group']
+    'Microsoft.Security/policies' => ['network_security_group']
   })
 end
 
@@ -215,7 +215,7 @@ coreo_aws_rule "azure-security-web-application-firewall-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as provision_waf
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -225,7 +225,7 @@ coreo_aws_rule "azure-security-web-application-firewall-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['provision_waf']
+    'Microsoft.Security/policies' => ['provision_waf']
   })
 end
 
@@ -248,7 +248,7 @@ coreo_aws_rule "azure-security-next-generation-firewall-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as enable_ngfw
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -258,7 +258,7 @@ coreo_aws_rule "azure-security-next-generation-firewall-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['enable_ngfw']
+    'Microsoft.Security/policies' => ['enable_ngfw']
   })
 end
 
@@ -281,7 +281,7 @@ coreo_aws_rule "azure-security-vulnerability-assessment-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as vulnerability_assessments
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -291,7 +291,7 @@ coreo_aws_rule "azure-security-vulnerability-assessment-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['vulnerability_assessments']
+    'Microsoft.Security/policies' => ['vulnerability_assessments']
   })
 end
 
@@ -314,7 +314,7 @@ coreo_aws_rule "azure-security-storage-encryption-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as blob_encryption_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -324,7 +324,7 @@ coreo_aws_rule "azure-security-storage-encryption-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['blob_encryption_enabled']
+    'Microsoft.Security/policies' => ['blob_encryption_enabled']
   })
 end
 
@@ -347,7 +347,7 @@ coreo_aws_rule "azure-security-jit-network-access-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as jit_network_access
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -357,7 +357,7 @@ coreo_aws_rule "azure-security-jit-network-access-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['jit_network_access']
+    'Microsoft.Security/policies' => ['jit_network_access']
   })
 end
 
@@ -380,7 +380,7 @@ coreo_aws_rule "azure-security-adaptive-application-controls-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as os_mac_provisioning
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -390,7 +390,7 @@ coreo_aws_rule "azure-security-adaptive-application-controls-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['os_mac_provisioning']
+    'Microsoft.Security/policies' => ['os_mac_provisioning']
   })
 end
 
@@ -413,7 +413,7 @@ coreo_aws_rule "azure-security-sql-auditing-threat-detection-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as sql_auditing
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -423,7 +423,7 @@ coreo_aws_rule "azure-security-sql-auditing-threat-detection-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['sql_auditing']
+    'Microsoft.Security/policies' => ['sql_auditing']
   })
 end
 
@@ -446,7 +446,7 @@ coreo_aws_rule "azure-security-sql-encryption-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as sql_encryption
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -456,7 +456,7 @@ coreo_aws_rule "azure-security-sql-encryption-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['sql_encryption']
+    'Microsoft.Security/policies' => ['sql_encryption']
   })
 end
 
@@ -479,18 +479,18 @@ coreo_aws_rule "azure-security-security-contact-emails-set" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    good_uids as var(func:has(Microsoft.Security_dg_policies)) @cascade{
+    good_uids as var(func:has(<Microsoft.Security/policies>)) @cascade{
       relates @filter(has(email_address)){
         email_address
       }
     }
-    query(func:has(Microsoft.Security_dg_policies)) @filter(NOT uid(good_uids)) {
+    query(func:has(<Microsoft.Security/policies>)) @filter(NOT uid(good_uids)) {
       <%= default_predicates %>
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => []
+    'Microsoft.Security/policies' => []
   })
 end
 
@@ -513,7 +513,7 @@ coreo_aws_rule "azure-security-security-contact-phone-num-set" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as security_phone_number
     }
     query(func:uid(blob_type)) @filter(eq(val(property), "")) {
@@ -523,7 +523,7 @@ coreo_aws_rule "azure-security-security-contact-phone-num-set" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['security_phone_number']
+    'Microsoft.Security/policies' => ['security_phone_number']
   })
 end
 
@@ -546,7 +546,7 @@ coreo_aws_rule "azure-security-send-email-alerts-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as send_notifications
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -556,7 +556,7 @@ coreo_aws_rule "azure-security-send-email-alerts-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['send_notifications']
+    'Microsoft.Security/policies' => ['send_notifications']
   })
 end
 
@@ -579,7 +579,7 @@ coreo_aws_rule "azure-security-send-email-to-subscription-owners-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Security_dg_policies)) @cascade{
+    blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
       property as notify_admins
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -589,7 +589,7 @@ coreo_aws_rule "azure-security-send-email-to-subscription-owners-on" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Security_dg_policies' => ['notify_admins']
+    'Microsoft.Security/policies' => ['notify_admins']
   })
 end
 
@@ -612,7 +612,7 @@ coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
+    blob_type as var(func: has(<Microsoft.Storage/storageAccounts>)) @cascade{
       property as https_only
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -622,7 +622,7 @@ coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Storage_dg_storageAccounts' => ['https_only']
+    'Microsoft.Storage/storageAccounts' => ['https_only']
   })
 end
 
@@ -645,7 +645,7 @@ coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
+    blob_type as var(func: has(<Microsoft.Storage/storageAccounts>)) @cascade{
       property as blob_encryption_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -655,7 +655,7 @@ coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Storage_dg_storageAccounts' => ['blob_encryption_enabled']
+    'Microsoft.Storage/storageAccounts' => ['blob_encryption_enabled']
   })
 end
 
@@ -678,17 +678,17 @@ coreo_aws_rule "azure-storage-storage-encryption-enabled-for-file-service" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
+    blob_type as var(func: has(<Microsoft.Storage/storageAccounts>)) @cascade{
       property as file_encryption_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group
+      name file_encryption_enabled contains storage_account blob_encryption_enabled https_only resource_group
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Storage_dg_storageAccounts' => ['file_encryption_enabled']
+    'Microsoft.Storage/storageAccounts' => ['file_encryption_enabled']
   })
 end
 
@@ -711,17 +711,17 @@ coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-container
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Storage_dg_storageAccounts)) @cascade{
+    blob_type as var(func: has(<Microsoft.Storage/storageAccounts>)) @cascade{
       property as public_access
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group
+      name file_encryption_enabled contains storage_account blob_encryption_enabled https_only resource_group
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Storage_dg_storageAccounts' => ['public_access']
+    'Microsoft.Storage/storageAccounts' => ['public_access']
   })
 end
 
@@ -744,17 +744,17 @@ coreo_aws_rule "azure-sql-auditing-on-server" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
       property as is_audit_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
+      name notify_admins contains audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers' => ['is_audit_enabled']
+    'Microsoft.Sql/servers' => ['is_audit_enabled']
   })
 end
 
@@ -777,17 +777,17 @@ coreo_aws_rule "azure-sql-threat-detection-on-server" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
       property as is_threat_detection_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
+      name notify_admins contains audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers' => ['is_threat_detection_enabled']
+    'Microsoft.Sql/servers' => ['is_threat_detection_enabled']
   })
 end
 
@@ -810,7 +810,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers)) {}
+    blob_type as var(func: has(<Microsoft.Sql/servers>)) {}
     query(func:uid(blob_type)) @cascade{
       <%= default_predicates %>
       synthesises {
@@ -820,7 +820,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers' => []
+    'Microsoft.Sql/servers' => []
   })
 end
 
@@ -843,18 +843,18 @@ coreo_aws_rule "azure-sql-send-alerts-set-server" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    good_uids as var(func:has(Microsoft.Sql_dg_servers)) @cascade{
+    good_uids as var(func:has(<Microsoft.Sql/servers>)) @cascade{
       relates @filter(has(email_address)){
         email_address
       }
     }
-    query(func:has(Microsoft.Sql_dg_servers)) @filter(NOT uid(good_uids)) {
+    query(func:has(<Microsoft.Sql/servers>)) @filter(NOT uid(good_uids)) {
       <%= default_predicates %>
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers' => []
+    'Microsoft.Sql/servers' => []
   })
 end
 
@@ -877,17 +877,17 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
       property as notify_admins
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
+      name notify_admins contains audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers' => ['notify_admins']
+    'Microsoft.Sql/servers' => ['notify_admins']
   })
 end
 
@@ -910,17 +910,17 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
       property as audit_retention_days
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
+      name notify_admins contains audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers' => ['audit_retention_days']
+    'Microsoft.Sql/servers' => ['audit_retention_days']
   })
 end
 
@@ -943,17 +943,17 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
       property as threat_retention_days
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name notify_admins contains  audit_retention_days threat_retention_days is_audit_enabled
+      name notify_admins contains audit_retention_days threat_retention_days is_audit_enabled
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers' => ['threat_retention_days']
+    'Microsoft.Sql/servers' => ['threat_retention_days']
   })
 end
 
@@ -976,7 +976,7 @@ coreo_aws_rule "azure-sql-active-directory-admin-configured" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
       property as is_audit_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
@@ -986,7 +986,7 @@ coreo_aws_rule "azure-sql-active-directory-admin-configured" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers' => ['is_audit_enabled']
+    'Microsoft.Sql/servers' => ['is_audit_enabled']
   })
 end
 
@@ -1009,17 +1009,17 @@ coreo_aws_rule "azure-sql-auditing-on-database" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
       property as is_audit_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name Microsoft.Sql_dg_servers_dg_databases
+      name
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers_dg_databases' => ['is_audit_enabled']
+    'Microsoft.Sql/servers/databases' => ['is_audit_enabled']
   })
 end
 
@@ -1042,17 +1042,17 @@ coreo_aws_rule "azure-sql-threat-detection-on-database" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
       property as is_threat_detection_enabled
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name Microsoft.Sql_dg_servers_dg_databases
+      name
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers_dg_databases' => ['is_threat_detection_enabled']
+    'Microsoft.Sql/servers/databases' => ['is_threat_detection_enabled']
   })
 end
 
@@ -1075,7 +1075,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    query(func:has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+    query(func:has(<Microsoft.Sql/servers/databases>)) @cascade{
       <%= default_predicates %>
       synthesises {
         <%= default_predicates %>
@@ -1084,7 +1084,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers_dg_databases' => []
+    'Microsoft.Sql/servers/databases' => []
   })
 end
 
@@ -1107,18 +1107,18 @@ coreo_aws_rule "azure-sql-send-alerts-set-database" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    good_uids as var(func:has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+    good_uids as var(func:has(<Microsoft.Sql/servers/databases>)) @cascade{
       relates @filter(has(email_address)){
         email_address
       }
     }
-    query(func:has(Microsoft.Sql_dg_servers_dg_databases)) @filter(NOT uid(good_uids)) {
+    query(func:has(<Microsoft.Sql/servers/databases>)) @filter(NOT uid(good_uids)) {
       <%= default_predicates %>
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers_dg_database' => []
+    'Microsoft.Sql/servers/database' => []
   })
 end
 
@@ -1141,17 +1141,17 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
       property as notify_admins
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name Microsoft.Sql_dg_servers_dg_databases
+      name Microsoft.Sql/servers/databases
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers_dg_databases' => ['notify_admins']
+    'Microsoft.Sql/servers/databases' => ['notify_admins']
   })
 end
 
@@ -1174,17 +1174,17 @@ coreo_aws_rule "azure-sql-data-encryption-on" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
       property as sql_encryption
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name Microsoft.Sql_dg_servers_dg_databases
+      name Microsoft.Sql/servers/databases
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers_dg_databases' => ['sql_encryption']
+    'Microsoft.Sql/servers/databases' => ['sql_encryption']
   })
 end
 
@@ -1207,17 +1207,17 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
       property as audit_retention_days
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name Microsoft.Sql_dg_servers_dg_databases
+      name Microsoft.Sql/servers/databases
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers_dg_databases' => ['audit_retention_days']
+    'Microsoft.Sql/servers/databases' => ['audit_retention_days']
   })
 end
 
@@ -1240,17 +1240,17 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-databa
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    blob_type as var(func: has(Microsoft.Sql_dg_servers_dg_databases)) @cascade{
+    blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
       property as threat_retention_days
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name Microsoft.Sql_dg_servers_dg_databases
+      name
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Sql_dg_servers_dg_databases' => ['threat_retention_days']
+    'Microsoft.Sql/servers/databases' => ['threat_retention_days']
   })
 end
 
@@ -1276,7 +1276,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-ser
     var(func:has(value)) {
     vals as value
   }
-  var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+  var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
     guards{
       checks @filter(eq(val(vals), "Administrative")){
         checks @filter(eq(val(vals), "microsoft.sql/servers/firewallrules/write")){
@@ -1295,7 +1295,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-ser
 }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1321,7 +1321,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewa
     var(func:has(value)) {
       vals as value
     }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
       guards{
         checks @filter(eq(val(vals), "Administrative")){
           checks @filter(eq(val(vals), "microsoft.sql/servers/firewallrules/delete")){
@@ -1340,7 +1340,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewa
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1366,7 +1366,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" 
     var(func:has(value)) {
       vals as value
     }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
       guards{
         checks @filter(eq(val(vals), "Administrative")){
           checks @filter(eq(val(vals), "microsoft.security/policies/write")){
@@ -1385,7 +1385,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" 
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1412,7 +1412,7 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
       days as retention_days
     }
     subs as var(func:has(Microsoft.Subscription)) { }
-    kvs as var(func: has(Microsoft.KeyVault_dg_vaults)){ }
+    kvs as var(func: has(<Microsoft.KeyVault/vaults>)){ }
     vaults as var(func: has(microsoft.keyvault)){ }
     retention as var(func: has(is_retention_enabled)) @filter(ge(val(days), 180)) { }  
     var(func:uid(subs)) @cascade{
@@ -1432,7 +1432,7 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
 }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.KeyVault_dg_vaults' => ['retention_days']
+    'Microsoft.KeyVault/vaults' => ['retention_days']
   })
 end
 
@@ -1533,7 +1533,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment"
     var(func:has(value)){
       opValues as value
     }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
       guards{
         checks @filter(eq(val(opValues), "Administrative")){
           checks @filter(eq(val(opValues), "microsoft.authorization/policyassignments/write")){
@@ -1552,7 +1552,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment"
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1578,7 +1578,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
     var(func:has(value)){
       opValues as value
     }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
       guards{
         checks @filter(eq(val(opValues), "Administrative")){
           checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/write")){
@@ -1597,7 +1597,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1623,7 +1623,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
     var(func:has(value)){
       opValues as value
     }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
       guards{
         checks @filter(eq(val(opValues), "Administrative")){
           checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/delete")){
@@ -1642,7 +1642,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1668,7 +1668,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
     var(func:has(value)){
       opValues as value
     }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
       guards{
         checks @filter(eq(val(opValues), "Administrative")){
           checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/securityrules/write")){
@@ -1687,7 +1687,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1713,7 +1713,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
     var(func:has(value)){
       opValues as value
     }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
       guards{
         checks @filter(eq(val(opValues), "Administrative")){
           checks @filter(eq(val(opValues), "microsoft.network/networksecuritygroups/securityrules/delete")){
@@ -1732,7 +1732,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1758,7 +1758,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-securit
     var(func:has(value)){
       opValues as value
     }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
       guards{
         checks @filter(eq(val(opValues), "Administrative")){
           checks @filter(eq(val(opValues), "microsoft.security/securitysolutions/write")){
@@ -1777,7 +1777,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-securit
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1803,7 +1803,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
     var(func:has(value)){
       opValues as value
     }
-    var(func:has(Microsoft.Insights_dg_ActivityLogAlerts)) @cascade{
+    var(func:has(<Microsoft.Insights/ActivityLogAlerts>)) @cascade{
       guards{
         checks @filter(eq(val(opValues), "Administrative")){
           checks @filter(eq(val(opValues), "microsoft.security/securitysolutions/delete")){
@@ -1822,7 +1822,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Insights_dg_ActivityLogAlerts' => []
+    'Microsoft.Insights/ActivityLogAlerts' => []
   })
 end
 
@@ -1852,7 +1852,7 @@ coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
       sAddrMin as source_cidr_range_min
       sAddrMax as source_cidr_range_max
     }
-    var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
+    var(func:has(<Microsoft.Network/networkSecurityGroups>)) {
       synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 3389) AND ge(val(dportMax), 3389)){
         violation as uid
       }
@@ -1863,7 +1863,7 @@ coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Network_dg_networkSecurityGroups' => []
+    'Microsoft.Network/networkSecurityGroups' => []
   })
 end
 
@@ -1893,7 +1893,7 @@ coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
       sAddrMin as source_cidr_range_min
       sAddrMax as source_cidr_range_max
     }
-    var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
+    var(func:has(<Microsoft.Network/networkSecurityGroups>)) {
       synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 22) AND ge(val(dportMax), 22)){
         violation as uid
       }
@@ -1904,7 +1904,7 @@ coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Network_dg_networkSecurityGroups' => []
+    'Microsoft.Network/networkSecurityGroups' => []
   })
 end
 
@@ -1934,7 +1934,7 @@ coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
       sAddrMin as source_cidr_range_min
       sAddrMax as source_cidr_range_max
     }
-    var(func:has(Microsoft.Network_dg_networkSecurityGroups)) {
+    var(func:has(<Microsoft.Network/networkSecurityGroups>)) {
       synthesises @filter(eq(val(proto), "TCP") AND eq(val(sAddrMin),0) AND eq(val(sAddrMax),4294967295) AND le(val(dportMin), 1433) AND ge(val(dportMax), 1433)){
         violation as uid
       }
@@ -1945,7 +1945,7 @@ coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Network_dg_networkSecurityGroups' => []
+    'Microsoft.Network/networkSecurityGroups' => []
   })
 end
 
@@ -1972,17 +1972,17 @@ coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-
       flowLogs as is_audit_enabled
       retentionOk as retention_days
     }
-    okNSG as var(func:has(Microsoft.Network_dg_networkSecurityGroups)) @filter(eq(val(flowLogs), true)){
+    okNSG as var(func:has(<Microsoft.Network/networkSecurityGroups>)) @filter(eq(val(flowLogs), true)){
       uid
     }
-    query(func:has(Microsoft.Network_dg_networkSecurityGroups)) @filter(NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
+    query(func:has(<Microsoft.Network/networkSecurityGroups>)) @filter(NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
       <%= default_predicates %>
       retention_days
     }
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Network_dg_networkSecurityGroups' => ['retention_days']
+    'Microsoft.Network/networkSecurityGroups' => ['retention_days']
   })
 end
 
@@ -2010,7 +2010,7 @@ coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
     }
     query(func:has(sub_policy_location_id)){
       <%= default_predicates %>
-      contains @filter(has(Microsoft.Network_dg_networkWatchers) AND eq(val(provisioned), "Succeeded")){
+      contains @filter(has(<Microsoft.Network/networkWatchers>) AND eq(val(provisioned), "Succeeded")){
         count(uid)
       }
     }
@@ -2018,7 +2018,7 @@ coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Network_dg_networkWatchers' => []
+    'Microsoft.Network/networkWatchers' => []
   })
 end
 
@@ -2041,7 +2041,7 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    vms as var(func:has(vm_hardware_profile)) @cascade{
+    vms as var(func:has(<Microsoft.Compute/virtualMachines>)) @cascade{
       hasAgent as is_os_agent_enabled
     }
     query(func:uid(vms)) @filter(NOT eq(val(hasAgent), true) OR NOT uid(hasAgent)){
@@ -2050,7 +2050,7 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Compute_dg_virtualMachines' => ['is_os_agent_enabled']
+    'Microsoft.Compute/virtualMachines' => ['is_os_agent_enabled']
   })
 end
 
@@ -2082,7 +2082,7 @@ coreo_aws_rule "azure-security-os-disks-encrypted" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Compute_dg_virtualMachines' => ['is_os_encryption_enabled']
+    'Microsoft.Compute/virtualMachines' => ['is_os_encryption_enabled']
   })
 end
 
@@ -2105,7 +2105,7 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
   # meta_scoring_status "full"
   meta_rule_query <<~QUERY
   {
-    vms as var(func:has(Microsoft.Compute_dg_virtualMachines)) @cascade{
+    vms as var(func:has(<Microsoft.Compute/virtualMachines>)) @cascade{
       encrypted as disk_encryption
     }
     query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
@@ -2114,7 +2114,7 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
   }
   QUERY
   meta_rule_node_triggers({
-    'Microsoft.Compute_dg_virtualMachines' => ['disk_encryption']
+    'Microsoft.Compute/virtualMachines' => ['disk_encryption']
   })
 end
 
