@@ -1146,7 +1146,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name Microsoft.Sql/servers/databases
+      name
     }
   }
   QUERY
@@ -1179,7 +1179,7 @@ coreo_aws_rule "azure-sql-data-encryption-on" do
     }
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
-      name Microsoft.Sql/servers/databases
+      name
     }
   }
   QUERY
@@ -1212,7 +1212,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
     }
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
-      name Microsoft.Sql/servers/databases
+      name 
     }
   }
   QUERY
