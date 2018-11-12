@@ -1025,7 +1025,7 @@ end
 
 coreo_aws_rule "azure-sql-threat-detection-on-database" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-threat-detection-on-database.html"
   display_name "Threat Detection On"
   description "SQL Threat Detection provides a new layer of security, which enables customers to detect and respond to potential threats as they occur by providing security alerts on anomalous activities. Users will receive an alert upon suspicious database activities, potential vulnerabilities, and SQL injection attacks, as well as anomalous database access patterns."
@@ -1058,7 +1058,7 @@ end
 
 coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-threat-detection-types-all-database.html"
   display_name "Threat Detection Types All"
   description "Enabling all threat detection types, you are protected against SQL injection, database vulnerabilities and any other anomalous activities."
@@ -1391,7 +1391,7 @@ end
 
 coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
   action :define
-  service "Microsoft.Security"
+  service "Microsoft.KeyVault"
   link "https://kb.securestate.vmware.com/azure-key-vault-logging-for-keyvault-enabled.html"
   display_name "Logging For Keyvault Enabled"
   description "Monitoring how and when your key vaults are accessed, and by whom enables an audit trail of interactions with your secrets, keys and certificates managed by Azure Keyvault. You can do this by enabling logging for Key Vault, which saves information in an Azure storage account that you provide. This creates a new container named insights-logs-auditevent automatically for your specified storage account, and you can use this same storage account for collecting logs for multiple key vaults."
@@ -1828,7 +1828,7 @@ end
 
 coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
   action :define
-  service "Microsoft.Networking"
+  service "Microsoft.Network"
   link "https://kb.securestate.vmware.com/azure-security-rdp-access-restricted-from-internet.html"
   display_name "Rdp Access Restricted From Internet"
   description "The potential security problem with using RDP over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
@@ -1869,7 +1869,7 @@ end
 
 coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
   action :define
-  service "Microsoft.Networking"
+  service "Microsoft.Network"
   link "https://kb.securestate.vmware.com/azure-security-ssh-access-restricted-from-internet.html"
   display_name "Ssh Access Restricted From Internet"
   description "The potential security problem with using SSH over the Internet is that attackers can use various brute force techniques to gain access to Azure Virtual Machines. Once the attackers gain access, they can use your virtual machine as a launch point for compromising other machines on your Azure Virtual Network or even attack networked devices outside of Azure."
@@ -1910,7 +1910,7 @@ end
 
 coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
   action :define
-  service "Microsoft.Networking"
+  service "Microsoft.Network"
   link "https://kb.securestate.vmware.com/azure-sql-sql-server-access-restricted-from-internet.html"
   display_name "Sql Server Access Restricted From Internet"
   description "SQL Database includes a firewall to block access to unauthorized connections. After creating your SQL Database, you can specify which IP addresses can connect to your database. You can then define more granular IP addresses by referencing the range of addresses available from specific datacenters."
@@ -1951,7 +1951,7 @@ end
 
 coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days" do
   action :define
-  service "Microsoft.Networking"
+  service "Microsoft.Network"
   link "https://kb.securestate.vmware.com/azure-network-watcher-network-security-group-flow-log-retention-greater-than-90-days.html"
   display_name "Network Security Group Flow Log Retention Greater Than 90 Days"
   description "Flow logs enable capturing information about IP traffic flowing in and out of your Network Security Groups. Logs can be used to check for anomalies and give insight into suspected breaches."
@@ -1988,7 +1988,7 @@ end
 
 coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
   action :define
-  service "Microsoft.Networking"
+  service "Microsoft.Network"
   link "https://kb.securestate.vmware.com/azure-network-watcher-network-watcher-enabled.html"
   display_name "Network Watcher Enabled"
   description "Network diagnostic and visualization tools available with Network Watcher help you understand, diagnose, and gain insights to your network in Azure."
