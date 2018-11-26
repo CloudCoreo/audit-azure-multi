@@ -2044,7 +2044,7 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
     vms as var(func:has(<Microsoft.Compute/virtualMachines>)) @cascade{
       hasAgent as is_os_agent_enabled
     }
-    query(func:uid(vms)) @filter(NOT eq(val(hasAgent), true) OR NOT uid(hasAgent)){
+    query(func:uid(vms)) @filter(NOT eq(val(hasAgent), true)){
       <%= default_predicates %>
     }
   }
@@ -2076,7 +2076,7 @@ coreo_aws_rule "azure-security-os-disks-encrypted" do
     vms as var(func:has(vm_hardware_profile)) @cascade{
       encrypted as is_os_encryption_enabled
     }
-    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true)){
       <%= default_predicates %>
     }
   }
@@ -2108,7 +2108,7 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
     vms as var(func:has(<Microsoft.Compute/virtualMachines>)) @cascade{
       encrypted as disk_encryption
     }
-    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true)){
       <%= default_predicates %>
     }
   }
