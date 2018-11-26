@@ -727,7 +727,7 @@ end
 
 coreo_aws_rule "azure-sql-auditing-on-server" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-auditing-on-server.html"
   display_name "Auditing On"
   description "The Azure platform allows you to create a SQL server as a service. Enabling auditing at the server level ensures that all existing and newly created databases on the SQL server instance are audited. Auditing tracks database events and writes them to an audit log in your Azure storage account. It also helps you to maintain regulatory compliance, understand database activity, and gain insight into discrepancies and anomalies that could indicate business concerns or suspected security violations."
@@ -760,7 +760,7 @@ end
 
 coreo_aws_rule "azure-sql-threat-detection-on-server" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-threat-detection-on-server.html"
   display_name "Threat Detection On"
   description "SQL Threat Detection provides a new layer of security, which enables customers to detect and respond to potential threats as they occur by providing security alerts on anomalous activities. Users will receive an alert upon suspicious database activities, potential vulnerabilities, and SQL injection attacks, as well as anomalous database access patterns. SQL Threat Detection alerts provide details of suspicious activity and recommend action on how to investigate and mitigate the threat."
@@ -793,7 +793,7 @@ end
 
 coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-threat-detection-types-all-server.html"
   display_name "Threat Detection Types All"
   description "Enabling all threat detection types, you are protected against SQL injection, database vulnerabilities and any other anomalous activities."
@@ -826,7 +826,7 @@ end
 
 coreo_aws_rule "azure-sql-send-alerts-set-server" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-send-alerts-set-server.html"
   display_name "Send Alerts Set"
   description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
@@ -860,7 +860,7 @@ end
 
 coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-email-service-co-administrators-enabled-server.html"
   display_name "Email Service Co Administrators Enabled"
   description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
@@ -893,7 +893,7 @@ end
 
 coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-auditing-retention-greater-than-90-days-server.html"
   display_name "Auditing Retention Greater Than 90 Days"
   description "Audit Logs can be used to check for anomalies and give insight into suspected breaches or misuse of information and access."
@@ -926,7 +926,7 @@ end
 
 coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-threat-detection-retention-greater-than-90-days-server.html"
   display_name "Threat Detection Retention Greater Than 90 Days"
   description "Threat Detection Logs can be used to check for suspected attack attempts and breaches on a SQL server with known attack signatures."
@@ -959,7 +959,7 @@ end
 
 coreo_aws_rule "azure-sql-active-directory-admin-configured" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-active-directory-admin-configured.html"
   display_name "Active Directory Admin Configured"
   description "Azure Active Directory authentication is a mechanism of connecting to Microsoft Azure SQL Database and SQL Data Warehouse by using identities in Azure Active Directory (Azure AD). With Azure AD authentication, you can centrally manage the identities of database users and other Microsoft services in one central location."
@@ -992,7 +992,7 @@ end
 
 coreo_aws_rule "azure-sql-auditing-on-database" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-auditing-on-database.html"
   display_name "Auditing On"
   description "Auditing tracks database events and writes them to an audit log in your Azure storage account. It also helps you to maintain regulatory compliance, understand database activity, and gain insight into discrepancies and anomalies that could indicate business concerns or suspected security violations."
@@ -1090,7 +1090,7 @@ end
 
 coreo_aws_rule "azure-sql-send-alerts-set-database" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-send-alerts-set-database.html"
   display_name "Send Alerts Set"
   description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
@@ -1124,7 +1124,7 @@ end
 
 coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-email-service-co-administrators-enabled-database.html"
   display_name "Email Service Co Administrators Enabled"
   description "Providing the email address to receive alerts ensures that any detection of anomalous activities is reported as soon as possible, making it more likely to mitigate any potential risk sooner."
@@ -1157,7 +1157,7 @@ end
 
 coreo_aws_rule "azure-sql-data-encryption-on" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-data-encryption-on.html"
   display_name "Data Encryption On"
   description "Azure SQL Database transparent data encryption helps protect against the threat of malicious activity by performing real-time encryption and decryption of the database, associated backups, and transaction log files at rest without requiring changes to the application."
@@ -1190,7 +1190,7 @@ end
 
 coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-auditing-retention-greater-than-90-days-database.html"
   display_name "Auditing Retention Greater Than 90 Days"
   description "Audit Logs can be used to check for anomalies and give insight into suspected breaches or misuse of information and access."
@@ -1223,7 +1223,7 @@ end
 
 coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-database" do
   action :define
-  service "Microsoft.Databases"
+  service "Microsoft.Sql"
   link "https://kb.securestate.vmware.com/azure-sql-threat-detection-retention-greater-than-90-days-database.html"
   display_name "Threat Detection Retention Greater Than 90 Days"
   description "Threat Logs can be used to check for anomalies and give insight into suspected breaches or misuse of information and access."
