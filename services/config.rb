@@ -2008,11 +2008,13 @@ coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
     var(func:has(provisioning_status)) @cascade{
       provisioned as provisioning_status
     }
-    query(func:has(sub_policy_location_id)){
-      <%= default_predicates %>
+    good_uids as var(func:has(Microsoft.Subscription)){
       contains @filter(has(<Microsoft.Network/networkWatchers>) AND eq(val(provisioned), "Succeeded")){
         count(uid)
       }
+    }
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(good_uids)) {
+      <%= default_predicates %>
     }
     ##TODO ADD ERB TEMPLATE TO CHECK IF count is < 27 (total locations from azure)
   }
