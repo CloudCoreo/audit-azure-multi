@@ -2008,11 +2008,13 @@ coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
     var(func:has(provisioning_status)) @cascade{
       provisioned as provisioning_status
     }
-    query(func:has(sub_policy_location_id)){
-      <%= default_predicates %>
+    good_uids as var(func:has(Microsoft.Subscription)){
       contains @filter(has(<Microsoft.Network/networkWatchers>) AND eq(val(provisioned), "Succeeded")){
         count(uid)
       }
+    }
+    query(func:has(Microsoft.Subscription)) @filter(NOT uid(good_uids)) {
+      <%= default_predicates %>
     }
     ##TODO ADD ERB TEMPLATE TO CHECK IF count is < 27 (total locations from azure)
   }
@@ -2044,7 +2046,7 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
     vms as var(func:has(<Microsoft.Compute/virtualMachines>)) @cascade{
       hasAgent as is_os_agent_enabled
     }
-    query(func:uid(vms)) @filter(NOT eq(val(hasAgent), true) OR NOT uid(hasAgent)){
+    query(func:uid(vms)) @filter(NOT eq(val(hasAgent), true)){
       <%= default_predicates %>
     }
   }
@@ -2076,7 +2078,7 @@ coreo_aws_rule "azure-security-os-disks-encrypted" do
     vms as var(func:has(vm_hardware_profile)) @cascade{
       encrypted as is_os_encryption_enabled
     }
-    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true)){
       <%= default_predicates %>
     }
   }
@@ -2108,7 +2110,7 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
     vms as var(func:has(<Microsoft.Compute/virtualMachines>)) @cascade{
       encrypted as disk_encryption
     }
-    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true) OR NOT uid(encrypted)){
+    query(func:uid(vms)) @filter(NOT eq(val(encrypted), true)){
       <%= default_predicates %>
     }
   }
