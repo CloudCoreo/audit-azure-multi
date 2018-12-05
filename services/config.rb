@@ -15,6 +15,11 @@ coreo_aws_rule "azure-security-monitoring-agent-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0", "requirement" => "2.02" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -48,6 +53,11 @@ coreo_aws_rule "azure-security-system-update-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.03" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -81,6 +91,11 @@ coreo_aws_rule "azure-security-security-configuration-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.04" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -114,6 +129,11 @@ coreo_aws_rule "azure-security-endpoint-protection-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.05" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -147,6 +167,11 @@ coreo_aws_rule "azure-security-disk-encrpytion-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.06" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -180,6 +205,11 @@ coreo_aws_rule "azure-security-network-security-groups-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.07" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -213,6 +243,11 @@ coreo_aws_rule "azure-security-web-application-firewall-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.08" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -246,6 +281,11 @@ coreo_aws_rule "azure-security-next-generation-firewall-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.09" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -279,6 +319,11 @@ coreo_aws_rule "azure-security-vulnerability-assessment-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.1" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -312,6 +357,11 @@ coreo_aws_rule "azure-security-storage-encryption-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.11" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -345,6 +395,11 @@ coreo_aws_rule "azure-security-jit-network-access-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.12" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -378,6 +433,11 @@ coreo_aws_rule "azure-security-adaptive-application-controls-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.13" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -411,6 +471,11 @@ coreo_aws_rule "azure-security-sql-auditing-threat-detection-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.14" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -444,6 +509,11 @@ coreo_aws_rule "azure-security-sql-encryption-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.15" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -477,6 +547,11 @@ coreo_aws_rule "azure-security-security-contact-emails-set" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.16" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     good_uids as var(func:has(<Microsoft.Security/policies>)) @cascade{
@@ -511,6 +586,11 @@ coreo_aws_rule "azure-security-security-contact-phone-num-set" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.17" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -544,6 +624,11 @@ coreo_aws_rule "azure-security-send-email-alerts-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.18" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -577,6 +662,11 @@ coreo_aws_rule "azure-security-send-email-to-subscription-owners-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "2.19" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Security/policies>)) @cascade{
@@ -610,6 +700,11 @@ coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "3.1" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Storage/storageAccounts>)) @cascade{
@@ -643,6 +738,11 @@ coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "3.2" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Storage/storageAccounts>)) @cascade{
@@ -676,6 +776,11 @@ coreo_aws_rule "azure-storage-storage-encryption-enabled-for-file-service" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "3.6" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Storage/storageAccounts>)) @cascade{
@@ -709,6 +814,11 @@ coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-container
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "3.7" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Storage/storageAccounts>)) @cascade{
@@ -742,6 +852,11 @@ coreo_aws_rule "azure-sql-auditing-on-server" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.1.1" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
@@ -775,6 +890,11 @@ coreo_aws_rule "azure-sql-threat-detection-on-server" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.1.2" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
@@ -808,6 +928,11 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.1.3" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers>)) {}
@@ -841,6 +966,11 @@ coreo_aws_rule "azure-sql-send-alerts-set-server" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.1.4" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     good_uids as var(func:has(<Microsoft.Sql/servers>)) @cascade{
@@ -875,6 +1005,11 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.1.5" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
@@ -908,6 +1043,11 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.1.6" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
@@ -941,6 +1081,11 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.1.7" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
@@ -974,6 +1119,11 @@ coreo_aws_rule "azure-sql-active-directory-admin-configured" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.1.8" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers>)) @cascade{
@@ -1007,6 +1157,11 @@ coreo_aws_rule "azure-sql-auditing-on-database" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.2.1" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
@@ -1040,6 +1195,11 @@ coreo_aws_rule "azure-sql-threat-detection-on-database" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.2.2" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
@@ -1073,6 +1233,11 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.2.3" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     query(func:has(<Microsoft.Sql/servers/databases>)) @cascade{
@@ -1105,6 +1270,11 @@ coreo_aws_rule "azure-sql-send-alerts-set-database" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.2.4" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     good_uids as var(func:has(<Microsoft.Sql/servers/databases>)) @cascade{
@@ -1139,6 +1309,11 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.2.5" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
@@ -1172,6 +1347,11 @@ coreo_aws_rule "azure-sql-data-encryption-on" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.2.6" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
@@ -1205,6 +1385,11 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.2.7" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
@@ -1238,6 +1423,11 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-databa
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "4.2.8" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     blob_type as var(func: has(<Microsoft.Sql/servers/databases>)) @cascade{
@@ -1271,6 +1461,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-ser
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.10" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {   
     var(func:has(value)) {
@@ -1316,6 +1511,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewa
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.11" }
+    ]
+  )
   meta_rule_query <<~QUERY
   { 
     var(func:has(value)) {
@@ -1361,6 +1561,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" 
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.12" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(value)) {
@@ -1406,6 +1611,11 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.13" }
+    ]
+  )
   meta_rule_query <<~QUERY
 {
     var(func:has(is_retention_enabled)){
@@ -1453,6 +1663,11 @@ coreo_aws_rule "azure-monitoring-log-profile-exists" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.1" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(Microsoft.Subscription)){
@@ -1489,6 +1704,11 @@ coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.2" }
+    ]
+  )
   meta_rule_query <<~QUERY
 {
   var(func:has(retention_days)){
@@ -1528,6 +1748,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment"
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.3" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(value)){
@@ -1573,6 +1798,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.4" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(value)){
@@ -1618,6 +1848,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.5" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(value)){
@@ -1663,6 +1898,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.6" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(value)){
@@ -1708,6 +1948,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.7" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(value)){
@@ -1753,6 +1998,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-securit
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.8" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(value)){
@@ -1798,6 +2048,11 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "5.9" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(value)){
@@ -1843,6 +2098,11 @@ coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "6.1" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(protocol)) @cascade{
@@ -1884,6 +2144,11 @@ coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "6.2" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(protocol)) @cascade{
@@ -1925,6 +2190,11 @@ coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "6.3" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(protocol)) @cascade{
@@ -1966,6 +2236,11 @@ coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-
   meta_cis_scored "true"
   meta_cis_level "2"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "6.4" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(is_audit_enabled)) @cascade{
@@ -2003,6 +2278,11 @@ coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "6.5" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(provisioning_status)) @cascade{
@@ -2041,6 +2321,11 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "7.1" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     vms as var(func:has(<Microsoft.Compute/virtualMachines>)) @cascade{
@@ -2073,6 +2358,11 @@ coreo_aws_rule "azure-security-os-disks-encrypted" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "7.2" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     vms as var(func:has(vm_hardware_profile)) @cascade{
@@ -2105,6 +2395,11 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "7.3" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     vms as var(func:has(<Microsoft.Compute/virtualMachines>)) @cascade{
@@ -2137,6 +2432,11 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "8.1" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(vault_uri)) @cascade{
@@ -2171,6 +2471,11 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
   meta_cis_scored "true"
   meta_cis_level "1"
   # meta_scoring_status "full"
+  meta_compliance (
+    [
+      { "name" => "cis-azure-foundations-benchmark", "version" => "1.0.0" , "requirement" => "8.2" }
+    ]
+  )
   meta_rule_query <<~QUERY
   {
     var(func:has(vault_uri)) @cascade{
