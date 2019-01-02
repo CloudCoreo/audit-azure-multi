@@ -1623,7 +1623,7 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
     }
     subs as var(func:has(Microsoft.Subscription)) { }
     kvs as var(func: has(<Microsoft.KeyVault/vaults>)){ }
-    vaults as var(func: has(microsoft.keyvault)){ }
+    vaults as var(func: has(Microsoft.KeyVault)){ }
     retention as var(func: has(is_retention_enabled)) @filter(ge(val(days), 180)) { }  
     var(func:uid(subs)) @cascade{
       contains @filter(uid(kvs)){
