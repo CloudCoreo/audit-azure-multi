@@ -36,7 +36,7 @@ coreo_aws_rule "azure-security-monitoring-agent-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -85,7 +85,7 @@ coreo_aws_rule "azure-security-system-update-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -134,7 +134,7 @@ coreo_aws_rule "azure-security-security-configuration-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -183,7 +183,7 @@ coreo_aws_rule "azure-security-endpoint-protection-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -232,7 +232,7 @@ coreo_aws_rule "azure-security-disk-encrpytion-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -281,7 +281,7 @@ coreo_aws_rule "azure-security-network-security-groups-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -330,7 +330,7 @@ coreo_aws_rule "azure-security-web-application-firewall-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -379,7 +379,7 @@ coreo_aws_rule "azure-security-next-generation-firewall-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -428,7 +428,7 @@ coreo_aws_rule "azure-security-vulnerability-assessment-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -477,7 +477,7 @@ coreo_aws_rule "azure-security-storage-encryption-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -526,7 +526,7 @@ coreo_aws_rule "azure-security-jit-network-access-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -575,7 +575,7 @@ coreo_aws_rule "azure-security-adaptive-application-controls-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -624,7 +624,7 @@ coreo_aws_rule "azure-security-sql-auditing-threat-detection-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -673,7 +673,7 @@ coreo_aws_rule "azure-security-sql-encryption-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -723,7 +723,7 @@ coreo_aws_rule "azure-security-security-contact-emails-set" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -772,7 +772,7 @@ coreo_aws_rule "azure-security-security-contact-phone-num-set" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -821,7 +821,7 @@ coreo_aws_rule "azure-security-send-email-alerts-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -870,7 +870,7 @@ coreo_aws_rule "azure-security-send-email-to-subscription-owners-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -919,7 +919,7 @@ coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -968,7 +968,7 @@ coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1017,7 +1017,7 @@ coreo_aws_rule "azure-storage-storage-encryption-enabled-for-file-service" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1066,7 +1066,7 @@ coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-container
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1115,7 +1115,7 @@ coreo_aws_rule "azure-sql-auditing-on-server" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1164,7 +1164,7 @@ coreo_aws_rule "azure-sql-threat-detection-on-server" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1213,7 +1213,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1263,7 +1263,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-server" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1312,7 +1312,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1361,7 +1361,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1410,7 +1410,7 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1459,7 +1459,7 @@ coreo_aws_rule "azure-sql-active-directory-admin-configured" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1508,7 +1508,7 @@ coreo_aws_rule "azure-sql-auditing-on-database" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1557,7 +1557,7 @@ coreo_aws_rule "azure-sql-threat-detection-on-database" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1605,7 +1605,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1655,7 +1655,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-database" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1704,7 +1704,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1753,7 +1753,7 @@ coreo_aws_rule "azure-sql-data-encryption-on" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1802,7 +1802,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1851,7 +1851,7 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-databa
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1912,7 +1912,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-ser
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -1973,7 +1973,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewa
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2034,7 +2034,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" 
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2097,7 +2097,7 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2149,7 +2149,7 @@ coreo_aws_rule "azure-monitoring-log-profile-exists" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2204,7 +2204,7 @@ coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2265,7 +2265,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment"
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2326,7 +2326,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2387,7 +2387,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2448,7 +2448,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2509,7 +2509,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2570,7 +2570,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-securit
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2631,7 +2631,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2688,7 +2688,7 @@ coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2745,7 +2745,7 @@ coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2802,7 +2802,7 @@ coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2855,7 +2855,7 @@ coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2909,7 +2909,7 @@ coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -2957,7 +2957,7 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -3005,7 +3005,7 @@ coreo_aws_rule "azure-security-os-disks-encrypted" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -3053,7 +3053,7 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -3103,7 +3103,7 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
@@ -3154,7 +3154,7 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
   	<%= default_predicates %>
   	relates_to {
   		<%= default_predicates %>
-  		relates_to {
+  		relates_to @filter(NOT uid(<%= violation_uid %>)){
   			<%= default_predicates %>
   		}
   	}
