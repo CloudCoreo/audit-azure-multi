@@ -2439,12 +2439,12 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
   )
   meta_rule_query <<~QUERY
   {
-    var(func:has(vault_uri)) @cascade{
-      contains @filter(has(Microsoft.KeyVault)){
+    var(func:has(<%= filter['vault_uri'] %>)) @cascade{
+      contains @filter(has(<%= filter['Microsoft.KeyVault'] %>)){
         expires as validity_period_end_datetime
       }
     }
-    query(func:has(Microsoft.KeyVault)) @filter(NOT uid(expires)){
+    query(func:has(<%= filter['Microsoft.KeyVault'] %>)) @filter(NOT uid(expires)){
       <%= default_predicates %>
     }
   }
