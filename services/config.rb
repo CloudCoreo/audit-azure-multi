@@ -31,6 +31,19 @@ coreo_aws_rule "azure-security-monitoring-agent-on" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Security/policies' => ['is_os_agent_enabled']
   })
@@ -66,6 +79,19 @@ coreo_aws_rule "azure-security-system-update-on" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -107,6 +133,19 @@ coreo_aws_rule "azure-security-security-configuration-on" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Security/policies' => ['security_baselines']
   })
@@ -142,6 +181,19 @@ coreo_aws_rule "azure-security-endpoint-protection-on" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -183,6 +235,19 @@ coreo_aws_rule "azure-security-disk-encrpytion-on" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Security/policies' => ['disk_encryption']
   })
@@ -218,6 +283,19 @@ coreo_aws_rule "azure-security-network-security-groups-on" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -259,6 +337,19 @@ coreo_aws_rule "azure-security-web-application-firewall-on" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Security/policies' => ['provision_waf']
   })
@@ -294,6 +385,19 @@ coreo_aws_rule "azure-security-next-generation-firewall-on" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -335,6 +439,19 @@ coreo_aws_rule "azure-security-vulnerability-assessment-on" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Security/policies' => ['vulnerability_assessments']
   })
@@ -370,6 +487,19 @@ coreo_aws_rule "azure-security-storage-encryption-on" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -411,6 +541,19 @@ coreo_aws_rule "azure-security-jit-network-access-on" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Security/policies' => ['jit_network_access']
   })
@@ -446,6 +589,19 @@ coreo_aws_rule "azure-security-adaptive-application-controls-on" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -487,6 +643,19 @@ coreo_aws_rule "azure-security-sql-auditing-threat-detection-on" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Security/policies' => ['sql_auditing']
   })
@@ -522,6 +691,19 @@ coreo_aws_rule "azure-security-sql-encryption-on" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -564,6 +746,19 @@ coreo_aws_rule "azure-security-security-contact-emails-set" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Security/policies' => []
   })
@@ -599,6 +794,19 @@ coreo_aws_rule "azure-security-security-contact-phone-num-set" do
     query(func:uid(blob_type)) @filter(eq(val(property), "")) {
       <%= default_predicates %>
       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -640,6 +848,19 @@ coreo_aws_rule "azure-security-send-email-alerts-on" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Security/policies' => ['send_notifications']
   })
@@ -675,6 +896,19 @@ coreo_aws_rule "azure-security-send-email-to-subscription-owners-on" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       is_os_update_enabled sql_encryption sql_auditing notify_admins send_notifications os_mac_provisioning vulnerability_assessments blob_encryption_enabled endpoint_protection enable_ngfw disk_encryption is_os_agent_enabled network_security_group jit_network_access security_baselines
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -716,6 +950,19 @@ coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Storage/storageAccounts' => ['https_only']
   })
@@ -751,6 +998,19 @@ coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       name file_encryption_enabled contains  storage_account blob_encryption_enabled https_only resource_group
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -792,6 +1052,19 @@ coreo_aws_rule "azure-storage-storage-encryption-enabled-for-file-service" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Storage/storageAccounts' => ['file_encryption_enabled']
   })
@@ -827,6 +1100,19 @@ coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-container
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       name file_encryption_enabled contains storage_account blob_encryption_enabled https_only resource_group
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -868,6 +1154,19 @@ coreo_aws_rule "azure-sql-auditing-on-server" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Sql/servers' => ['is_audit_enabled']
   })
@@ -906,6 +1205,19 @@ coreo_aws_rule "azure-sql-threat-detection-on-server" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Sql/servers' => ['is_threat_detection_enabled']
   })
@@ -940,6 +1252,19 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
       <%= default_predicates %>
       synthesises {
         <%= default_predicates %>
+      }
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
       }
     }
   }
@@ -983,6 +1308,19 @@ coreo_aws_rule "azure-sql-send-alerts-set-server" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Sql/servers' => []
   })
@@ -1018,6 +1356,19 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       name notify_admins contains audit_retention_days threat_retention_days is_audit_enabled
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -1059,6 +1410,19 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Sql/servers' => ['audit_retention_days']
   })
@@ -1094,6 +1458,19 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
       name notify_admins contains audit_retention_days threat_retention_days is_audit_enabled
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -1135,6 +1512,19 @@ coreo_aws_rule "azure-sql-active-directory-admin-configured" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Sql/servers' => ['is_audit_enabled']
   })
@@ -1170,6 +1560,19 @@ coreo_aws_rule "azure-sql-auditing-on-database" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       name
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -1211,6 +1614,19 @@ coreo_aws_rule "azure-sql-threat-detection-on-database" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Sql/servers/databases' => ['is_threat_detection_enabled']
   })
@@ -1244,6 +1660,19 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
       <%= default_predicates %>
       synthesises {
         <%= default_predicates %>
+      }
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
       }
     }
   }
@@ -1287,6 +1716,19 @@ coreo_aws_rule "azure-sql-send-alerts-set-database" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Sql/servers/database' => []
   })
@@ -1322,6 +1764,19 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
     query(func:uid(blob_type)) @filter(NOT eq(val(property), true)) {
       <%= default_predicates %>
       name
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -1363,6 +1818,19 @@ coreo_aws_rule "azure-sql-data-encryption-on" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Sql/servers/databases' => ['sql_encryption']
   })
@@ -1401,6 +1869,19 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Sql/servers/databases' => ['audit_retention_days']
   })
@@ -1436,6 +1917,19 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-databa
     query(func:uid(blob_type)) @filter(lt(val(property), 90)) {
       <%= default_predicates %>
       name
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -1489,6 +1983,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-ser
   }
 }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Insights/ActivityLogAlerts' => []
   })
@@ -1539,6 +2046,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewa
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Insights/ActivityLogAlerts' => []
   })
@@ -1586,6 +2106,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" 
     }
     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
       <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -1641,6 +2174,19 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
     }
 }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.KeyVault/vaults' => ['retention_days']
   })
@@ -1679,6 +2225,19 @@ coreo_aws_rule "azure-monitoring-log-profile-exists" do
     }
     query(func:has(Microsoft.Subscription)) @filter(NOT uid(goodSub)){
       <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -1725,6 +2284,19 @@ coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
     <%= default_predicates %>
   }
 }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
   QUERY
   meta_rule_node_triggers({
     'microsoft.insights' => []
@@ -1773,6 +2345,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment"
     }
     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
       <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -1826,6 +2411,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Insights/ActivityLogAlerts' => []
   })
@@ -1873,6 +2471,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
     }
     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
       <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -1926,6 +2537,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Insights/ActivityLogAlerts' => []
   })
@@ -1973,6 +2597,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
     }
     query(func:has(Microsoft.Subscription)) @filter(NOT uid(happyTarget)){
       <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -2026,6 +2663,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-securit
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Insights/ActivityLogAlerts' => []
   })
@@ -2076,6 +2726,19 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Insights/ActivityLogAlerts' => []
   })
@@ -2119,6 +2782,19 @@ coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
     }
     query(func:uid(violation)){
       <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -2168,6 +2844,19 @@ coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Network/networkSecurityGroups' => []
   })
@@ -2214,6 +2903,19 @@ coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Network/networkSecurityGroups' => []
   })
@@ -2253,6 +2955,19 @@ coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-
     query(func:has(<Microsoft.Network/networkSecurityGroups>)) @filter(NOT uid(okNSG) AND NOT ge(val(retentionOk),90) ){
       <%= default_predicates %>
       retention_days
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -2299,6 +3014,19 @@ coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
     ##TODO ADD ERB TEMPLATE TO CHECK IF count is < 27 (total locations from azure)
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Network/networkWatchers' => []
   })
@@ -2333,6 +3061,19 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
     }
     query(func:uid(vms)) @filter(NOT eq(val(hasAgent), true)){
       <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -2373,6 +3114,19 @@ coreo_aws_rule "azure-security-os-disks-encrypted" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
     'Microsoft.Compute/virtualMachines' => ['is_os_encryption_enabled']
   })
@@ -2407,6 +3161,19 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
     }
     query(func:uid(vms)) @filter(NOT eq(val(encrypted), true)){
       <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
@@ -2450,6 +3217,19 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
     }
   }
   QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
+    }
+  }
+  QUERY
   meta_rule_node_triggers({
    'Microsoft.KeyVault' => []
   })
@@ -2487,6 +3267,19 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
     }
     query(func:uid(vaultSecret)) @filter(NOT uid(expires)){
       <%= default_predicates %>
+    }
+  }
+  QUERY
+  meta_rule_visualize <<~QUERY
+  {
+    visualize(func: uid(<%= violation_uid %>)) {
+      <%= default_predicates %>
+      relates_to {
+        <%= default_predicates %>
+        relates_to @filter(NOT uid(<%= violation_uid %>)) {
+          <%= default_predicates %>
+        }
+      }
     }
   }
   QUERY
