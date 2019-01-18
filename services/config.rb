@@ -2151,7 +2151,7 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
   )
   meta_rule_query <<~QUERY
 {
-    var(func:has(is_retention_enabled)){
+    var(func:has(is_retention_enabled)) @cascade{
       days as retention_days
     }
     subs as var(func:has(Microsoft.Subscription)) { }
@@ -2169,7 +2169,7 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
         }
       }
     }
-    query(func:has(Microsoft.Subscription)) @filter(not uid(happySub)){
+    query(func:uid(subs)) @filter(NOT uid(happySub)){
        <%= default_predicates %>
     }
 }
