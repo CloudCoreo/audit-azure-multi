@@ -3287,3 +3287,75 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
    'Microsoft.KeyVault' => []
   })
 end
+
+coreo_aws_rule "azure-vm-count-native-objects" do
+  action :define
+  service :Microsoft_Compute
+  category "Inventory"
+  link "https://kb.securestate.vmware.com/azure-all-inventory.html"
+  display_name "Count Native Objects for Azure Compute VMs"
+  suggested_action "None"
+  description "Count all objects as discovered natively and exclude generated intermediary objects"
+  level "Informational"
+  objectives [""]
+  audit_objects [""]
+  operators [""]
+  raise_when [true]
+  id_map "static.no_op"
+  meta_rule_query <<~QUERY
+  {
+    query(func: has(<Microsoft.Compute/virtualMachines>)) @groupby(type, cc_location, tenant_id, cc_cloud, cc_cloud_native) {
+      object_id: count(uid)
+    }
+  }
+  QUERY
+  meta_rule_node_triggers ({})
+end
+
+coreo_aws_rule "azure-storage-count-native-objects" do
+  action :define
+  service :Microsoft_Storage
+  category "Inventory"
+  link "https://kb.securestate.vmware.com/azure-all-inventory.html"
+  display_name "Count Native Objects for Azure Storage"
+  suggested_action "None"
+  description "Count all objects as discovered natively and exclude generated intermediary objects"
+  level "Informational"
+  objectives [""]
+  audit_objects [""]
+  operators [""]
+  raise_when [true]
+  id_map "static.no_op"
+  meta_rule_query <<~QUERY
+  {
+    query(func: has(blob_container)) @groupby(type, cc_location, tenant_id, cc_cloud, cc_cloud_native) {
+      object_id: count(uid)
+    }
+  }
+  QUERY
+  meta_rule_node_triggers ({})
+end
+
+coreo_aws_rule "azure-sql-count-native-objects" do
+  action :define
+  service :Microsoft_Sql
+  category "Inventory"
+  link "https://kb.securestate.vmware.com/azure-all-inventory.html"
+  display_name "Count Native Objects for Azure Sql"
+  suggested_action "None"
+  description "Count all objects as discovered natively and exclude generated intermediary objects"
+  level "Informational"
+  objectives [""]
+  audit_objects [""]
+  operators [""]
+  raise_when [true]
+  id_map "static.no_op"
+  meta_rule_query <<~QUERY
+  {
+    query(func: has(<Microsoft.Sql/servers>)) @groupby(type, cc_location, tenant_id, cc_cloud, cc_cloud_native) {
+      object_id: count(uid)
+    }
+  }
+  QUERY
+  meta_rule_node_triggers ({})
+end
