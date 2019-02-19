@@ -33,7 +33,7 @@ coreo_aws_rule "azure-security-monitoring-agent-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -84,7 +84,7 @@ coreo_aws_rule "azure-security-system-update-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -135,7 +135,7 @@ coreo_aws_rule "azure-security-security-configuration-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -186,7 +186,7 @@ coreo_aws_rule "azure-security-endpoint-protection-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -237,7 +237,7 @@ coreo_aws_rule "azure-security-disk-encrpytion-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -288,7 +288,7 @@ coreo_aws_rule "azure-security-network-security-groups-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -339,7 +339,7 @@ coreo_aws_rule "azure-security-web-application-firewall-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -390,7 +390,7 @@ coreo_aws_rule "azure-security-next-generation-firewall-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -441,7 +441,7 @@ coreo_aws_rule "azure-security-vulnerability-assessment-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -492,7 +492,7 @@ coreo_aws_rule "azure-security-storage-encryption-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -543,7 +543,7 @@ coreo_aws_rule "azure-security-jit-network-access-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -594,7 +594,7 @@ coreo_aws_rule "azure-security-adaptive-application-controls-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -645,7 +645,7 @@ coreo_aws_rule "azure-security-sql-auditing-threat-detection-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -696,7 +696,7 @@ coreo_aws_rule "azure-security-sql-encryption-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -748,7 +748,7 @@ coreo_aws_rule "azure-security-security-contact-emails-set" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -799,7 +799,7 @@ coreo_aws_rule "azure-security-security-contact-phone-num-set" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -850,7 +850,7 @@ coreo_aws_rule "azure-security-send-email-alerts-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -901,7 +901,7 @@ coreo_aws_rule "azure-security-send-email-to-subscription-owners-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -952,7 +952,7 @@ coreo_aws_rule "azure-storage-secure-transfer-required-enabled" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1003,7 +1003,7 @@ coreo_aws_rule "azure-storage-storage-encryption-blob-service-enabled" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1054,7 +1054,7 @@ coreo_aws_rule "azure-storage-storage-encryption-enabled-for-file-service" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1105,7 +1105,7 @@ coreo_aws_rule "azure-storage-public-access-level-set-private-for-blob-container
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1156,7 +1156,7 @@ coreo_aws_rule "azure-sql-auditing-on-server" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1207,7 +1207,7 @@ coreo_aws_rule "azure-sql-threat-detection-on-server" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1258,7 +1258,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-server" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1310,7 +1310,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-server" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1361,7 +1361,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-server" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1412,7 +1412,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-server" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1463,7 +1463,7 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-server
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1514,7 +1514,7 @@ coreo_aws_rule "azure-sql-active-directory-admin-configured" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1565,7 +1565,7 @@ coreo_aws_rule "azure-sql-auditing-on-database" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1616,7 +1616,7 @@ coreo_aws_rule "azure-sql-threat-detection-on-database" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1666,7 +1666,7 @@ coreo_aws_rule "azure-sql-threat-detection-types-all-database" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1718,7 +1718,7 @@ coreo_aws_rule "azure-sql-send-alerts-set-database" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1769,7 +1769,7 @@ coreo_aws_rule "azure-sql-email-service-co-administrators-enabled-database" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1820,7 +1820,7 @@ coreo_aws_rule "azure-sql-data-encryption-on" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1871,7 +1871,7 @@ coreo_aws_rule "azure-sql-auditing-retention-greater-than-90-days-database" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1922,7 +1922,7 @@ coreo_aws_rule "azure-sql-threat-detection-retention-greater-than-90-days-databa
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -1985,7 +1985,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-sql-ser
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2048,7 +2048,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-sql-server-firewa
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2111,7 +2111,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-update-security-policy" 
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2151,7 +2151,7 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
   )
   meta_rule_query <<~QUERY
 {
-    var(func:has(is_retention_enabled)){
+    var(func:has(is_retention_enabled)) @cascade{
       days as retention_days
     }
     subs as var(func:has(Microsoft.Subscription)) { }
@@ -2169,14 +2169,14 @@ coreo_aws_rule "azure-key-vault-logging-for-keyvault-enabled" do
         }
       }
     }
-    query(func:has(Microsoft.Subscription)) @filter(not uid(happySub)){
+    query(func:uid(subs)) @filter(NOT uid(happySub)){
        <%= default_predicates %>
     }
 }
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2230,7 +2230,7 @@ coreo_aws_rule "azure-monitoring-log-profile-exists" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2287,7 +2287,7 @@ coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2350,7 +2350,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-policy-assignment
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2413,7 +2413,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2476,7 +2476,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2539,7 +2539,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-network
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2602,7 +2602,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2665,7 +2665,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-or-update-securit
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2728,7 +2728,7 @@ coreo_aws_rule "azure-monitoring-activity-log-alert-for-delete-network-security-
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2787,7 +2787,7 @@ coreo_aws_rule "azure-security-rdp-access-restricted-from-internet" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2846,7 +2846,7 @@ coreo_aws_rule "azure-security-ssh-access-restricted-from-internet" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2905,7 +2905,7 @@ coreo_aws_rule "azure-sql-sql-server-access-restricted-from-internet" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -2960,7 +2960,7 @@ coreo_aws_rule "azure-network-watcher-network-security-group-flow-log-retention-
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -3016,7 +3016,7 @@ coreo_aws_rule "azure-network-watcher-network-watcher-enabled" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -3066,7 +3066,7 @@ coreo_aws_rule "azure-security-vm-agent-installed" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -3116,7 +3116,7 @@ coreo_aws_rule "azure-security-os-disks-encrypted" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -3166,7 +3166,7 @@ coreo_aws_rule "azure-security-data-disks-encrypted" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -3219,7 +3219,7 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-keys" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
@@ -3272,7 +3272,7 @@ coreo_aws_rule "azure-key-vault-expiry-date-set-for-all-secrets" do
   QUERY
   meta_rule_visualize <<~QUERY
   {
-    visualize(func: uid(<%= violation_uid %>)) {
+    query(func: uid(<%= violation_uid %>)) {
       <%= default_predicates %>
       relates_to {
         <%= default_predicates %>
