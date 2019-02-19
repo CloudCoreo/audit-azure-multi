@@ -2303,11 +2303,11 @@ coreo_aws_rule "azure-monitoring-activity-log-retention-365-days-or-greater" do
   })
 end
 
-coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-polic-assignment" do
+coreo_aws_rule "azure-monitoring-activity-log-alert-for-create-policy-assignment" do
   action :define
   service :Microsoft_Insights
-  link "azure-monitoring-activity-log-alert-for-create-polic-assignment.html"
-  display_name "Activity Log Alert For Create Polic Assignment"
+  link "azure-monitoring-activity-log-alert-for-create-policy-assignment.html"
+  display_name "Activity Log Alert For Create Policy Assignment"
   description "Monitoring for Create Policy Assignment gives insight into privilege assignment and may reduce the time it takes to detect a breach or misuse of information."
   category "Logging"
   suggested_action "Create an Activity Log Alert for the Create Policy Assignment event."
